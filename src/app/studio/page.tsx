@@ -11,9 +11,11 @@ import {
   Users
 } from "lucide-react";
 import Link from "next/link";
+import { getAllScenarios } from "@/lib/scenarios";
 
 export default async function StudioPage() {
   const user = await currentUser();
+  const scenarios = getAllScenarios();
   
   return (
     <div className="min-h-[calc(100vh-4rem)] bg-gradient-to-b from-navy to-navy-light">
@@ -80,34 +82,17 @@ export default async function StudioPage() {
             </h2>
             
             <div className="grid gap-4">
-              <ScenarioCard 
-                title="Sales Discovery Call"
-                description="Practice uncovering customer needs and qualifying leads"
-                difficulty="Beginner"
-                duration="10-15 min"
-                category="Sales"
-              />
-              <ScenarioCard 
-                title="Objection Handling"
-                description="Master responses to common sales objections"
-                difficulty="Intermediate"
-                duration="15-20 min"
-                category="Sales"
-              />
-              <ScenarioCard 
-                title="Customer Support - Billing Issue"
-                description="Handle a frustrated customer with a billing complaint"
-                difficulty="Intermediate"
-                duration="10-15 min"
-                category="Support"
-              />
-              <ScenarioCard 
-                title="Technical Troubleshooting"
-                description="Guide a customer through complex technical issues"
-                difficulty="Advanced"
-                duration="20-30 min"
-                category="Support"
-              />
+              {scenarios.map((scenario) => (
+                <ScenarioCard 
+                  key={scenario.id}
+                  id={scenario.id}
+                  title={scenario.title}
+                  description={scenario.description}
+                  difficulty={scenario.difficulty}
+                  duration={scenario.duration}
+                  category={scenario.category === 'sales' ? 'Sales' : 'Support'}
+                />
+              ))}
             </div>
           </div>
 
@@ -117,10 +102,13 @@ export default async function StudioPage() {
             <div className="bg-navy-light border border-white/10 rounded-xl p-6">
               <h3 className="text-lg font-semibold text-white mb-4">Quick Actions</h3>
               <div className="space-y-3">
-                <button className="w-full flex items-center gap-3 px-4 py-3 bg-electric-blue hover:bg-electric-blue/90 text-white rounded-lg transition-colors">
+                <Link 
+                  href="/studio/session/angry-customer"
+                  className="w-full flex items-center gap-3 px-4 py-3 bg-electric-blue hover:bg-electric-blue/90 text-white rounded-lg transition-colors"
+                >
                   <Play className="w-5 h-5" />
-                  Start Random Session
-                </button>
+                  Start Angry Customer
+                </Link>
                 <button className="w-full flex items-center gap-3 px-4 py-3 bg-white/10 hover:bg-white/20 text-white rounded-lg transition-colors">
                   <BarChart3 className="w-5 h-5" />
                   View Analytics
@@ -150,8 +138,8 @@ export default async function StudioPage() {
                   locked={true}
                 />
                 <Achievement 
-                  title="Objection Master"
-                  description="Score 90%+ on objection handling"
+                  title="De-escalation Pro"
+                  description="Score 8+ on angry customer scenario"
                   locked={true}
                 />
               </div>
@@ -183,7 +171,8 @@ function StatCard({ icon, label, value, trend }: {
   );
 }
 
-function ScenarioCard({ title, description, difficulty, duration, category }: {
+function ScenarioCard({ id, title, description, difficulty, duration, category }: {
+  id: string;
   title: string;
   description: string;
   difficulty: string;
@@ -197,7 +186,7 @@ function ScenarioCard({ title, description, difficulty, duration, category }: {
   };
   
   return (
-    <div className="bg-navy-light border border-white/10 rounded-xl p-6 hover:border-electric-blue/50 transition-colors cursor-pointer group">
+    <div className="bg-navy-light border border-white/10 rounded-xl p-6 hover:border-electric-blue/50 transition-colors group">
       <div className="flex items-start justify-between mb-3">
         <div>
           <h3 className="text-lg font-semibold text-white group-hover:text-electric-blue transition-colors">
@@ -217,9 +206,12 @@ function ScenarioCard({ title, description, difficulty, duration, category }: {
           <Clock className="w-4 h-4" />
           {duration}
         </span>
-        <button className="ml-auto px-4 py-2 bg-electric-blue/20 hover:bg-electric-blue text-electric-blue hover:text-white text-sm font-medium rounded-lg transition-colors">
+        <Link 
+          href={`/studio/session/${id}`}
+          className="ml-auto px-4 py-2 bg-electric-blue/20 hover:bg-electric-blue text-electric-blue hover:text-white text-sm font-medium rounded-lg transition-colors"
+        >
           Start Session
-        </button>
+        </Link>
       </div>
     </div>
   );
