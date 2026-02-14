@@ -2,9 +2,10 @@
 
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
+import { SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { Menu, X, Sparkles } from 'lucide-react';
+import { Menu, Sparkles } from 'lucide-react';
 
 const navItems = [
   { href: '/', label: 'Home' },
@@ -45,16 +46,45 @@ export function Navigation() {
               {item.label}
             </Link>
           ))}
+          <SignedIn>
+            <Link
+              href="/studio"
+              className="text-electric-blue hover:text-electric-blue/80 transition-colors font-medium"
+            >
+              Studio
+            </Link>
+          </SignedIn>
         </div>
 
         {/* CTA Buttons */}
         <div className="hidden md:flex items-center gap-4">
-          <Button variant="ghost" className="text-muted-foreground hover:text-white">
-            Sign In
-          </Button>
-          <Button className="btn-gradient border-0 text-white font-semibold">
-            Start Free Trial
-          </Button>
+          <SignedOut>
+            <Link href="/sign-in">
+              <Button variant="ghost" className="text-muted-foreground hover:text-white">
+                Sign In
+              </Button>
+            </Link>
+            <Link href="/sign-up">
+              <Button className="btn-gradient border-0 text-white font-semibold">
+                Start Free Trial
+              </Button>
+            </Link>
+          </SignedOut>
+          <SignedIn>
+            <Link href="/studio">
+              <Button className="btn-gradient border-0 text-white font-semibold">
+                Go to Studio
+              </Button>
+            </Link>
+            <UserButton 
+              afterSignOutUrl="/"
+              appearance={{
+                elements: {
+                  avatarBox: "w-9 h-9 ring-2 ring-electric-blue/50"
+                }
+              }}
+            />
+          </SignedIn>
         </div>
 
         {/* Mobile Menu */}
@@ -77,13 +107,45 @@ export function Navigation() {
                     {item.label}
                   </Link>
                 ))}
+                <SignedIn>
+                  <Link
+                    href="/studio"
+                    onClick={() => setIsOpen(false)}
+                    className="text-lg font-medium text-electric-blue hover:text-electric-blue/80 transition-colors"
+                  >
+                    Studio
+                  </Link>
+                </SignedIn>
                 <div className="flex flex-col gap-3 mt-4">
-                  <Button variant="outline" className="border-violet/30 text-white">
-                    Sign In
-                  </Button>
-                  <Button className="btn-gradient border-0 text-white font-semibold">
-                    Start Free Trial
-                  </Button>
+                  <SignedOut>
+                    <Link href="/sign-in" onClick={() => setIsOpen(false)}>
+                      <Button variant="outline" className="w-full border-violet/30 text-white">
+                        Sign In
+                      </Button>
+                    </Link>
+                    <Link href="/sign-up" onClick={() => setIsOpen(false)}>
+                      <Button className="w-full btn-gradient border-0 text-white font-semibold">
+                        Start Free Trial
+                      </Button>
+                    </Link>
+                  </SignedOut>
+                  <SignedIn>
+                    <Link href="/studio" onClick={() => setIsOpen(false)}>
+                      <Button className="w-full btn-gradient border-0 text-white font-semibold">
+                        Go to Studio
+                      </Button>
+                    </Link>
+                    <div className="flex justify-center mt-2">
+                      <UserButton 
+                        afterSignOutUrl="/"
+                        appearance={{
+                          elements: {
+                            avatarBox: "w-10 h-10 ring-2 ring-electric-blue/50"
+                          }
+                        }}
+                      />
+                    </div>
+                  </SignedIn>
                 </div>
               </div>
             </SheetContent>
