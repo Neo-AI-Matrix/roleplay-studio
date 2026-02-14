@@ -52,6 +52,7 @@ export default function VoiceSessionPage() {
   const [sessionScore, setSessionScore] = useState<number | null>(null);
   const [scoreBreakdown, setScoreBreakdown] = useState<ScoreBreakdown | null>(null);
   const [sessionDuration, setSessionDuration] = useState(0);
+  const [showBriefing, setShowBriefing] = useState(false);
   
   const conversationRef = useRef<any>(null);
   const transcriptEndRef = useRef<HTMLDivElement>(null);
@@ -524,7 +525,20 @@ export default function VoiceSessionPage() {
             </div>
           </div>
           
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3">
+            {/* Briefing Toggle Button */}
+            <button
+              onClick={() => setShowBriefing(!showBriefing)}
+              className={`px-3 py-1 rounded-full text-sm flex items-center gap-2 transition-colors ${
+                showBriefing 
+                  ? 'bg-electric-blue/20 text-electric-blue' 
+                  : 'bg-white/10 text-gray-400 hover:text-white'
+              }`}
+            >
+              <FileText className="w-4 h-4" />
+              Briefing
+            </button>
+            
             <span className={`px-3 py-1 rounded-full text-sm ${
               status === 'connected' 
                 ? 'bg-green-500/20 text-green-400' 
@@ -537,6 +551,43 @@ export default function VoiceSessionPage() {
           </div>
         </div>
       </div>
+
+      {/* Collapsible Briefing Panel */}
+      {showBriefing && (
+        <div className="border-b border-white/10 bg-navy-light/50 px-4 py-4 animate-in slide-in-from-top duration-200">
+          <div className="container mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+              <div className="flex gap-2">
+                <div className="flex-shrink-0 w-6 h-6 bg-electric-blue/20 rounded flex items-center justify-center">
+                  <FileText className="w-3 h-3 text-electric-blue" />
+                </div>
+                <div>
+                  <h4 className="text-electric-blue font-medium text-xs mb-1">Background</h4>
+                  <p className="text-gray-400 text-xs leading-relaxed">{scenario.briefing.background}</p>
+                </div>
+              </div>
+              <div className="flex gap-2">
+                <div className="flex-shrink-0 w-6 h-6 bg-red-500/20 rounded flex items-center justify-center">
+                  <AlertTriangle className="w-3 h-3 text-red-400" />
+                </div>
+                <div>
+                  <h4 className="text-red-400 font-medium text-xs mb-1">The Issue</h4>
+                  <p className="text-gray-400 text-xs leading-relaxed">{scenario.briefing.issue}</p>
+                </div>
+              </div>
+              <div className="flex gap-2">
+                <div className="flex-shrink-0 w-6 h-6 bg-green-500/20 rounded flex items-center justify-center">
+                  <Target className="w-3 h-3 text-green-400" />
+                </div>
+                <div>
+                  <h4 className="text-green-400 font-medium text-xs mb-1">Your Goal</h4>
+                  <p className="text-gray-400 text-xs leading-relaxed">{scenario.briefing.goal}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col items-center justify-center p-8">
