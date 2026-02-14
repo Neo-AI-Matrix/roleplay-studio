@@ -52,11 +52,6 @@ export function Footer() {
                   Enterprise
                 </Link>
               </li>
-              <li>
-                <Link href="/product#scenarios" className="text-muted-foreground hover:text-white transition-colors">
-                  Scenarios
-                </Link>
-              </li>
             </ul>
           </div>
 
@@ -70,19 +65,14 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/contact" className="text-muted-foreground hover:text-white transition-colors">
-                  Contact
+                <Link href="/careers" className="text-muted-foreground hover:text-white transition-colors">
+                  Careers
                 </Link>
               </li>
               <li>
-                <a href="#" className="text-muted-foreground hover:text-white transition-colors">
-                  Careers
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-muted-foreground hover:text-white transition-colors">
-                  Blog
-                </a>
+                <Link href="/contact" className="text-muted-foreground hover:text-white transition-colors">
+                  Contact
+                </Link>
               </li>
             </ul>
           </div>
