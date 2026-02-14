@@ -27,6 +27,34 @@ import {
   Phone
 } from 'lucide-react';
 import Link from 'next/link';
+import { FAQ } from '@/components/FAQ';
+
+const enterpriseFAQs = [
+  {
+    question: "What makes Enterprise different from the Business plan?",
+    answer: "Enterprise includes fully custom AI agents built specifically for your business, unlimited users, dedicated implementation support, a named Customer Success Manager, SSO integration upon request, advanced security controls, and custom integrations with your existing tools (Salesforce, HubSpot, your LMS, etc.)."
+  },
+  {
+    question: "How long does implementation take?",
+    answer: "Typical enterprise implementations take 8-12 weeks from contract signing to full deployment. This includes discovery and design (2-3 weeks), custom agent development (3-4 weeks), pilot program (2-3 weeks), and full rollout with training. We can accelerate timelines for urgent needs."
+  },
+  {
+    question: "Can you integrate with our existing LMS or CRM?",
+    answer: "Yes. We offer native integrations with Salesforce, HubSpot, and major LMS platforms. We can also build custom integrations via our API to connect with proprietary systems. User provisioning can be automated through SCIM."
+  },
+  {
+    question: "How do you build custom AI agents for our business?",
+    answer: "We start by analyzing your top performers, existing training materials, product documentation, and real customer interactions. Our team then designs AI personas that understand your products, pricing, competitive landscape, and common objections. We iterate with your team until the agents feel authentic."
+  },
+  {
+    question: "What security certifications do you have?",
+    answer: "We are GDPR and CCPA compliant, use AES-256 encryption at rest and TLS 1.3 in transit, and undergo regular penetration testing. We offer SSO/SAML integration upon request, role-based access controls, and can accommodate custom security reviews with your InfoSec team."
+  },
+  {
+    question: "What kind of support do Enterprise customers receive?",
+    answer: "Enterprise customers get a dedicated Customer Success Manager, priority support with guaranteed response times, quarterly business reviews, and a Technical Account Manager for integration and optimization. We also provide admin training and change management resources for rollout."
+  }
+];
 
 const enterpriseFeatures = [
   {
@@ -504,6 +532,12 @@ export default function EnterprisePage() {
           </div>
         </div>
       </section>
+
+      {/* FAQ Section */}
+      <FAQ 
+        faqs={enterpriseFAQs}
+        subtitle="Common questions about our enterprise solutions"
+      />
 
       {/* CTA Section */}
       <section className="relative container mx-auto px-4 py-24">

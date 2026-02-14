@@ -20,6 +20,34 @@ import {
   TrendingDown
 } from 'lucide-react';
 import Link from 'next/link';
+import { FAQ } from '@/components/FAQ';
+
+const homeFAQs = [
+  {
+    question: "What is Roleplay Studio?",
+    answer: "Roleplay Studio is an AI-powered training platform that helps professionals practice and improve their communication skills through realistic voice and text simulations. Whether you're in sales, support, HR, or leadership, our AI personas provide a safe space to practice difficult conversations and receive instant feedback."
+  },
+  {
+    question: "How does AI roleplay training work?",
+    answer: "You choose a scenario (like handling an angry customer or negotiating with a CFO), then engage in a realistic conversation with our AI persona via voice or text. The AI adapts to your responses just like a real person would. After each session, you receive detailed feedback on your performance, including specific areas for improvement."
+  },
+  {
+    question: "Is there a free trial?",
+    answer: "Yes! We offer a 7-day free trial with full access to all features and scenarios. You can practice unlimited sessions during your trial to experience the full value of the platform before committing."
+  },
+  {
+    question: "What types of scenarios are available?",
+    answer: "We offer training across five categories: Sales (discovery calls, objection handling, closing), Support (de-escalation, troubleshooting), HR (difficult conversations, performance reviews), Communication (presentations, public speaking), and Leadership (coaching, executive presence). Each category includes multiple scenarios at varying difficulty levels."
+  },
+  {
+    question: "Can I create custom scenarios for my team?",
+    answer: "Absolutely! Our Business and Enterprise plans include the ability to create custom AI personas and scenarios tailored to your specific products, customers, and industry challenges. You can even upload real customer interactions to train the AI."
+  },
+  {
+    question: "How is this different from traditional roleplay training?",
+    answer: "Traditional roleplay requires scheduling time with colleagues or trainers, which limits practice frequency. Roleplay Studio is available 24/7, provides consistent AI personas that never get tired or break character, and delivers objective, data-driven feedback. Users can practice as often as they want without the social pressure of practicing with peers."
+  }
+];
 
 const stats = [
   { value: '10,000+', label: 'Active Users' },
@@ -426,6 +454,12 @@ export default function Home() {
           ))}
         </div>
       </section>
+
+      {/* FAQ Section */}
+      <FAQ 
+        faqs={homeFAQs}
+        subtitle="Everything you need to know about AI-powered roleplay training"
+      />
 
       {/* CTA Section */}
       <section className="relative container mx-auto px-4 py-24">

@@ -1,5 +1,33 @@
 import { Badge } from '@/components/ui/badge';
 import { FileText } from 'lucide-react';
+import { FAQ } from '@/components/FAQ';
+
+const termsFAQs = [
+  {
+    question: "Can I cancel my subscription at any time?",
+    answer: "Yes, you can cancel your subscription at any time through your account settings. Your access will continue until the end of your current billing period. We do not provide prorated refunds for partial months."
+  },
+  {
+    question: "What happens when my free trial ends?",
+    answer: "Your trial automatically converts to a paid subscription at the end of the 7-day period. You'll be charged the plan rate you selected during signup. You can cancel anytime before the trial ends to avoid charges."
+  },
+  {
+    question: "Can I use Roleplay Studio for commercial training purposes?",
+    answer: "Yes, our Business and Enterprise plans are designed for commercial use, including training employees, consultants, and clients. Individual plans are for personal professional development only. Contact sales if you need a reseller or white-label arrangement."
+  },
+  {
+    question: "Who owns the content I create on the platform?",
+    answer: "You retain ownership of all content you create or upload (custom scenarios, conversation transcripts, etc.). You grant us a license to use this content solely to provide the Service to you. We do not claim ownership of your content."
+  },
+  {
+    question: "What are the age requirements to use Roleplay Studio?",
+    answer: "You must be at least 16 years old to create an account and use Roleplay Studio. If you are using the Service on behalf of an organization, you represent that you have the authority to bind that organization to these Terms."
+  },
+  {
+    question: "How do you handle disputes?",
+    answer: "Any disputes are resolved through binding arbitration in San Francisco, California. By using the Service, you agree to waive your right to a jury trial or to participate in a class action lawsuit. Please see Section 14 of our Terms for full details."
+  }
+];
 
 export default function TermsOfServicePage() {
   return (
@@ -248,6 +276,13 @@ export default function TermsOfServicePage() {
               </div>
             </div>
           </div>
+          
+          {/* Terms FAQ */}
+          <FAQ 
+            faqs={termsFAQs}
+            title="Terms FAQ"
+            subtitle="Common questions about our terms of service"
+          />
         </div>
       </div>
     </div>

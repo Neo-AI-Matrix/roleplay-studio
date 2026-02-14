@@ -18,26 +18,35 @@ import {
   X,
   Sparkles
 } from 'lucide-react';
+import { FAQ } from '@/components/FAQ';
 
 // ElevenLabs Conversational AI Widget Agent ID (create in ElevenLabs dashboard)
 const ELEVENLABS_AGENT_ID = 'YOUR_AGENT_ID_HERE'; // TODO: Replace with actual agent ID
 
-const faqs = [
+const contactFAQs = [
   {
     question: 'How long is the free trial?',
-    answer: '7 days with full access to all features.',
+    answer: '7 days with full access to all features, all scenarios, and unlimited practice sessions. Your trial automatically converts to a paid subscription unless you cancel before it ends.',
   },
   {
     question: 'Can I create custom scenarios?',
-    answer: 'Yes! Professional and Enterprise plans include a custom scenario builder.',
+    answer: 'Yes! Business and Enterprise plans include a custom scenario builder where you can create AI personas tailored to your specific products, customers, and industry challenges.',
   },
   {
     question: 'Do you offer team discounts?',
-    answer: 'Yes, we offer volume discounts for teams of 10+ users. Contact sales for details.',
+    answer: 'Yes, we offer volume discounts for teams of 10+ users on our Business plan. Enterprise customers receive custom pricing based on their needs. Contact our sales team for a personalized quote.',
   },
   {
     question: 'What integrations do you support?',
-    answer: 'We integrate with Salesforce, HubSpot, Slack, and most major CRM and communication tools.',
+    answer: 'We integrate with Salesforce, HubSpot, Slack, Microsoft Teams, and most major LMS platforms. Enterprise customers can also request custom API integrations with their existing tools.',
+  },
+  {
+    question: 'How quickly does your team respond?',
+    answer: 'Our average response time is under 2 hours during business hours (9am-6pm PT, Monday-Friday). Enterprise customers receive priority support with a 4-hour response time SLA.',
+  },
+  {
+    question: 'Can I schedule a live demo?',
+    answer: 'Absolutely! Fill out the contact form or email us at hello@roleplaystudio.com and mention you\'d like a demo. We\'ll schedule a 30-minute personalized walkthrough of the platform tailored to your team\'s needs.',
   },
 ];
 
@@ -287,24 +296,8 @@ export default function ContactPage() {
             )}
           </div>
 
-          {/* FAQ & Support Info */}
+          {/* Support Info */}
           <div>
-            <Badge className="mb-4 bg-violet/30 text-white border-violet/50">FAQ</Badge>
-            <h2 className="font-heading text-3xl font-bold mb-6">
-              Common{' '}
-              <span className="gradient-text">Questions</span>
-            </h2>
-
-            <div className="space-y-4 mb-12">
-              {faqs.map((faq, i) => (
-                <Card key={i} className="glass-card border-violet/20">
-                  <CardContent className="p-4">
-                    <h4 className="font-semibold text-white mb-2">{faq.question}</h4>
-                    <p className="text-muted-foreground text-sm">{faq.answer}</p>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
 
             {/* Support Hours */}
             <Card className="glass-card border-cyan/20 glow-cyan">
@@ -353,6 +346,12 @@ export default function ContactPage() {
           </div>
         </div>
       </section>
+
+      {/* FAQ Section */}
+      <FAQ 
+        faqs={contactFAQs}
+        subtitle="Quick answers to common questions"
+      />
 
       {/* CTA Section */}
       <section className="relative container mx-auto px-4 py-24">

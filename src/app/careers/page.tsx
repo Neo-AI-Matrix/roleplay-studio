@@ -24,6 +24,34 @@ import {
   Gamepad2
 } from 'lucide-react';
 import Link from 'next/link';
+import { FAQ } from '@/components/FAQ';
+
+const careersFAQs = [
+  {
+    question: "What is the interview process like?",
+    answer: "Our typical process includes: 1) Initial recruiter screen (30 min), 2) Hiring manager conversation (45 min), 3) Technical or skills assessment relevant to the role, 4) Team interviews (2-3 conversations with potential teammates), 5) Final conversation with a founder. Total timeline is usually 2-3 weeks."
+  },
+  {
+    question: "Do you sponsor work visas?",
+    answer: "Yes, we sponsor H-1B visas for exceptional candidates. We also support transfers for candidates on existing visas. Please mention your visa status during the application process so we can discuss options early."
+  },
+  {
+    question: "Is remote work really supported?",
+    answer: "Absolutely! About 60% of our team is fully remote across the US. We use async-first communication, have core collaboration hours (10am-2pm PT), and fly everyone to our SF HQ quarterly for team building. Remote employees get a $1,500 home office stipend."
+  },
+  {
+    question: "What's the equity compensation like?",
+    answer: "All full-time employees receive equity grants as part of their compensation. We offer ISOs with a 4-year vesting schedule and 1-year cliff. We're transparent about our cap table during the offer process and provide equity education sessions."
+  },
+  {
+    question: "How do you support professional development?",
+    answer: "Every employee gets $3,000/year for learning—courses, conferences, books, whatever helps you grow. No approval needed, just expense it. We also have internal mentorship programs, regular lunch-and-learns, and encourage 10% time for learning projects."
+  },
+  {
+    question: "What's the culture really like?",
+    answer: "We're a high-performance team that values work-life balance. We ship fast, celebrate wins loudly, and support each other through challenges. Friday afternoons are for rooftop pickleball and demos. We don't do late nights or weekend work unless something is truly on fire (and it rarely is)."
+  }
+];
 
 const perks = [
   {
@@ -478,6 +506,12 @@ export default function CareersPage() {
           ))}
         </div>
       </section>
+
+      {/* FAQ Section */}
+      <FAQ 
+        faqs={careersFAQs}
+        subtitle="Common questions about working at Roleplay Studio"
+      />
 
       {/* CTA Section */}
       <section className="relative container mx-auto px-4 py-24">

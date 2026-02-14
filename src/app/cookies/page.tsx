@@ -1,6 +1,34 @@
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { Cookie } from 'lucide-react';
+import { FAQ } from '@/components/FAQ';
+
+const cookiesFAQs = [
+  {
+    question: "Can I use Roleplay Studio without cookies?",
+    answer: "Some cookies are essential for the Service to function properly, including authentication cookies that keep you logged in. You can disable optional cookies (analytics and marketing), but disabling essential cookies will prevent you from using the platform."
+  },
+  {
+    question: "How do I opt out of analytics tracking?",
+    answer: "You can opt out of analytics cookies through your browser settings, use the Google Analytics Opt-out Browser Add-on, or adjust your preferences through the cookie consent banner when you first visit our site. Enterprise customers can request analytics be disabled for their organization."
+  },
+  {
+    question: "Do you use cookies to track me across other websites?",
+    answer: "We use marketing cookies from third parties (like Google and Facebook) that may track activity across websites for advertising purposes. You can opt out of these through the Digital Advertising Alliance opt-out tool or by adjusting your ad preferences on those platforms."
+  },
+  {
+    question: "How long do your cookies last?",
+    answer: "Cookie duration varies by type. Session cookies expire when you close your browser. Persistent cookies can last from 24 hours (analytics) to 2 years (authentication). See the cookie tables above for specific durations."
+  },
+  {
+    question: "Are cookies the same as tracking pixels?",
+    answer: "No, but they serve similar purposes. Cookies are text files stored on your device, while pixels are tiny images embedded in pages or emails that can track views and actions. We use both technologies as described in this policy."
+  },
+  {
+    question: "Will blocking cookies affect my experience?",
+    answer: "Yes, blocking cookies may impact your experience. Essential cookies are required for login and security. Blocking functional cookies means we won't remember your preferences. Blocking analytics cookies means we can't improve the product based on usage patterns."
+  }
+];
 
 const cookieCategories = [
   {
@@ -339,6 +367,13 @@ export default function CookiePolicyPage() {
               </div>
             </div>
           </div>
+          
+          {/* Cookies FAQ */}
+          <FAQ 
+            faqs={cookiesFAQs}
+            title="Cookie FAQ"
+            subtitle="Common questions about our use of cookies"
+          />
         </div>
       </div>
     </div>

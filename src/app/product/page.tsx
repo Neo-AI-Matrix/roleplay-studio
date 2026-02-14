@@ -18,6 +18,34 @@ import {
   Award
 } from 'lucide-react';
 import Link from 'next/link';
+import { FAQ } from '@/components/FAQ';
+
+const productFAQs = [
+  {
+    question: "What AI models power Roleplay Studio?",
+    answer: "We use a combination of leading AI models including GPT-4, Claude, and custom fine-tuned models optimized for realistic conversation simulation. Our voice interactions are powered by ElevenLabs' state-of-the-art voice synthesis technology for natural, expressive speech."
+  },
+  {
+    question: "How realistic are the AI conversations?",
+    answer: "Our AI personas are designed by professional trainers and sales coaches to behave like real people. They have consistent personalities, react emotionally to your responses, and will push back, ask clarifying questions, or express frustration just like real customers or colleagues would."
+  },
+  {
+    question: "Can I practice with voice or just text?",
+    answer: "Both! Every scenario supports text-based chat for quick practice sessions, and most scenarios also offer voice mode where you can have a real spoken conversation with the AI. Voice mode is especially effective for sales calls and customer support training."
+  },
+  {
+    question: "How does the feedback and scoring work?",
+    answer: "After each session, our AI analyzes your conversation across multiple dimensions: communication clarity, empathy, objection handling, questioning technique, and more. You receive a score out of 100, specific feedback on what you did well, and actionable suggestions for improvement."
+  },
+  {
+    question: "Can I track my team's progress?",
+    answer: "Yes! Business and Enterprise plans include team dashboards showing individual and aggregate performance metrics, skill progression over time, leaderboards, and completion tracking. Managers can identify skill gaps and assign specific scenarios for improvement."
+  },
+  {
+    question: "Is my conversation data private and secure?",
+    answer: "Absolutely. All conversations are encrypted in transit and at rest. We do not use your conversation data to train our AI models. Enterprise customers can request data residency in specific regions and additional security controls including SSO and audit logs."
+  }
+];
 
 // Legacy scenarios for other sections
 const scenarioTypes = [
@@ -636,6 +664,12 @@ export default function ProductPage() {
           </div>
         </div>
       </section>
+
+      {/* FAQ Section */}
+      <FAQ 
+        faqs={productFAQs}
+        subtitle="Learn more about how our AI training platform works"
+      />
 
       {/* CTA Section */}
       <section className="relative container mx-auto px-4 py-24">

@@ -11,6 +11,34 @@ import {
   Twitter
 } from 'lucide-react';
 import Link from 'next/link';
+import { FAQ } from '@/components/FAQ';
+
+const aboutFAQs = [
+  {
+    question: "When was Roleplay Studio founded?",
+    answer: "Roleplay Studio was founded in 2024 by a team of AI researchers and sales training experts who saw an opportunity to democratize elite training through artificial intelligence. We launched our beta program in late 2024 and have grown to over 10,000 users since."
+  },
+  {
+    question: "Where is your team located?",
+    answer: "We're a distributed team with members across the United States and Europe. Our headquarters is in San Francisco, but we embrace remote work and have team members in multiple time zones to better serve our global customer base."
+  },
+  {
+    question: "Are you hiring?",
+    answer: "Yes! We're always looking for talented people who are passionate about AI, training, and helping professionals succeed. Check out our Careers page for current openings in engineering, product, sales, and customer success."
+  },
+  {
+    question: "What makes your AI different from ChatGPT?",
+    answer: "While we leverage large language models, our AI is specifically fine-tuned for realistic roleplay training scenarios. Our personas maintain consistent personalities, exhibit realistic emotional responses, and provide structured feedback aligned with professional training methodologies. It's purpose-built for skill development, not general conversation."
+  },
+  {
+    question: "Do you offer partnerships or integrations?",
+    answer: "Yes, we partner with sales training consultancies, HR technology platforms, and learning management systems. If you're interested in partnering or integrating Roleplay Studio into your offering, please reach out to our partnerships team via the Contact page."
+  },
+  {
+    question: "How can I provide feedback or suggest features?",
+    answer: "We love hearing from our users! You can submit feedback directly through the platform, email our support team, or join our community Discord where our product team actively engages with users. Many of our best features have come from user suggestions."
+  }
+];
 
 const values = [
   {
@@ -257,6 +285,12 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
+
+      {/* FAQ Section */}
+      <FAQ 
+        faqs={aboutFAQs}
+        subtitle="Learn more about our company and mission"
+      />
 
       {/* CTA Section */}
       <section className="relative container mx-auto px-4 py-24">

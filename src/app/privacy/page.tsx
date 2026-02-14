@@ -1,5 +1,33 @@
 import { Badge } from '@/components/ui/badge';
 import { Shield } from 'lucide-react';
+import { FAQ } from '@/components/FAQ';
+
+const privacyFAQs = [
+  {
+    question: "Do you sell my personal data?",
+    answer: "No, we never sell your personal data to third parties. We only share data with service providers who help us operate the platform (like payment processors and hosting providers), and they are contractually obligated to protect your data."
+  },
+  {
+    question: "Are my practice conversations recorded and stored?",
+    answer: "Yes, conversation transcripts are stored to provide you with session history, feedback, and analytics. Voice recordings are processed in real-time but not permanently stored unless you opt into that feature. You can delete your conversation history at any time from your account settings."
+  },
+  {
+    question: "Do you use my data to train your AI models?",
+    answer: "No, we do not use your individual conversation data to train our AI models. Your practice sessions and content remain private to you and your organization. Enterprise customers can request additional data isolation guarantees."
+  },
+  {
+    question: "How can I delete my account and data?",
+    answer: "You can request account deletion from your account settings or by emailing privacy@roleplaystudio.ai. Upon deletion, we will remove your personal data and conversation history within 30 days, except where retention is required by law."
+  },
+  {
+    question: "Are you GDPR compliant?",
+    answer: "Yes, we comply with GDPR for users in the European Economic Area. This includes the right to access, rectify, delete, and port your data. You can exercise these rights by contacting our data protection team at privacy@roleplaystudio.ai."
+  },
+  {
+    question: "How do you protect my data?",
+    answer: "We use industry-standard security measures including TLS 1.3 encryption for data in transit, AES-256 encryption for data at rest, regular security audits, and strict access controls. Our infrastructure is hosted on enterprise-grade cloud providers with robust security certifications."
+  }
+];
 
 export default function PrivacyPolicyPage() {
   return (
@@ -187,6 +215,13 @@ export default function PrivacyPolicyPage() {
               </div>
             </div>
           </div>
+          
+          {/* Privacy FAQ */}
+          <FAQ 
+            faqs={privacyFAQs}
+            title="Privacy FAQ"
+            subtitle="Common questions about how we handle your data"
+          />
         </div>
       </div>
     </div>
