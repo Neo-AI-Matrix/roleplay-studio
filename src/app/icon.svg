@@ -1,0 +1,13 @@
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#8B5CF6"/>
+      <stop offset="100%" stop-color="#06B6D4"/>
+    </linearGradient>
+  </defs>
+  <rect width="32" height="32" rx="6" fill="url(#logoGradient)"/>
+  <!-- Sparkles icon -->
+  <path d="M16 6L17.5 12.5L24 14L17.5 15.5L16 22L14.5 15.5L8 14L14.5 12.5L16 6Z" fill="white"/>
+  <path d="M22 18L22.75 21.25L26 22L22.75 22.75L22 26L21.25 22.75L18 22L21.25 21.25L22 18Z" fill="white" opacity="0.8"/>
+  <path d="M10 6L10.5 8.5L13 9L10.5 9.5L10 12L9.5 9.5L7 9L9.5 8.5L10 6Z" fill="white" opacity="0.6"/>
+</svg>
