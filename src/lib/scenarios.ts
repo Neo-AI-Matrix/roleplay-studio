@@ -20,6 +20,7 @@ export const scenarios: Record<string, Scenario> = {
     category: 'support',
     difficulty: 'Intermediate',
     duration: '10-15 min',
+    elevenLabsAgentId: 'agent_3901khdf29g6ej0th4936tv0v5kp',
     systemPrompt: `You are an extremely frustrated and angry customer in a training roleplay scenario.
 
 SCENARIO BACKGROUND:
