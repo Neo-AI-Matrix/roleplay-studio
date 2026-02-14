@@ -122,7 +122,7 @@ export default function Home() {
           </div>
 
           <p className="text-sm text-muted-foreground">
-            No credit card required • Setup in 5 minutes • Cancel anytime
+            Setup in 5 minutes • Cancel anytime
           </p>
 
           {/* Trust Avatars - Different from team/employee photos */}
@@ -451,7 +451,7 @@ export default function Home() {
             </Link>
           </div>
           <p className="text-sm text-muted-foreground mt-6">
-            No credit card required • Setup in 5 minutes • Cancel anytime
+            Setup in 5 minutes • Cancel anytime
           </p>
         </div>
       </section>

@@ -563,7 +563,7 @@ export default function ProductPage() {
             <span className="gradient-text">Action?</span>
           </h2>
           <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Start your free 7-day trial today. No credit card required.
+            Start your free 7-day trial today.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/sign-up">

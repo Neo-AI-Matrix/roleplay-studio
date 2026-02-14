@@ -25,7 +25,7 @@ const ELEVENLABS_AGENT_ID = 'YOUR_AGENT_ID_HERE'; // TODO: Replace with actual a
 const faqs = [
   {
     question: 'How long is the free trial?',
-    answer: '14 days with full access to all features. No credit card required.',
+    answer: '7 days with full access to all features.',
   },
   {
     question: 'Can I create custom scenarios?',
@@ -362,7 +362,7 @@ export default function ContactPage() {
             <span className="gradient-text">Your Training?</span>
           </h2>
           <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Start your free 14-day trial today. No credit card required, no commitment.
+            Start your free 7-day trial today. Cancel anytime.
           </p>
           <Link href="/sign-up">
             <Button size="lg" className="btn-gradient text-lg h-14 px-8 border-0 text-white font-semibold">
