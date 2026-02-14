@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { HeroDemoChat } from '@/components/HeroDemoChat';
 import { 
   Sparkles, 
   Play, 
@@ -137,39 +138,8 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Hero Visual */}
-        <div className="relative mt-16 max-w-5xl mx-auto">
-          <div className="glass-card p-8 glow-violet">
-            <div className="bg-navy-light rounded-lg p-6 border border-violet/20">
-              <div className="flex items-center gap-4 mb-6">
-                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-violet to-cyan flex items-center justify-center">
-                  <Brain className="w-6 h-6 text-white" />
-                </div>
-                <div>
-                  <p className="font-semibold text-white">AI Customer: Frustrated Enterprise Buyer</p>
-                  <p className="text-sm text-muted-foreground">Objection Handling Scenario</p>
-                </div>
-                <Badge className="ml-auto bg-cyan/30 text-white border-cyan/50">Live Session</Badge>
-              </div>
-              
-              <div className="space-y-4">
-                <div className="flex gap-3">
-                  <div className="w-8 h-8 rounded-full bg-red-500/20 flex items-center justify-center text-sm font-semibold text-red-400">AI</div>
-                  <div className="flex-1 bg-navy/50 rounded-lg p-3 border border-red-500/20">
-                    <p className="text-muted-foreground">"We've been evaluating your solution for 3 months and I'm honestly not seeing the ROI your team promised. I'm ready to cancel."</p>
-                  </div>
-                </div>
-                <div className="flex gap-3">
-                  <div className="w-8 h-8 rounded-full bg-violet/20 flex items-center justify-center text-sm font-semibold text-violet">You</div>
-                  <div className="flex-1 bg-violet/10 rounded-lg p-3 border border-violet/20">
-                    <p className="text-white">Type your response...</p>
-                    <div className="h-0.5 w-4 bg-cyan animate-pulse mt-1" />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        {/* Hero Visual - Animated Demo */}
+        <HeroDemoChat />
       </section>
 
       {/* Social Proof Image Section */}
