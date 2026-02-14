@@ -39,8 +39,21 @@ Margaret is an angry customer (Intermediate difficulty), so she needs Expressive
 | **TTS Model** | eleven_turbo_v2_5, eleven_v3_conversational | Model affects quality, latency, and language support |
 | **Stability** | 0.0 - 1.0 | Higher = more consistent/predictable; Lower = more expressive/variable |
 | **Similarity** | 0.0 - 1.0 | Higher = closer to original voice; Lower = more variation allowed |
-| **Speed** | 0.5 - 2.0 | 1.0 = normal; <1.0 = slower; >1.0 = faster |
+| **Speed** | 0.8 - 1.2 | 1.0 = normal; <1.0 = slower; >1.0 = faster |
 | **Expressive Mode** | On / Off | Adds emotional inflection based on content |
+
+### ⚠️ MINIMUM SPEED REQUIREMENT
+
+**All agents MUST have speed set to 1.2 (minimum).** 
+
+Slower speeds feel unnatural and frustrating for users. The ElevenLabs max is 1.2, so all agents should be set to this value.
+
+| Requirement | Value | Reason |
+|-------------|-------|--------|
+| **Minimum Speed** | 1.2 | Slower feels sluggish and unresponsive |
+| **Maximum Speed** | 1.2 | ElevenLabs API maximum |
+
+When creating new agents, always set `speed: 1.2` in the TTS configuration.
 
 ### ⚠️ TTS Model + Expressive Mode Dependency
 

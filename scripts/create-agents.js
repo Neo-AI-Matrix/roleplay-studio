@@ -462,7 +462,8 @@ async function createAgent(agent) {
         language: "en"
       },
       tts: {
-        voice_id: VOICES[agent.voice]
+        voice_id: VOICES[agent.voice],
+        speed: 1.2  // REQUIRED: Minimum speed for all agents
       }
     }
   };
