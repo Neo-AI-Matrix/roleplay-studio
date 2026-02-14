@@ -48,13 +48,13 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/product#scenarios" className="text-muted-foreground hover:text-white transition-colors">
-                  Scenarios
+                <Link href="/enterprise" className="text-muted-foreground hover:text-white transition-colors">
+                  Enterprise
                 </Link>
               </li>
               <li>
-                <Link href="/product#integrations" className="text-muted-foreground hover:text-white transition-colors">
-                  Integrations
+                <Link href="/product#scenarios" className="text-muted-foreground hover:text-white transition-colors">
+                  Scenarios
                 </Link>
               </li>
             </ul>
@@ -93,9 +93,9 @@ export function Footer() {
             © 2026 Roleplay Studio. All rights reserved.
           </p>
           <div className="flex gap-6 text-sm">
-            <a href="#" className="text-muted-foreground hover:text-white transition-colors">
+            <Link href="/privacy" className="text-muted-foreground hover:text-white transition-colors">
               Privacy Policy
-            </a>
+            </Link>
             <a href="#" className="text-muted-foreground hover:text-white transition-colors">
               Terms of Service
             </a>

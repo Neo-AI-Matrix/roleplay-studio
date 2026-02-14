@@ -47,7 +47,7 @@ const enterpriseFeatures = [
   {
     icon: Shield,
     title: 'Enterprise Security',
-    description: 'SOC 2 Type II certified. SSO/SAML, SCIM provisioning, role-based access control, audit logs, and data residency options to meet your compliance requirements.',
+    description: 'Enterprise-grade security with SSO available on request, role-based access control, encrypted data, and GDPR/CCPA compliant data handling.',
   },
   {
     icon: Database,
@@ -85,12 +85,12 @@ const customizationOptions = [
 ];
 
 const securityFeatures = [
-  { icon: Lock, title: 'SSO/SAML', description: 'Single sign-on with your identity provider' },
-  { icon: Users, title: 'SCIM Provisioning', description: 'Automatic user lifecycle management' },
-  { icon: Shield, title: 'SOC 2 Type II', description: 'Audited security controls and processes' },
-  { icon: Globe, title: 'Data Residency', description: 'Choose where your data is stored' },
-  { icon: FileText, title: 'Audit Logs', description: 'Complete activity tracking and exports' },
-  { icon: Settings, title: 'RBAC', description: 'Granular role-based access control' },
+  { icon: Lock, title: 'SSO/SAML', description: 'Single sign-on available on request' },
+  { icon: Shield, title: 'Secure Infrastructure', description: 'Hosted on enterprise-grade cloud infrastructure' },
+  { icon: Lock, title: 'Encryption', description: 'Data encrypted in transit and at rest' },
+  { icon: Settings, title: 'Role-Based Access', description: 'Control who can access what' },
+  { icon: FileText, title: 'Privacy Compliant', description: 'GDPR and CCPA compliant data handling' },
+  { icon: UserCheck, title: 'Dedicated Security Review', description: 'Work with your security team' },
 ];
 
 const implementationPhases = [
@@ -194,7 +194,7 @@ export default function EnterprisePage() {
           </div>
 
           <p className="text-sm text-muted-foreground">
-            Trusted by Fortune 500 companies • SOC 2 Type II Certified • 99.9% Uptime SLA
+            Enterprise-grade infrastructure • GDPR & CCPA Compliant • Dedicated Support
           </p>
         </div>
       </section>
@@ -438,14 +438,14 @@ export default function EnterprisePage() {
           <div className="glass-card p-8 glow-cyan">
             <h3 className="font-heading text-2xl font-bold text-white mb-6 flex items-center gap-2">
               <Shield className="w-6 h-6 text-cyan" />
-              Compliance & Certifications
+              Data Protection
             </h3>
             <div className="space-y-4">
               {[
-                { cert: 'SOC 2 Type II', status: 'Certified', desc: 'Annual third-party security audits' },
                 { cert: 'GDPR', status: 'Compliant', desc: 'EU data protection compliance' },
                 { cert: 'CCPA', status: 'Compliant', desc: 'California privacy compliance' },
-                { cert: 'HIPAA', status: 'Available', desc: 'BAA available for healthcare' },
+                { cert: 'Encryption', status: 'Standard', desc: 'TLS 1.3 in transit, AES-256 at rest' },
+                { cert: 'Security Review', status: 'Available', desc: 'Work with your InfoSec team' },
               ].map((item, i) => (
                 <div key={i} className="flex items-center justify-between p-4 rounded-lg bg-navy/50 border border-cyan/20">
                   <div>
