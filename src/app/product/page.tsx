@@ -148,7 +148,7 @@ export default function ProductPage() {
           <div className="max-w-4xl mx-auto mt-12">
             <div className="glass-card p-2 overflow-hidden glow-violet">
               <img 
-                src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=1200&h=500&fit=crop" 
+                src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=1200&h=500&fit=crop" 
                 alt="Professional team training session"
                 className="w-full h-64 md:h-80 object-cover object-center rounded-lg"
               />
