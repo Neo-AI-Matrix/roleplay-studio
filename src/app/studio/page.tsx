@@ -1,19 +1,13 @@
 import { currentUser } from "@clerk/nextjs/server";
 import { UserButton } from "@clerk/nextjs";
 import { 
-  Play, 
   BarChart3, 
-  MessageSquare, 
   Trophy,
-  Clock,
-  Target,
-  TrendingUp,
-  Users
+  Sparkles
 } from "lucide-react";
-import Link from "next/link";
-import Image from "next/image";
 import { getAllScenarios } from "@/lib/scenarios";
 import { StudioStats } from "./StudioStats";
+import { ScenarioGrid } from "./ScenarioGrid";
 
 export default async function StudioPage() {
   const user = await currentUser();
@@ -34,7 +28,7 @@ export default async function StudioPage() {
             <p className="text-gray-400">Ready to sharpen your skills?</p>
           </div>
           <div className="flex items-center gap-4">
-            <div className="text-right mr-4">
+            <div className="text-right mr-4 hidden sm:block">
               <p className="text-sm text-gray-400">Signed in as</p>
               <p className="text-white font-medium">{user?.emailAddresses[0]?.emailAddress}</p>
             </div>
@@ -54,57 +48,45 @@ export default async function StudioPage() {
         {/* Stats Grid - Client Component */}
         <StudioStats />
 
-        {/* Main Content Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Training Scenarios */}
-          <div className="lg:col-span-2 space-y-6">
-            <h2 className="text-xl font-semibold text-white flex items-center gap-2">
-              <Play className="w-5 h-5 text-electric-blue" />
-              Training Scenarios
-            </h2>
-            
-            <div className="grid gap-4">
-              {scenarios.map((scenario) => (
-                <ScenarioCard 
-                  key={scenario.id}
-                  id={scenario.id}
-                  title={scenario.title}
-                  description={scenario.description}
-                  difficulty={scenario.difficulty}
-                  duration={scenario.duration}
-                  category={scenario.category === 'sales' ? 'Sales' : 'Support'}
-                  hasVoice={!!scenario.elevenLabsAgentId}
-                  personaName={scenario.persona.name}
-                  personaAvatar={scenario.persona.avatar}
-                />
-              ))}
+        {/* Main Content */}
+        <div className="grid grid-cols-1 xl:grid-cols-4 gap-8">
+          {/* Scenario Grid - Takes 3/4 width on XL screens */}
+          <div className="xl:col-span-3">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-xl font-semibold text-white flex items-center gap-2">
+                <Sparkles className="w-5 h-5 text-electric-blue" />
+                Training Scenarios
+              </h2>
+              <p className="text-sm text-gray-400">
+                {scenarios.length} scenarios available
+              </p>
             </div>
+            
+            <ScenarioGrid scenarios={scenarios} />
           </div>
 
-          {/* Sidebar */}
+          {/* Sidebar - 1/4 width on XL screens */}
           <div className="space-y-6">
-            {/* Quick Actions */}
+            {/* Quick Stats Summary */}
             <div className="bg-navy-light border border-white/10 rounded-xl p-6">
-              <h3 className="text-lg font-semibold text-white mb-4">Quick Actions</h3>
-              <div className="space-y-3">
-                <Link 
-                  href="/studio/voice/angry-customer"
-                  className="w-full flex items-center gap-3 px-4 py-3 bg-gradient-to-r from-violet to-cyan hover:opacity-90 text-white rounded-lg transition-opacity"
-                >
-                  <Play className="w-5 h-5" />
-                  🎙️ Voice: Angry Customer
-                </Link>
-                <Link 
-                  href="/studio/session/angry-customer"
-                  className="w-full flex items-center gap-3 px-4 py-3 bg-electric-blue hover:bg-electric-blue/90 text-white rounded-lg transition-colors"
-                >
-                  <MessageSquare className="w-5 h-5" />
-                  💬 Text: Angry Customer
-                </Link>
-                <button className="w-full flex items-center gap-3 px-4 py-3 bg-white/10 hover:bg-white/20 text-white rounded-lg transition-colors">
-                  <BarChart3 className="w-5 h-5" />
-                  View Analytics
-                </button>
+              <h3 className="text-lg font-semibold text-white mb-4">Your Progress</h3>
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <span className="text-gray-400">Sessions Completed</span>
+                  <span className="text-white font-semibold">0</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-gray-400">Average Score</span>
+                  <span className="text-white font-semibold">--</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-gray-400">Time Trained</span>
+                  <span className="text-white font-semibold">0 min</span>
+                </div>
+                <div className="w-full h-2 bg-white/10 rounded-full overflow-hidden">
+                  <div className="h-full w-0 bg-gradient-to-r from-violet to-cyan rounded-full" />
+                </div>
+                <p className="text-xs text-gray-500">Complete your first session to start tracking progress</p>
               </div>
             </div>
 
@@ -127,95 +109,26 @@ export default async function StudioPage() {
                 />
                 <Achievement 
                   title="De-escalation Pro"
-                  description="Score 8+ on angry customer scenario"
+                  description="Score 8+ on angry customer"
+                  locked={true}
+                />
+                <Achievement 
+                  title="Sales Master"
+                  description="Score 9+ on all sales scenarios"
                   locked={true}
                 />
               </div>
             </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
 
-function ScenarioCard({ id, title, description, difficulty, duration, category, hasVoice, personaName, personaAvatar }: {
-  id: string;
-  title: string;
-  description: string;
-  difficulty: string;
-  duration: string;
-  category: string;
-  hasVoice?: boolean;
-  personaName: string;
-  personaAvatar: string;
-}) {
-  const difficultyColors = {
-    Beginner: "bg-green-500/20 text-green-400",
-    Intermediate: "bg-yellow-500/20 text-yellow-400",
-    Advanced: "bg-red-500/20 text-red-400",
-  };
-  
-  return (
-    <div className="bg-navy-light border border-white/10 rounded-xl p-6 hover:border-electric-blue/50 transition-colors group">
-      <div className="flex items-start gap-4">
-        {/* Persona Avatar */}
-        <div className="flex-shrink-0">
-          <div className="w-16 h-16 rounded-full overflow-hidden ring-2 ring-white/20 group-hover:ring-electric-blue/50 transition-all">
-            <Image 
-              src={personaAvatar} 
-              alt={personaName}
-              width={64}
-              height={64}
-              className="w-full h-full object-cover"
-            />
-          </div>
-          <p className="text-xs text-gray-500 text-center mt-1 truncate w-16">{personaName.split(' ')[0]}</p>
-        </div>
-        
-        {/* Content */}
-        <div className="flex-1 min-w-0">
-          <div className="flex items-start justify-between mb-2">
-            <div>
-              <h3 className="text-lg font-semibold text-white group-hover:text-electric-blue transition-colors">
-                {title}
-              </h3>
-              <p className="text-gray-400 text-sm mt-1">{description}</p>
-            </div>
-            <div className="flex items-center gap-2 flex-shrink-0 ml-2">
-              {hasVoice && (
-                <span className="px-2 py-1 bg-violet/20 text-violet text-xs rounded-full">
-                  🎙️ Voice
-                </span>
-              )}
-              <span className="px-2 py-1 bg-white/10 text-gray-300 text-xs rounded-full">
-                {category}
-              </span>
-            </div>
-          </div>
-          <div className="flex items-center gap-4 mt-4">
-            <span className={`px-2 py-1 text-xs rounded-full ${difficultyColors[difficulty as keyof typeof difficultyColors]}`}>
-              {difficulty}
-            </span>
-            <span className="text-gray-500 text-sm flex items-center gap-1">
-              <Clock className="w-4 h-4" />
-              {duration}
-            </span>
-            <div className="ml-auto flex items-center gap-2">
-              <Link 
-                href={`/studio/session/${id}`}
-                className="px-4 py-2 bg-white/10 hover:bg-white/20 text-white text-sm font-medium rounded-lg transition-colors"
-              >
-                💬 Text
-              </Link>
-              {hasVoice && (
-                <Link 
-                  href={`/studio/voice/${id}`}
-                  className="px-4 py-2 bg-gradient-to-r from-violet to-cyan hover:opacity-90 text-white text-sm font-medium rounded-lg transition-colors"
-                >
-                  🎙️ Voice
-                </Link>
-              )}
+            {/* Quick Actions */}
+            <div className="bg-navy-light border border-white/10 rounded-xl p-6">
+              <h3 className="text-lg font-semibold text-white mb-4">Quick Actions</h3>
+              <div className="space-y-3">
+                <button className="w-full flex items-center gap-3 px-4 py-3 bg-white/10 hover:bg-white/20 text-white rounded-lg transition-colors">
+                  <BarChart3 className="w-5 h-5" />
+                  View Full Analytics
+                </button>
+              </div>
             </div>
           </div>
         </div>
