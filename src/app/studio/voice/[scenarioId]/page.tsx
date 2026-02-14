@@ -1,8 +1,15 @@
 'use client';
 
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { getScenario } from '@/lib/scenarios';
+import { 
+  saveSession, 
+  calculateScore, 
+  formatDuration,
+  TranscriptEntry,
+  ScoreBreakdown 
+} from '@/lib/session-storage';
 import { Conversation } from '@elevenlabs/client';
 import { 
   Mic, 
@@ -11,23 +18,19 @@ import {
   PhoneOff,
   ArrowLeft,
   Volume2,
-  VolumeX,
   User,
   Bot,
   Loader2,
   AlertCircle,
-  CheckCircle
+  CheckCircle,
+  XCircle,
+  Star,
+  Clock,
+  Download
 } from 'lucide-react';
 
 type ConversationStatus = 'disconnected' | 'connecting' | 'connected';
 type AgentMode = 'listening' | 'speaking';
-
-interface TranscriptMessage {
-  id: string;
-  role: 'user' | 'agent';
-  text: string;
-  timestamp: Date;
-}
 
 export default function VoiceSessionPage() {
   const params = useParams();
@@ -39,11 +42,17 @@ export default function VoiceSessionPage() {
   const [agentMode, setAgentMode] = useState<AgentMode>('listening');
   const [isMuted, setIsMuted] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [transcript, setTranscript] = useState<TranscriptMessage[]>([]);
+  const [transcript, setTranscript] = useState<TranscriptEntry[]>([]);
   const [sessionStarted, setSessionStarted] = useState(false);
+  const [sessionEnded, setSessionEnded] = useState(false);
+  const [sessionScore, setSessionScore] = useState<number | null>(null);
+  const [scoreBreakdown, setScoreBreakdown] = useState<ScoreBreakdown | null>(null);
+  const [sessionDuration, setSessionDuration] = useState(0);
   
   const conversationRef = useRef<any>(null);
   const transcriptEndRef = useRef<HTMLDivElement>(null);
+  const startTimeRef = useRef<Date | null>(null);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   // Auto-scroll transcript
   useEffect(() => {
@@ -55,6 +64,9 @@ export default function VoiceSessionPage() {
     return () => {
       if (conversationRef.current) {
         conversationRef.current.endSession();
+      }
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
       }
     };
   }, []);
@@ -68,6 +80,14 @@ export default function VoiceSessionPage() {
     setSessionStarted(true);
     setStatus('connecting');
     setError(null);
+    startTimeRef.current = new Date();
+    
+    // Start duration timer
+    timerRef.current = setInterval(() => {
+      if (startTimeRef.current) {
+        setSessionDuration(Math.floor((Date.now() - startTimeRef.current.getTime()) / 1000));
+      }
+    }, 1000);
 
     try {
       // Request microphone permission
@@ -106,17 +126,27 @@ export default function VoiceSessionPage() {
         },
         onMessage: (message: any) => {
           // Handle transcript messages
-          if (message.type === 'transcript' || message.type === 'agent_response') {
-            const newMessage: TranscriptMessage = {
-              id: Date.now().toString(),
-              role: message.role === 'user' ? 'user' : 'agent',
-              text: message.text || message.message || '',
-              timestamp: new Date()
+          console.log('Message received:', message);
+          
+          let text = '';
+          let role: 'user' | 'agent' = 'agent';
+          
+          // Handle different message formats
+          if (message.message) {
+            text = message.message;
+            role = message.source === 'user' ? 'user' : 'agent';
+          } else if (message.text) {
+            text = message.text;
+            role = message.role === 'user' ? 'user' : 'agent';
+          }
+          
+          if (text && text.trim()) {
+            const newEntry: TranscriptEntry = {
+              role,
+              text: text.trim(),
+              timestamp: new Date().toISOString()
             };
-            
-            if (newMessage.text) {
-              setTranscript(prev => [...prev, newMessage]);
-            }
+            setTranscript(prev => [...prev, newEntry]);
           }
         }
       });
@@ -128,15 +158,45 @@ export default function VoiceSessionPage() {
       setError(err.message || 'Failed to start conversation');
       setStatus('disconnected');
       setSessionStarted(false);
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+      }
     }
   };
 
   const endConversation = async () => {
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+    }
+    
     if (conversationRef.current) {
       await conversationRef.current.endSession();
       conversationRef.current = null;
     }
+    
     setStatus('disconnected');
+    setSessionEnded(true);
+    
+    // Calculate score
+    const { score, breakdown } = calculateScore(transcript);
+    setSessionScore(score);
+    setScoreBreakdown(breakdown);
+    
+    // Save session
+    if (scenario && startTimeRef.current) {
+      saveSession({
+        id: Date.now().toString(),
+        scenarioId: scenario.id,
+        scenarioTitle: scenario.title,
+        startTime: startTimeRef.current.toISOString(),
+        endTime: new Date().toISOString(),
+        durationSeconds: sessionDuration,
+        transcript,
+        score,
+        scoreBreakdown: breakdown,
+        completed: true
+      });
+    }
   };
 
   const toggleMute = () => {
@@ -144,6 +204,20 @@ export default function VoiceSessionPage() {
       conversationRef.current.setMicMuted(!isMuted);
       setIsMuted(!isMuted);
     }
+  };
+
+  const downloadTranscript = () => {
+    const text = transcript.map(t => 
+      `[${t.role.toUpperCase()}] ${t.text}`
+    ).join('\n\n');
+    
+    const blob = new Blob([text], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `session-${scenarioId}-${Date.now()}.txt`;
+    a.click();
+    URL.revokeObjectURL(url);
   };
 
   if (!scenario) {
@@ -208,18 +282,18 @@ export default function VoiceSessionPage() {
                   </li>
                   <li className="flex items-center gap-2">
                     <CheckCircle className="w-4 h-4 text-green-400" />
-                    Emotionally expressive AI responses
+                    Full transcript recorded for review
                   </li>
                   <li className="flex items-center gap-2">
                     <CheckCircle className="w-4 h-4 text-green-400" />
-                    Full transcript saved for review
+                    Performance score based on best practices (0-10)
                   </li>
                 </ul>
               </div>
 
               <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-xl p-4 mb-8">
                 <p className="text-yellow-400 text-sm">
-                  🎤 You'll need to allow microphone access when prompted
+                  🎤 You&apos;ll need to allow microphone access when prompted
                 </p>
               </div>
               
@@ -251,6 +325,128 @@ export default function VoiceSessionPage() {
     );
   }
 
+  // Session ended - show results
+  if (sessionEnded) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-navy to-navy-light">
+        <div className="container mx-auto px-4 py-8">
+          <div className="max-w-4xl mx-auto">
+            {/* Header */}
+            <div className="text-center mb-8">
+              <h1 className="text-3xl font-bold text-white mb-2">Session Complete!</h1>
+              <p className="text-gray-400">{scenario.title}</p>
+            </div>
+
+            {/* Score Card */}
+            <div className="bg-navy-light border border-white/10 rounded-2xl p-8 mb-8">
+              <div className="flex items-center justify-center gap-8 mb-8">
+                <div className="text-center">
+                  <div className="text-6xl font-bold text-white mb-2">{sessionScore}</div>
+                  <div className="text-gray-400">out of 10</div>
+                  <div className="flex justify-center mt-2">
+                    {[...Array(10)].map((_, i) => (
+                      <Star 
+                        key={i} 
+                        className={`w-5 h-5 ${i < (sessionScore || 0) ? 'text-yellow-400 fill-yellow-400' : 'text-gray-600'}`} 
+                      />
+                    ))}
+                  </div>
+                </div>
+                <div className="text-center border-l border-white/10 pl-8">
+                  <div className="text-4xl font-bold text-white mb-2 flex items-center gap-2">
+                    <Clock className="w-8 h-8 text-electric-blue" />
+                    {formatDuration(sessionDuration)}
+                  </div>
+                  <div className="text-gray-400">Duration</div>
+                </div>
+              </div>
+
+              {/* Score Breakdown */}
+              <h3 className="text-xl font-semibold text-white mb-4">Best Practices Breakdown</h3>
+              <div className="grid grid-cols-2 gap-3">
+                {scoreBreakdown && Object.entries(scoreBreakdown).map(([key, value]) => (
+                  <div 
+                    key={key} 
+                    className={`flex items-center gap-3 p-3 rounded-lg ${value ? 'bg-green-500/10' : 'bg-red-500/10'}`}
+                  >
+                    {value ? (
+                      <CheckCircle className="w-5 h-5 text-green-400 flex-shrink-0" />
+                    ) : (
+                      <XCircle className="w-5 h-5 text-red-400 flex-shrink-0" />
+                    )}
+                    <span className={`text-sm ${value ? 'text-green-400' : 'text-red-400'}`}>
+                      {formatBreakdownKey(key)}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Transcript */}
+            <div className="bg-navy-light border border-white/10 rounded-2xl p-8 mb-8">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-xl font-semibold text-white">Session Transcript</h3>
+                <button
+                  onClick={downloadTranscript}
+                  className="flex items-center gap-2 px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg transition-colors text-sm"
+                >
+                  <Download className="w-4 h-4" />
+                  Download
+                </button>
+              </div>
+              <div className="max-h-96 overflow-y-auto space-y-3">
+                {transcript.length === 0 ? (
+                  <p className="text-gray-500 italic">No transcript recorded</p>
+                ) : (
+                  transcript.map((entry, i) => (
+                    <div key={i} className={`flex gap-3 ${entry.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                      {entry.role === 'agent' && (
+                        <Bot className="w-6 h-6 text-red-400 flex-shrink-0 mt-1" />
+                      )}
+                      <div className={`max-w-[80%] rounded-xl px-4 py-3 ${
+                        entry.role === 'user' 
+                          ? 'bg-electric-blue/20 text-white' 
+                          : 'bg-white/10 text-gray-300'
+                      }`}>
+                        <p className="text-sm">{entry.text}</p>
+                      </div>
+                      {entry.role === 'user' && (
+                        <User className="w-6 h-6 text-electric-blue flex-shrink-0 mt-1" />
+                      )}
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+
+            {/* Actions */}
+            <div className="flex gap-4 justify-center">
+              <button
+                onClick={() => router.push('/studio')}
+                className="px-8 py-4 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-xl transition-colors"
+              >
+                Back to Studio
+              </button>
+              <button
+                onClick={() => {
+                  setSessionStarted(false);
+                  setSessionEnded(false);
+                  setTranscript([]);
+                  setSessionScore(null);
+                  setScoreBreakdown(null);
+                  setSessionDuration(0);
+                }}
+                className="px-8 py-4 bg-gradient-to-r from-violet to-cyan hover:opacity-90 text-white font-semibold rounded-xl transition-opacity"
+              >
+                Try Again
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   // Active voice session
   return (
     <div className="h-screen bg-gradient-to-b from-navy to-navy-light flex flex-col">
@@ -269,7 +465,13 @@ export default function VoiceSessionPage() {
             </button>
             <div>
               <h1 className="text-white font-semibold">{scenario.title}</h1>
-              <p className="text-gray-500 text-sm">Voice Session</p>
+              <div className="flex items-center gap-3 text-sm">
+                <span className="text-gray-500">Voice Session</span>
+                <span className="text-electric-blue flex items-center gap-1">
+                  <Clock className="w-4 h-4" />
+                  {formatDuration(sessionDuration)}
+                </span>
+              </div>
             </div>
           </div>
           
@@ -316,13 +518,13 @@ export default function VoiceSessionPage() {
 
         <p className="text-xl text-white mb-2">
           {status === 'connecting' && 'Connecting...'}
-          {status === 'connected' && agentMode === 'speaking' && 'Agent is speaking...'}
+          {status === 'connected' && agentMode === 'speaking' && 'Margaret is speaking...'}
           {status === 'connected' && agentMode === 'listening' && 'Listening to you...'}
           {status === 'disconnected' && 'Session ended'}
         </p>
         
         <p className="text-gray-400 text-sm mb-8">
-          {status === 'connected' && 'Speak naturally — the AI will respond'}
+          {status === 'connected' && 'Speak naturally — Margaret will respond'}
         </p>
 
         {error && (
@@ -374,15 +576,18 @@ export default function VoiceSessionPage() {
       {/* Transcript Panel */}
       <div className="border-t border-white/10 bg-navy-light/50 max-h-64 overflow-y-auto">
         <div className="container mx-auto px-4 py-4">
-          <h3 className="text-white font-semibold mb-3 text-sm">Live Transcript</h3>
+          <h3 className="text-white font-semibold mb-3 text-sm flex items-center justify-between">
+            <span>Live Transcript</span>
+            <span className="text-gray-500 font-normal">{transcript.length} messages</span>
+          </h3>
           <div className="space-y-2">
             {transcript.length === 0 ? (
               <p className="text-gray-500 text-sm italic">Transcript will appear here...</p>
             ) : (
-              transcript.map((msg) => (
-                <div key={msg.id} className={`flex gap-2 ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+              transcript.map((msg, i) => (
+                <div key={i} className={`flex gap-2 ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                   {msg.role === 'agent' && (
-                    <Bot className="w-5 h-5 text-violet flex-shrink-0 mt-1" />
+                    <Bot className="w-5 h-5 text-red-400 flex-shrink-0 mt-1" />
                   )}
                   <p className={`text-sm rounded-lg px-3 py-2 max-w-[80%] ${
                     msg.role === 'user' 
@@ -403,4 +608,21 @@ export default function VoiceSessionPage() {
       </div>
     </div>
   );
+}
+
+// Format breakdown key to readable text
+function formatBreakdownKey(key: string): string {
+  const labels: Record<string, string> = {
+    usedCustomerName: 'Used customer\'s name',
+    showedEmpathy: 'Showed empathy',
+    tookOwnership: 'Took ownership',
+    stayedCalm: 'Stayed calm throughout',
+    askedClarifyingQuestions: 'Asked clarifying questions',
+    offeredSolutions: 'Offered solutions',
+    providedClearNextSteps: 'Provided clear next steps',
+    closedProfessionally: 'Closed professionally',
+    handledVerification: 'Handled verification',
+    deescalatedSuccessfully: 'De-escalated successfully'
+  };
+  return labels[key] || key;
 }

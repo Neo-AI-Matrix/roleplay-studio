@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { getAllScenarios } from "@/lib/scenarios";
+import { StudioStats } from "./StudioStats";
 
 export default async function StudioPage() {
   const user = await currentUser();
@@ -44,33 +45,8 @@ export default async function StudioPage() {
       </div>
 
       <div className="container mx-auto px-4 py-8">
-        {/* Stats Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <StatCard 
-            icon={<MessageSquare className="w-6 h-6" />}
-            label="Sessions Completed"
-            value="0"
-            trend="+0 this week"
-          />
-          <StatCard 
-            icon={<Clock className="w-6 h-6" />}
-            label="Practice Time"
-            value="0 hrs"
-            trend="Start practicing!"
-          />
-          <StatCard 
-            icon={<Target className="w-6 h-6" />}
-            label="Avg. Score"
-            value="--"
-            trend="Complete a session"
-          />
-          <StatCard 
-            icon={<TrendingUp className="w-6 h-6" />}
-            label="Improvement"
-            value="--"
-            trend="Track your progress"
-          />
-        </div>
+        {/* Stats Grid - Client Component */}
+        <StudioStats />
 
         {/* Main Content Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -91,6 +67,7 @@ export default async function StudioPage() {
                   difficulty={scenario.difficulty}
                   duration={scenario.duration}
                   category={scenario.category === 'sales' ? 'Sales' : 'Support'}
+                  hasVoice={!!scenario.elevenLabsAgentId}
                 />
               ))}
             </div>
@@ -103,19 +80,22 @@ export default async function StudioPage() {
               <h3 className="text-lg font-semibold text-white mb-4">Quick Actions</h3>
               <div className="space-y-3">
                 <Link 
+                  href="/studio/voice/angry-customer"
+                  className="w-full flex items-center gap-3 px-4 py-3 bg-gradient-to-r from-violet to-cyan hover:opacity-90 text-white rounded-lg transition-opacity"
+                >
+                  <Play className="w-5 h-5" />
+                  🎙️ Voice: Angry Customer
+                </Link>
+                <Link 
                   href="/studio/session/angry-customer"
                   className="w-full flex items-center gap-3 px-4 py-3 bg-electric-blue hover:bg-electric-blue/90 text-white rounded-lg transition-colors"
                 >
-                  <Play className="w-5 h-5" />
-                  Start Angry Customer
+                  <MessageSquare className="w-5 h-5" />
+                  💬 Text: Angry Customer
                 </Link>
                 <button className="w-full flex items-center gap-3 px-4 py-3 bg-white/10 hover:bg-white/20 text-white rounded-lg transition-colors">
                   <BarChart3 className="w-5 h-5" />
                   View Analytics
-                </button>
-                <button className="w-full flex items-center gap-3 px-4 py-3 bg-white/10 hover:bg-white/20 text-white rounded-lg transition-colors">
-                  <Users className="w-5 h-5" />
-                  Team Leaderboard
                 </button>
               </div>
             </div>
@@ -151,26 +131,6 @@ export default async function StudioPage() {
   );
 }
 
-function StatCard({ icon, label, value, trend }: { 
-  icon: React.ReactNode; 
-  label: string; 
-  value: string; 
-  trend: string; 
-}) {
-  return (
-    <div className="bg-navy-light border border-white/10 rounded-xl p-6">
-      <div className="flex items-center gap-3 mb-3">
-        <div className="p-2 bg-electric-blue/20 rounded-lg text-electric-blue">
-          {icon}
-        </div>
-        <span className="text-gray-400 text-sm">{label}</span>
-      </div>
-      <p className="text-3xl font-bold text-white mb-1">{value}</p>
-      <p className="text-sm text-gray-500">{trend}</p>
-    </div>
-  );
-}
-
 function ScenarioCard({ id, title, description, difficulty, duration, category, hasVoice }: {
   id: string;
   title: string;
@@ -195,9 +155,16 @@ function ScenarioCard({ id, title, description, difficulty, duration, category, 
           </h3>
           <p className="text-gray-400 text-sm mt-1">{description}</p>
         </div>
-        <span className="px-2 py-1 bg-white/10 text-gray-300 text-xs rounded-full">
-          {category}
-        </span>
+        <div className="flex items-center gap-2">
+          {hasVoice && (
+            <span className="px-2 py-1 bg-violet/20 text-violet text-xs rounded-full">
+              🎙️ Voice
+            </span>
+          )}
+          <span className="px-2 py-1 bg-white/10 text-gray-300 text-xs rounded-full">
+            {category}
+          </span>
+        </div>
       </div>
       <div className="flex items-center gap-4 mt-4">
         <span className={`px-2 py-1 text-xs rounded-full ${difficultyColors[difficulty as keyof typeof difficultyColors]}`}>
@@ -214,12 +181,14 @@ function ScenarioCard({ id, title, description, difficulty, duration, category, 
           >
             💬 Text
           </Link>
-          <Link 
-            href={`/studio/voice/${id}`}
-            className="px-4 py-2 bg-gradient-to-r from-violet to-cyan hover:opacity-90 text-white text-sm font-medium rounded-lg transition-colors"
-          >
-            🎙️ Voice
-          </Link>
+          {hasVoice && (
+            <Link 
+              href={`/studio/voice/${id}`}
+              className="px-4 py-2 bg-gradient-to-r from-violet to-cyan hover:opacity-90 text-white text-sm font-medium rounded-lg transition-colors"
+            >
+              🎙️ Voice
+            </Link>
+          )}
         </div>
       </div>
     </div>
