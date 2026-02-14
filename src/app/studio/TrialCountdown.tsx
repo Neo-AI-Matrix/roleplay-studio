@@ -1,6 +1,6 @@
 "use client";
 
-import { Clock, AlertTriangle } from "lucide-react";
+import { Clock, Sparkles } from "lucide-react";
 
 interface TrialCountdownProps {
   trialEndsAt?: Date | null;
@@ -18,45 +18,24 @@ export function TrialCountdown({ trialEndsAt, isTrialing = true }: TrialCountdow
   const diffTime = endDate.getTime() - now.getTime();
   const daysLeft = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-  // If trial has expired, show expired state
+  // Trial ended = they're now a paying customer! Celebrate!
   if (daysLeft <= 0) {
     return (
-      <div className="flex items-center gap-2 px-3 py-2 bg-red-500/20 border border-red-500/30 rounded-lg">
-        <AlertTriangle className="w-4 h-4 text-red-400" />
+      <div className="flex items-center gap-2 px-3 py-2 bg-emerald-500/20 border border-emerald-500/30 rounded-lg">
+        <Sparkles className="w-4 h-4 text-emerald-400" />
         <div className="text-sm">
-          <span className="text-red-400 font-medium">Trial expired</span>
+          <span className="text-emerald-400 font-medium">Welcome to Roleplay Studio!</span>
         </div>
       </div>
     );
   }
 
-  // Determine urgency level
-  const isUrgent = daysLeft <= 2;
-  const isWarning = daysLeft <= 4;
-
-  const bgColor = isUrgent 
-    ? "bg-red-500/20 border-red-500/30" 
-    : isWarning 
-    ? "bg-amber-500/20 border-amber-500/30" 
-    : "bg-electric-blue/20 border-electric-blue/30";
-
-  const textColor = isUrgent 
-    ? "text-red-400" 
-    : isWarning 
-    ? "text-amber-400" 
-    : "text-electric-blue";
-
-  const iconColor = isUrgent 
-    ? "text-red-400" 
-    : isWarning 
-    ? "text-amber-400" 
-    : "text-electric-blue";
-
+  // During trial - friendly green countdown
   return (
-    <div className={`flex items-center gap-2 px-3 py-2 border rounded-lg ${bgColor}`}>
-      <Clock className={`w-4 h-4 ${iconColor}`} />
+    <div className="flex items-center gap-2 px-3 py-2 bg-emerald-500/20 border border-emerald-500/30 rounded-lg">
+      <Clock className="w-4 h-4 text-emerald-400" />
       <div className="text-sm">
-        <span className={`font-medium ${textColor}`}>
+        <span className="text-emerald-400 font-medium">
           {daysLeft === 1 ? "1 day" : `${daysLeft} days`} left
         </span>
         <span className="text-gray-400 ml-1 hidden sm:inline">in trial</span>
