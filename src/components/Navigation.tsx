@@ -12,7 +12,6 @@ const navItems = [
   { href: '/product', label: 'Product' },
   { href: '/enterprise', label: 'Enterprise' },
   { href: '/about', label: 'About' },
-  { href: '/contact', label: 'Contact' },
 ];
 
 export function Navigation() {
