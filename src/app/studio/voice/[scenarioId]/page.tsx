@@ -279,12 +279,23 @@ export default function VoiceSessionPage() {
               <h2 className="text-xl text-electric-blue mb-4">{scenario.title}</h2>
               <p className="text-gray-400 mb-6">{scenario.description}</p>
               
-              <div className="flex items-center justify-center gap-6 text-sm text-gray-500 mb-8">
+              <div className="flex items-center justify-center gap-6 text-sm text-gray-500 mb-6">
                 <span className="px-3 py-1 bg-yellow-500/20 text-yellow-400 rounded-full">
                   {scenario.difficulty}
                 </span>
                 <span>{scenario.duration}</span>
               </div>
+
+              {/* Quick Start Button */}
+              {scenario.elevenLabsAgentId && (
+                <button
+                  onClick={startConversation}
+                  className="w-full py-4 mb-8 bg-gradient-to-r from-violet to-cyan hover:opacity-90 text-white font-semibold rounded-xl transition-opacity text-lg flex items-center justify-center gap-3"
+                >
+                  <Phone className="w-6 h-6" />
+                  Start Voice Session
+                </button>
+              )}
 
               {/* Scenario Briefing */}
               <div className="bg-navy/50 rounded-xl p-6 text-left mb-8 border border-white/5">
