@@ -16,7 +16,7 @@ const outfit = Outfit({
 });
 
 export const metadata: Metadata = {
-  title: "Role Play Studio - AI-Powered Sales & Support Training",
+  title: "Roleplay Studio - AI-Powered Sales & Support Training",
   description: "Transform your team's performance with AI-powered role-play simulations. Practice real-world scenarios, receive instant feedback, and build confidence.",
   keywords: "sales training, customer support training, AI roleplay, conversation practice, sales coaching, objection handling",
 };

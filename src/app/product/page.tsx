@@ -234,7 +234,7 @@ export default function ProductPage() {
             <span className="gradient-text">AI Training Agents</span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            The "Studio" in Role Play Studio. Create custom AI personas from scratch or customize our battle-tested templates.
+            The "Studio" in Roleplay Studio. Create custom AI personas from scratch or customize our battle-tested templates.
           </p>
         </div>
 
@@ -487,7 +487,7 @@ export default function ProductPage() {
               </div>
               <div className="hidden md:block w-px h-12 bg-violet/30" />
               <div className="text-center md:text-left">
-                <p className="text-muted-foreground text-sm mb-1">Role Play Studio yearly (25 users)</p>
+                <p className="text-muted-foreground text-sm mb-1">Roleplay Studio yearly (25 users)</p>
                 <p className="text-2xl font-heading font-bold text-cyan">$23,700</p>
               </div>
               <div className="hidden md:block w-px h-12 bg-violet/30" />

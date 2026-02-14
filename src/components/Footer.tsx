@@ -13,7 +13,7 @@ export function Footer() {
                 <Sparkles className="w-5 h-5 text-white" />
               </div>
               <span className="font-heading font-bold text-xl text-white">
-                Role Play <span className="gradient-text">Studio</span>
+                Roleplay <span className="gradient-text">Studio</span>
               </span>
             </Link>
             <p className="text-muted-foreground max-w-md">
@@ -90,7 +90,7 @@ export function Footer() {
 
         <div className="border-t border-violet/20 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-muted-foreground text-sm">
-            © 2026 Role Play Studio. All rights reserved.
+            © 2026 Roleplay Studio. All rights reserved.
           </p>
           <div className="flex gap-6 text-sm">
             <a href="#" className="text-muted-foreground hover:text-white transition-colors">

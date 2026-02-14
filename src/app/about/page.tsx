@@ -121,7 +121,7 @@ export default function AboutPage() {
               inconsistent, and often embarrassing.
             </p>
             <p className="text-lg text-muted-foreground mb-6">
-              We built Role Play Studio to give every team member access to unlimited, 
+              We built Roleplay Studio to give every team member access to unlimited, 
               judgment-free practice with AI that adapts to their skill level and provides 
               instant, actionable feedback.
             </p>

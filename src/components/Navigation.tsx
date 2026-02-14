@@ -30,7 +30,7 @@ export function Navigation() {
             <Sparkles className="w-5 h-5 text-white" />
           </div>
           <span className="font-heading font-bold text-xl text-white">
-            Role Play <span className="gradient-text">Studio</span>
+            Roleplay <span className="gradient-text">Studio</span>
           </span>
         </Link>
 

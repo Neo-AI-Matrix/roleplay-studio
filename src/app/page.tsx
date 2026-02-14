@@ -62,7 +62,7 @@ const features = [
 
 const testimonials = [
   {
-    quote: "Our new reps are hitting quota 2.5x faster since implementing Role Play Studio. The AI coaching is like having a personal trainer for every rep.",
+    quote: "Our new reps are hitting quota 2.5x faster since implementing Roleplay Studio. The AI coaching is like having a personal trainer for every rep.",
     author: "Sarah Chen",
     role: "VP of Sales, TechFlow Inc",
     image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&h=200&fit=crop&crop=face"
@@ -99,7 +99,7 @@ export default function Home() {
           
           <h1 className="font-heading text-5xl md:text-7xl font-bold mb-6 leading-tight">
             Train Your Team with{' '}
-            <span className="gradient-text">AI Role Play</span>
+            <span className="gradient-text">AI Roleplay</span>
           </h1>
           
           <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
@@ -317,7 +317,7 @@ export default function Home() {
             </div>
           </div>
           <p className="text-center text-muted-foreground mt-6">
-            <span className="text-cyan font-semibold">Role Play Studio costs less than one lost deal.</span> Most teams see ROI in the first month.
+            <span className="text-cyan font-semibold">Roleplay Studio costs less than one lost deal.</span> Most teams see ROI in the first month.
           </p>
         </div>
       </section>
@@ -361,7 +361,7 @@ export default function Home() {
                 <span className="gradient-text">Revenue</span>
               </h2>
               <p className="text-xl text-muted-foreground mb-8">
-                Companies that invest in sales training see 50% higher net sales per employee. Here's how Role Play Studio delivers ROI:
+                Companies that invest in sales training see 50% higher net sales per employee. Here's how Roleplay Studio delivers ROI:
               </p>
 
               <div className="space-y-4">
@@ -463,7 +463,7 @@ export default function Home() {
             <span className="gradient-text">Your Team?</span>
           </h2>
           <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Join 10,000+ professionals using Role Play Studio to sharpen their skills and close more deals.
+            Join 10,000+ professionals using Roleplay Studio to sharpen their skills and close more deals.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button size="lg" className="btn-gradient text-lg h-14 px-8 border-0 text-white font-semibold">
