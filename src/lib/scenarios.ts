@@ -132,12 +132,14 @@ GOAL: Make the salesperson work to understand your needs. Don't volunteer inform
 When the trainee says "END SESSION", provide feedback on their discovery skills.`,
     openingLine: "Hi, I have about 15 minutes. I saw your demo request come through. What exactly does your solution do?",
     evaluationCriteria: [
-      'Asked open-ended questions',
-      'Listened more than talked',
-      'Uncovered pain points',
-      'Qualified the opportunity',
-      'Built rapport',
-      'Established next steps'
+      'Asked open-ended discovery questions',
+      'Listened more than talked (good talk ratio)',
+      'Uncovered specific pain points',
+      'Qualified BANT (Budget, Authority, Need, Timeline)',
+      'Built rapport through genuine curiosity',
+      'Summarized understanding back to prospect',
+      'Avoided pitching before understanding needs',
+      'Established clear, agreed-upon next steps'
     ]
   },
 
@@ -481,11 +483,14 @@ When the trainee says "END SESSION", break character and provide:
     systemPrompt: `You are Jennifer Walsh, VP of Marketing at a fast-growing SaaS company. You're in back-to-back meetings and this call is during a 10-minute break.`,
     openingLine: "Hi — I've got maybe 5 minutes between meetings. My assistant said you had something that could help with our lead gen. What is it?",
     evaluationCriteria: [
-      'Got to the point quickly',
-      'Led with value proposition',
-      'Respected time constraints',
+      'Got to the point within 30 seconds',
+      'Led with relevant value proposition',
+      'Respected stated time constraints',
       'Asked efficient qualifying questions',
-      'Earned more time through relevance'
+      'Earned more time by demonstrating relevance',
+      'Adapted pace to match prospect energy',
+      'Confirmed next steps before time ran out',
+      'Avoided rambling or over-explaining'
     ]
   },
 
@@ -509,11 +514,14 @@ When the trainee says "END SESSION", break character and provide:
     systemPrompt: `You are Marcus Price, Procurement Manager focused on getting the best deal possible.`,
     openingLine: "Hey, thanks for sending over that proposal. I've been reviewing it alongside a few others. I like what I see, but honestly, your pricing is higher than what I was expecting. What can you do for me on cost?",
     evaluationCriteria: [
-      'Defended pricing without immediate discounting',
-      'Articulated value beyond price',
-      'Asked about decision criteria',
-      'Offered creative alternatives to discounting',
-      'Maintained confidence in pricing'
+      'Did not discount immediately under pressure',
+      'Articulated value and ROI beyond price',
+      'Asked about true decision criteria',
+      'Understood competitive landscape',
+      'Offered creative deal structures (not just discounts)',
+      'Maintained confidence and composure',
+      'Reframed price as investment',
+      'Used silence effectively after stating value'
     ]
   },
 
@@ -539,11 +547,14 @@ When the trainee says "END SESSION", break character and provide:
     systemPrompt: `You are Robert Chen, a cautious IT Director who was burned by vendors before.`,
     openingLine: "Hi. I'll be honest — I agreed to this call, but I'm not sure we're ready to make any changes right now. We tried something similar a couple years ago and it didn't go well. But I'm willing to listen. What exactly are you proposing?",
     evaluationCriteria: [
-      'Acknowledged past concerns',
-      'Built trust through honesty',
-      'Offered references and proof',
-      'Proposed risk mitigation',
-      'Didn\'t push too hard'
+      'Acknowledged past negative experience empathetically',
+      'Built trust through transparency and honesty',
+      'Offered relevant references and case studies',
+      'Proposed risk mitigation strategies (pilot, guarantees)',
+      'Did not push too hard or create false urgency',
+      'Asked about specific concerns from past experience',
+      'Demonstrated patience with evaluation process',
+      'Let prospect control the pace'
     ]
   },
 
@@ -567,11 +578,14 @@ When the trainee says "END SESSION", break character and provide:
     systemPrompt: `You are Patricia Donovan, a friendly CEO who loves to talk and goes on tangents.`,
     openingLine: "Oh hi! So glad we could connect! My friend Sarah — do you know Sarah from TechFlow? Anyway, she mentioned you might be able to help us with our systems. We're growing so fast right now, it's crazy. Just last month we launched this new product line and oh my gosh the response has been incredible. But anyway, what was I saying? Right — tell me about what you do!",
     evaluationCriteria: [
-      'Politely redirected tangents',
-      'Picked up on buried challenges',
-      'Summarized key points',
-      'Asked focused questions',
-      'Managed conversation flow'
+      'Politely redirected tangents to business topics',
+      'Picked up on challenges buried in stories',
+      'Summarized and confirmed key points',
+      'Asked focused, strategic questions',
+      'Managed conversation flow without being rude',
+      'Connected the dots between anecdotes',
+      'Used active listening cues',
+      'Established clear next steps despite the chaos'
     ]
   },
 
@@ -595,11 +609,14 @@ When the trainee says "END SESSION", break character and provide:
     systemPrompt: `You are Dr. Michael Torres, a technical CTO who asks deep technical questions.`,
     openingLine: "Thanks for taking the time. Before we get into pricing or business cases, I need to understand the technical fundamentals. Can you walk me through your system architecture and how you handle data security?",
     evaluationCriteria: [
-      'Demonstrated technical knowledge',
-      'Avoided buzzwords and fluff',
-      'Said "I\'ll find out" when appropriate',
-      'Asked clarifying questions',
-      'Engaged at the right technical level'
+      'Demonstrated genuine technical knowledge',
+      'Avoided buzzwords and marketing fluff',
+      'Said "I\'ll find out and follow up" when unsure',
+      'Asked clarifying technical questions',
+      'Engaged at appropriate technical depth',
+      'Offered to bring in technical resources',
+      'Provided specific, not generic, answers',
+      'Knew limits of own technical knowledge'
     ]
   },
 
@@ -625,11 +642,14 @@ When the trainee says "END SESSION", break character and provide:
     systemPrompt: `You are Derek Morrison, a furious customer who found unauthorized charges.`,
     openingLine: "Finally! I've been on hold for thirty minutes! Look, I just found four hundred and fifty dollars in charges on my account that I never authorized. Someone upgraded me to some premium plan I never asked for. I want this fixed right now and I want my money back. This is completely unacceptable!",
     evaluationCriteria: [
-      'Apologized sincerely',
-      'Took ownership immediately',
-      'De-escalated effectively',
-      'Processed resolution quickly',
-      'Retained the customer'
+      'Apologized sincerely and specifically',
+      'Took ownership without blaming others',
+      'Acknowledged the financial impact',
+      'De-escalated through empathy and action',
+      'Offered immediate refund/resolution',
+      'Stayed calm under verbal pressure',
+      'Provided clear timeline for resolution',
+      'Took steps to retain the customer relationship'
     ]
   },
 
@@ -655,11 +675,14 @@ When the trainee says "END SESSION", break character and provide:
     systemPrompt: `You are Amanda Foster, a happy customer open to hearing about new features.`,
     openingLine: "Hey! Great to hear from you. We've been loving the platform — my team uses it every day. What's up?",
     evaluationCriteria: [
-      'Asked about current usage',
-      'Identified growth pain points',
-      'Connected features to needs',
-      'Presented upgrade naturally',
-      'Avoided being pushy'
+      'Asked about current usage and satisfaction',
+      'Identified growth challenges and pain points',
+      'Connected premium features to specific needs',
+      'Presented upgrade as natural progression',
+      'Avoided being pushy or salesy',
+      'Quantified potential ROI or time savings',
+      'Offered trial or proof of concept',
+      'Let customer drive the conversation'
     ]
   },
 
@@ -683,11 +706,14 @@ When the trainee says "END SESSION", break character and provide:
     systemPrompt: `You are Frank Deluca, a budget-conscious Finance Director at a nonprofit.`,
     openingLine: "Hi, thanks for checking in. I saw your email about the new features. I'll be honest — we're on a tight budget here, so unless there's a really compelling reason to upgrade, we're probably going to stay where we are. But I'm happy to hear what you've got.",
     evaluationCriteria: [
-      'Acknowledged budget constraints',
-      'Built compelling ROI case',
-      'Offered appropriate discounts',
-      'Helped with board justification',
-      'Was patient with the process'
+      'Acknowledged budget constraints upfront',
+      'Built compelling ROI case with specifics',
+      'Offered nonprofit/special pricing if available',
+      'Helped build board presentation materials',
+      'Was patient with approval process',
+      'Focused on value and outcomes, not features',
+      'Provided comparison of current vs. upgraded',
+      'Offered phased or payment plan options'
     ]
   },
 
@@ -711,11 +737,14 @@ When the trainee says "END SESSION", break character and provide:
     systemPrompt: `You are Rachel Okonkwo, scaling a startup and looking for tools that grow with you.`,
     openingLine: "Good timing on this call. We just closed our Series B and we're about to triple the team. I'm looking at all our tools and figuring out what scales with us and what doesn't. Where do you think we should be focused?",
     evaluationCriteria: [
-      'Understood growth trajectory',
-      'Positioned as strategic partner',
-      'Shared relevant customer stories',
-      'Helped plan for scale',
-      'Thought long-term, not transactional'
+      'Understood growth trajectory and timeline',
+      'Positioned as long-term strategic partner',
+      'Shared relevant high-growth customer stories',
+      'Helped plan proactively for scale',
+      'Thought long-term, not transactional',
+      'Demonstrated understanding of startup challenges',
+      'Offered roadmap for growing with them',
+      'Aligned on mutual success metrics'
     ]
   }
 };
