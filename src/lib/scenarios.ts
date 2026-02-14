@@ -4,11 +4,37 @@ export interface ScenarioBriefing {
   goal: string;        // What the trainee should accomplish
 }
 
+export type ScenarioCategory = 'sales' | 'support' | 'hr' | 'communication' | 'leadership';
+
+export const categoryLabels: Record<ScenarioCategory, string> = {
+  sales: 'Sales',
+  support: 'Support',
+  hr: 'HR',
+  communication: 'Communication',
+  leadership: 'Leadership'
+};
+
+export const categoryDescriptions: Record<ScenarioCategory, string> = {
+  sales: 'Master discovery calls, objection handling, and closing techniques',
+  support: 'Practice de-escalation, troubleshooting, and customer empathy',
+  hr: 'Navigate difficult conversations, interviews, and performance reviews',
+  communication: 'Present ideas clearly to peers, stakeholders, and large audiences',
+  leadership: 'Develop executive presence, coaching skills, and strategic influence'
+};
+
+export const categoryColors: Record<ScenarioCategory, { bg: string; text: string; border: string }> = {
+  sales: { bg: 'bg-violet/30', text: 'text-white', border: 'border-violet/50' },
+  support: { bg: 'bg-cyan/30', text: 'text-white', border: 'border-cyan/50' },
+  hr: { bg: 'bg-amber-500/30', text: 'text-amber-200', border: 'border-amber-500/50' },
+  communication: { bg: 'bg-emerald-500/30', text: 'text-emerald-200', border: 'border-emerald-500/50' },
+  leadership: { bg: 'bg-rose-500/30', text: 'text-rose-200', border: 'border-rose-500/50' }
+};
+
 export interface Scenario {
   id: string;
   title: string;
   description: string;
-  category: 'sales' | 'support' | 'hr';
+  category: ScenarioCategory;
   difficulty: 'Beginner' | 'Intermediate' | 'Advanced';
   duration: string;
   briefing: ScenarioBriefing;  // Structured context for the trainee

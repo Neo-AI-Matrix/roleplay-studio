@@ -8,6 +8,7 @@ import {
 import { getAllScenarios } from "@/lib/scenarios";
 import { StudioStats } from "./StudioStats";
 import { ScenarioGrid } from "./ScenarioGrid";
+import { CategoryOverview } from "./CategoryOverview";
 import { TrialCountdown } from "./TrialCountdown";
 
 export default async function StudioPage() {
@@ -54,10 +55,14 @@ export default async function StudioPage() {
         <div className="grid grid-cols-1 xl:grid-cols-4 gap-8">
           {/* Scenario Grid - Takes 3/4 width on XL screens */}
           <div className="xl:col-span-3">
+            {/* Category Overview */}
+            <CategoryOverview />
+            
+            {/* All Scenarios */}
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-xl font-semibold text-white flex items-center gap-2">
                 <Sparkles className="w-5 h-5 text-electric-blue" />
-                Training Scenarios
+                All Training Scenarios
               </h2>
               <p className="text-sm text-gray-400">
                 {scenarios.length} scenarios available

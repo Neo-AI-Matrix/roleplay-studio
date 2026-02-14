@@ -19,7 +19,8 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 
-const scenarios = [
+// Legacy scenarios for other sections
+const scenarioTypes = [
   {
     icon: Target,
     title: 'Sales Objection Handling',
@@ -43,6 +44,62 @@ const scenarios = [
     title: 'Upsell & Cross-sell',
     description: 'Learn to identify opportunities and present additional value to existing customers.',
     personas: ['Happy Customer', 'Budget Conscious', 'Growth-Focused'],
+  },
+];
+
+// 5 Training Categories
+import { Briefcase, Crown } from 'lucide-react';
+
+const trainingCategories = [
+  {
+    id: 'sales',
+    icon: Briefcase,
+    title: 'Sales',
+    description: 'Master discovery calls, objection handling, and closing techniques with AI prospects.',
+    color: 'from-violet to-purple-600',
+    bgColor: 'bg-violet/20',
+    borderColor: 'border-violet/50',
+    scenarios: ['Discovery Calls', 'Objection Handling', 'Closing Deals', 'Upselling'],
+  },
+  {
+    id: 'support',
+    icon: Headphones,
+    title: 'Support',
+    description: 'Practice de-escalation, troubleshooting, and customer empathy with realistic scenarios.',
+    color: 'from-cyan to-blue-500',
+    bgColor: 'bg-cyan/20',
+    borderColor: 'border-cyan/50',
+    scenarios: ['Angry Customers', 'Billing Disputes', 'Technical Issues', 'Confused Users'],
+  },
+  {
+    id: 'hr',
+    icon: Users,
+    title: 'HR',
+    description: 'Navigate difficult conversations, interviews, and performance reviews with confidence.',
+    color: 'from-amber-500 to-orange-500',
+    bgColor: 'bg-amber-500/20',
+    borderColor: 'border-amber-500/50',
+    scenarios: ['Performance Reviews', 'Salary Negotiations', 'Conflict Resolution', 'Terminations'],
+  },
+  {
+    id: 'communication',
+    icon: MessageSquare,
+    title: 'Communication',
+    description: 'Present ideas clearly to peers, stakeholders, and large audiences.',
+    color: 'from-emerald-500 to-green-500',
+    bgColor: 'bg-emerald-500/20',
+    borderColor: 'border-emerald-500/50',
+    scenarios: ['Pitch Presentations', 'Team Updates', 'Stakeholder Alignment', 'Public Speaking'],
+  },
+  {
+    id: 'leadership',
+    icon: Crown,
+    title: 'Leadership',
+    description: 'Develop executive presence, coaching skills, and strategic influence.',
+    color: 'from-rose-500 to-pink-500',
+    bgColor: 'bg-rose-500/20',
+    borderColor: 'border-rose-500/50',
+    scenarios: ['Giving Feedback', 'Coaching Sessions', 'Executive Presence', 'Board Presentations'],
   },
 ];
 
@@ -274,45 +331,70 @@ export default function ProductPage() {
         </div>
       </section>
 
-      {/* Scenarios Section */}
-      <section id="scenarios" className="relative bg-navy-light/50 py-24">
+      {/* Training Categories Section */}
+      <section id="categories" className="relative bg-navy-light/50 py-24">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <Badge className="mb-4 bg-violet/30 text-white border-violet/50">Scenarios</Badge>
+            <Badge className="mb-4 bg-violet/30 text-white border-violet/50">Training Categories</Badge>
             <h2 className="font-heading text-4xl font-bold mb-4">
-              Pre-Built Scenarios for{' '}
-              <span className="gradient-text">Every Situation</span>
+              Five Pillars of{' '}
+              <span className="gradient-text">Professional Excellence</span>
             </h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Choose from our library or create custom scenarios tailored to your industry and challenges.
+              Comprehensive training across sales, support, HR, communication, and leadership.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-6">
-            {scenarios.map((scenario, i) => (
-              <Card key={i} className="glass-card border-violet/20 hover:border-violet/40 transition-all">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+            {trainingCategories.slice(0, 3).map((category, i) => (
+              <Card key={i} className={`glass-card ${category.borderColor} hover:border-opacity-80 transition-all group`}>
                 <CardContent className="p-6">
-                  <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-violet to-cyan flex items-center justify-center flex-shrink-0">
-                      <scenario.icon className="w-6 h-6 text-white" />
-                    </div>
-                    <div className="flex-1">
-                      <h3 className="font-heading text-xl font-semibold text-white mb-2">{scenario.title}</h3>
-                      <p className="text-muted-foreground mb-4">{scenario.description}</p>
-                      <div className="flex flex-wrap gap-2">
-                        {scenario.personas.map((persona, j) => (
-                          <Badge key={j} variant="outline" className="border-cyan/30 text-cyan">
-                            {persona}
-                          </Badge>
-                        ))}
-                      </div>
-                    </div>
+                  <div className={`w-14 h-14 rounded-xl ${category.bgColor} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
+                    <category.icon className="w-7 h-7 text-white" />
+                  </div>
+                  <h3 className="font-heading text-2xl font-semibold text-white mb-2">{category.title}</h3>
+                  <p className="text-muted-foreground mb-4">{category.description}</p>
+                  <div className="flex flex-wrap gap-2">
+                    {category.scenarios.map((scenario, j) => (
+                      <Badge key={j} variant="outline" className={`${category.borderColor} text-white/80`}>
+                        {scenario}
+                      </Badge>
+                    ))}
                   </div>
                 </CardContent>
               </Card>
             ))}
           </div>
 
+          <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+            {trainingCategories.slice(3).map((category, i) => (
+              <Card key={i} className={`glass-card ${category.borderColor} hover:border-opacity-80 transition-all group`}>
+                <CardContent className="p-6">
+                  <div className={`w-14 h-14 rounded-xl ${category.bgColor} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
+                    <category.icon className="w-7 h-7 text-white" />
+                  </div>
+                  <h3 className="font-heading text-2xl font-semibold text-white mb-2">{category.title}</h3>
+                  <p className="text-muted-foreground mb-4">{category.description}</p>
+                  <div className="flex flex-wrap gap-2">
+                    {category.scenarios.map((scenario, j) => (
+                      <Badge key={j} variant="outline" className={`${category.borderColor} text-white/80`}>
+                        {scenario}
+                      </Badge>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+
+          <div className="text-center mt-10">
+            <Link href="/sign-up">
+              <Button size="lg" className="btn-gradient text-white border-0 font-semibold">
+                Explore All Scenarios
+                <ArrowRight className="ml-2 w-5 h-5" />
+              </Button>
+            </Link>
+          </div>
         </div>
       </section>
 

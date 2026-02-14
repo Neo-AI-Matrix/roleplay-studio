@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Search, Filter, Clock, MessageSquare, Mic, X, ChevronDown } from "lucide-react";
 import type { Scenario } from "@/lib/scenarios";
+import { categoryLabels, categoryColors, type ScenarioCategory } from "@/lib/scenarios";
 
 interface ScenarioGridProps {
   scenarios: Scenario[];
@@ -98,8 +99,9 @@ export function ScenarioGrid({ scenarios }: ScenarioGridProps) {
               className="appearance-none px-4 py-3 pr-10 bg-navy-light border border-white/10 rounded-xl text-white focus:outline-none focus:border-electric-blue/50 cursor-pointer"
             >
               <option value="all">All Categories</option>
-              <option value="sales">Sales</option>
-              <option value="support">Support</option>
+              {categories.map(cat => (
+                <option key={cat} value={cat}>{categoryLabels[cat as ScenarioCategory]}</option>
+              ))}
             </select>
             <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
           </div>
@@ -142,8 +144,9 @@ export function ScenarioGrid({ scenarios }: ScenarioGridProps) {
               className="w-full appearance-none px-4 py-3 pr-10 bg-white/5 border border-white/10 rounded-lg text-white focus:outline-none focus:border-electric-blue/50"
             >
               <option value="all">All Categories</option>
-              <option value="sales">Sales</option>
-              <option value="support">Support</option>
+              {categories.map(cat => (
+                <option key={cat} value={cat}>{categoryLabels[cat as ScenarioCategory]}</option>
+              ))}
             </select>
             <ChevronDown className="absolute right-3 bottom-3 w-4 h-4 text-gray-400 pointer-events-none" />
           </div>
@@ -181,7 +184,7 @@ export function ScenarioGrid({ scenarios }: ScenarioGridProps) {
           <div className="hidden sm:flex items-center gap-2">
             {categoryFilter !== "all" && (
               <span className="inline-flex items-center gap-1 px-2 py-1 bg-white/10 text-sm text-white rounded-lg">
-                {categoryFilter === "sales" ? "Sales" : "Support"}
+                {categoryLabels[categoryFilter as ScenarioCategory]}
                 <button onClick={() => setCategoryFilter("all")} className="hover:text-electric-blue">
                   <X className="w-3 h-3" />
                 </button>
@@ -226,16 +229,15 @@ export function ScenarioGrid({ scenarios }: ScenarioGridProps) {
 }
 
 function ScenarioTile({ scenario }: { scenario: Scenario }) {
-  const difficultyColors = {
+  const difficultyColorMap = {
     Beginner: "bg-green-500/20 text-green-400 border-green-500/30",
     Intermediate: "bg-yellow-500/20 text-yellow-400 border-yellow-500/30",
     Advanced: "bg-red-500/20 text-red-400 border-red-500/30",
   };
 
-  const categoryColors = {
-    sales: "bg-violet/30 text-white border-violet/50",
-    support: "bg-cyan/30 text-white border-cyan/50",
-    hr: "bg-amber-500/30 text-amber-200 border-amber-500/50",
+  const getCategoryColorClass = (cat: ScenarioCategory) => {
+    const colors = categoryColors[cat];
+    return `${colors.bg} ${colors.text} ${colors.border}`;
   };
 
   return (
@@ -264,8 +266,8 @@ function ScenarioTile({ scenario }: { scenario: Scenario }) {
         
         {/* Category Badge - Top Right */}
         <div className="absolute top-3 right-3 z-20">
-          <span className={`px-2 py-1 text-xs font-medium rounded-full border ${categoryColors[scenario.category]}`}>
-            {scenario.category === "sales" ? "Sales" : "Support"}
+          <span className={`px-2 py-1 text-xs font-medium rounded-full border ${getCategoryColorClass(scenario.category)}`}>
+            {categoryLabels[scenario.category]}
           </span>
         </div>
       </div>
@@ -287,7 +289,7 @@ function ScenarioTile({ scenario }: { scenario: Scenario }) {
 
         {/* Meta */}
         <div className="flex items-center gap-3 mb-4">
-          <span className={`px-2 py-1 text-xs font-medium rounded-full border ${difficultyColors[scenario.difficulty]}`}>
+          <span className={`px-2 py-1 text-xs font-medium rounded-full border ${difficultyColorMap[scenario.difficulty]}`}>
             {scenario.difficulty}
           </span>
           <span className="text-gray-500 text-sm flex items-center gap-1">

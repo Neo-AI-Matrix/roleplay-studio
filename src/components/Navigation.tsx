@@ -5,13 +5,21 @@ import { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import { SignedIn, SignedOut, UserButton, useClerk } from '@clerk/nextjs';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { Menu, Sparkles, LogOut } from 'lucide-react';
+import { Menu, Sparkles, LogOut, ChevronDown, Briefcase, HeadphonesIcon, Users, MessageSquare, Crown } from 'lucide-react';
 
 const navItems = [
   { href: '/', label: 'Home' },
   { href: '/product', label: 'Product' },
   { href: '/enterprise', label: 'Enterprise' },
   { href: '/about', label: 'About' },
+];
+
+const trainingCategories = [
+  { id: 'sales', label: 'Sales', icon: Briefcase, color: 'text-violet' },
+  { id: 'support', label: 'Support', icon: HeadphonesIcon, color: 'text-cyan' },
+  { id: 'hr', label: 'HR', icon: Users, color: 'text-amber-400' },
+  { id: 'communication', label: 'Communication', icon: MessageSquare, color: 'text-emerald-400' },
+  { id: 'leadership', label: 'Leadership', icon: Crown, color: 'text-rose-400' },
 ];
 
 export function Navigation() {
@@ -50,6 +58,29 @@ export function Navigation() {
               {item.label}
             </Link>
           ))}
+          
+          {/* Categories Dropdown */}
+          <div className="relative group">
+            <button className="flex items-center gap-1 text-muted-foreground hover:text-white transition-colors font-medium">
+              Categories
+              <ChevronDown className="w-4 h-4 group-hover:rotate-180 transition-transform" />
+            </button>
+            <div className="absolute top-full left-0 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+              <div className="bg-navy-light border border-white/10 rounded-xl shadow-xl p-2 min-w-[200px]">
+                {trainingCategories.map((cat) => (
+                  <Link
+                    key={cat.id}
+                    href={`/studio/category/${cat.id}`}
+                    className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-white/10 transition-colors"
+                  >
+                    <cat.icon className={`w-4 h-4 ${cat.color}`} />
+                    <span className="text-white text-sm font-medium">{cat.label}</span>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </div>
+          
           <SignedIn>
             <Link
               href="/studio"
@@ -134,6 +165,25 @@ export function Navigation() {
                     {item.label}
                   </Link>
                 ))}
+                
+                {/* Categories Section - Mobile */}
+                <div className="border-t border-white/10 pt-4">
+                  <p className="text-xs text-muted-foreground uppercase tracking-wide mb-3">Training Categories</p>
+                  <div className="space-y-2">
+                    {trainingCategories.map((cat) => (
+                      <Link
+                        key={cat.id}
+                        href={`/studio/category/${cat.id}`}
+                        onClick={() => setIsOpen(false)}
+                        className="flex items-center gap-3 py-2 text-muted-foreground hover:text-white transition-colors"
+                      >
+                        <cat.icon className={`w-5 h-5 ${cat.color}`} />
+                        <span className="font-medium">{cat.label}</span>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+                
                 <SignedIn>
                   <Link
                     href="/studio"
