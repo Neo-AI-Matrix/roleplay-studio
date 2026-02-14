@@ -8,38 +8,18 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { 
   Mail, 
-  MessageSquare, 
-  Phone,
+  Bot,
   MapPin,
   Send,
   CheckCircle,
   Clock,
-  Headphones
+  Headphones,
+  X,
+  Sparkles
 } from 'lucide-react';
 
-const contactMethods = [
-  {
-    icon: Mail,
-    title: 'Email Us',
-    description: 'Send us an email anytime',
-    value: 'hello@roleplaystudio.com',
-    action: 'mailto:hello@roleplaystudio.com',
-  },
-  {
-    icon: MessageSquare,
-    title: 'Live Chat',
-    description: 'Chat with our team',
-    value: 'Available 9am-6pm PT',
-    action: '#',
-  },
-  {
-    icon: Phone,
-    title: 'Call Us',
-    description: 'Mon-Fri from 9am to 6pm PT',
-    value: '+1 (555) 123-4567',
-    action: 'tel:+15551234567',
-  },
-];
+// ElevenLabs Conversational AI Widget Agent ID (create in ElevenLabs dashboard)
+const ELEVENLABS_AGENT_ID = 'YOUR_AGENT_ID_HERE'; // TODO: Replace with actual agent ID
 
 const faqs = [
   {
@@ -68,6 +48,7 @@ export default function ContactPage() {
     message: '',
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isChatOpen, setIsChatOpen] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -112,27 +93,101 @@ export default function ContactPage() {
 
       {/* Contact Methods */}
       <section className="relative container mx-auto px-4 pb-16">
-        <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-          {contactMethods.map((method, i) => (
-            <a 
-              key={i} 
-              href={method.action}
-              className="block"
-            >
-              <Card className="glass-card border-violet/20 hover:border-violet/40 transition-all h-full">
-                <CardContent className="p-6 text-center">
-                  <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-violet to-cyan flex items-center justify-center mx-auto mb-4">
-                    <method.icon className="w-6 h-6 text-white" />
-                  </div>
-                  <h3 className="font-heading text-lg font-semibold text-white mb-1">{method.title}</h3>
-                  <p className="text-muted-foreground text-sm mb-2">{method.description}</p>
-                  <p className="text-cyan font-medium">{method.value}</p>
-                </CardContent>
-              </Card>
-            </a>
-          ))}
+        <div className="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto">
+          {/* Email */}
+          <a href="mailto:hello@roleplaystudio.com" className="block">
+            <Card className="glass-card border-violet/20 hover:border-violet/40 transition-all h-full">
+              <CardContent className="p-6 text-center">
+                <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-violet to-cyan flex items-center justify-center mx-auto mb-4">
+                  <Mail className="w-6 h-6 text-white" />
+                </div>
+                <h3 className="font-heading text-lg font-semibold text-white mb-1">Email Us</h3>
+                <p className="text-muted-foreground text-sm mb-2">Send us an email anytime</p>
+                <p className="text-cyan font-medium">hello@roleplaystudio.com</p>
+              </CardContent>
+            </Card>
+          </a>
+
+          {/* AI Chat */}
+          <button onClick={() => setIsChatOpen(true)} className="block w-full text-left">
+            <Card className="glass-card border-cyan/30 hover:border-cyan/50 transition-all h-full glow-cyan">
+              <CardContent className="p-6 text-center">
+                <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-cyan to-violet flex items-center justify-center mx-auto mb-4 relative">
+                  <Bot className="w-6 h-6 text-white" />
+                  <span className="absolute -top-1 -right-1 w-3 h-3 bg-green-400 rounded-full border-2 border-navy animate-pulse" />
+                </div>
+                <h3 className="font-heading text-lg font-semibold text-white mb-1">AI Assistant</h3>
+                <p className="text-muted-foreground text-sm mb-2">Chat with our AI instantly</p>
+                <p className="text-cyan font-medium flex items-center justify-center gap-2">
+                  <Sparkles className="w-4 h-4" />
+                  Available 24/7
+                </p>
+              </CardContent>
+            </Card>
+          </button>
         </div>
       </section>
+
+      {/* AI Chat Modal */}
+      {isChatOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+          <div className="relative w-full max-w-lg bg-navy-light border border-violet/30 rounded-2xl shadow-2xl overflow-hidden">
+            {/* Modal Header */}
+            <div className="flex items-center justify-between p-4 border-b border-violet/20">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-cyan to-violet flex items-center justify-center">
+                  <Bot className="w-5 h-5 text-white" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-white">Roleplay Studio AI</h3>
+                  <p className="text-xs text-green-400 flex items-center gap-1">
+                    <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
+                    Online 24/7
+                  </p>
+                </div>
+              </div>
+              <button 
+                onClick={() => setIsChatOpen(false)}
+                className="p-2 text-gray-400 hover:text-white hover:bg-white/10 rounded-lg transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Chat Content - ElevenLabs Widget Container */}
+            <div className="h-[500px] bg-navy/50">
+              {/* Placeholder until ElevenLabs agent is configured */}
+              <div className="flex flex-col items-center justify-center h-full p-8 text-center">
+                <div className="w-20 h-20 rounded-full bg-gradient-to-br from-cyan to-violet flex items-center justify-center mb-6 animate-pulse">
+                  <Bot className="w-10 h-10 text-white" />
+                </div>
+                <h4 className="text-xl font-semibold text-white mb-2">AI Assistant Coming Soon!</h4>
+                <p className="text-muted-foreground mb-6 max-w-sm">
+                  Our 24/7 AI assistant powered by ElevenLabs Conversational AI will be available here shortly.
+                </p>
+                <p className="text-sm text-gray-500 mb-4">
+                  In the meantime, please email us at:
+                </p>
+                <a 
+                  href="mailto:hello@roleplaystudio.com" 
+                  className="text-cyan hover:underline font-medium"
+                >
+                  hello@roleplaystudio.com
+                </a>
+              </div>
+              
+              {/* 
+                To enable the ElevenLabs widget, replace the placeholder above with:
+                
+                <elevenlabs-convai agent-id={ELEVENLABS_AGENT_ID}></elevenlabs-convai>
+                
+                And add this script to your layout or page:
+                <Script src="https://elevenlabs.io/convai-widget/index.js" async />
+              */}
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Contact Form & Info */}
       <section className="relative container mx-auto px-4 py-16">
