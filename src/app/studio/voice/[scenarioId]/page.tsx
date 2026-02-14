@@ -497,12 +497,17 @@ export default function VoiceSessionPage() {
               </button>
               <button
                 onClick={() => {
-                  setSessionStarted(false);
+                  // Reset state
                   setSessionEnded(false);
                   setTranscript([]);
                   setSessionScore(null);
                   setScoreBreakdown(null);
                   setSessionDuration(0);
+                  setError(null);
+                  // Scroll to top
+                  window.scrollTo({ top: 0, behavior: 'instant' });
+                  // Start new session immediately
+                  startConversation();
                 }}
                 className="px-8 py-4 bg-gradient-to-r from-violet to-cyan hover:opacity-90 text-white font-semibold rounded-xl transition-opacity"
               >
