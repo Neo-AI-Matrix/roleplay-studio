@@ -659,7 +659,7 @@ export default function VoiceSessionPage() {
         </p>
         
         <p className="text-gray-400 text-sm mb-8">
-          {status === 'connected' && 'Speak naturally — Margaret will respond'}
+          {status === 'connected' && `Speak naturally — ${scenario.persona.name.split(' ')[0]} will respond`}
         </p>
 
         {error && (
