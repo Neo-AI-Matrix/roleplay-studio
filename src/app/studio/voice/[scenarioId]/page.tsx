@@ -52,7 +52,7 @@ export default function VoiceSessionPage() {
   const [sessionScore, setSessionScore] = useState<number | null>(null);
   const [scoreBreakdown, setScoreBreakdown] = useState<ScoreBreakdown | null>(null);
   const [sessionDuration, setSessionDuration] = useState(0);
-  const [showBriefing, setShowBriefing] = useState(false);
+  const [showBriefing, setShowBriefing] = useState(true);
   
   const conversationRef = useRef<any>(null);
   const transcriptEndRef = useRef<HTMLDivElement>(null);
@@ -63,6 +63,13 @@ export default function VoiceSessionPage() {
   useEffect(() => {
     transcriptEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [transcript]);
+
+  // Scroll to top when session starts
+  useEffect(() => {
+    if (sessionStarted) {
+      window.scrollTo({ top: 0, behavior: 'instant' });
+    }
+  }, [sessionStarted]);
 
   // Cleanup on unmount
   useEffect(() => {
