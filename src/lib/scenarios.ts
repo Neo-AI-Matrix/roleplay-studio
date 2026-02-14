@@ -457,6 +457,266 @@ When the trainee says "END SESSION", break character and provide:
       'Offered trial or proof of concept',
       'Established clear, unpressured next steps'
     ]
+  },
+
+// ============ NEW SCENARIOS - SALES OBJECTION HANDLING ============
+
+  'busy-decision-maker': {
+    id: 'busy-decision-maker',
+    title: 'Sales Objection - Busy Decision Maker',
+    description: 'Handle a time-pressed VP who has only 5 minutes and wants you to get to the point immediately.',
+    category: 'sales',
+    difficulty: 'Intermediate',
+    duration: '8-12 min',
+    elevenLabsAgentId: 'agent_5301khey0276fre8bp3r6m60a6yb',
+    briefing: {
+      background: 'Jennifer Walsh is VP of Marketing at a fast-growing SaaS company. She\'s in back-to-back meetings and took this call during a 10-minute break.',
+      issue: 'Her time is extremely limited. She has 47 unread emails and will cut you off if you waste her time.',
+      goal: 'Be concise, lead with value, and earn more of her time by proving you understand her needs quickly.'
+    },
+    persona: {
+      name: 'Jennifer Walsh',
+      avatar: '/avatars/jennifer-walsh.png'
+    },
+    systemPrompt: `You are Jennifer Walsh, VP of Marketing at a fast-growing SaaS company. You're in back-to-back meetings and this call is during a 10-minute break.`,
+    openingLine: "Hi — I've got maybe 5 minutes between meetings. My assistant said you had something that could help with our lead gen. What is it?",
+    evaluationCriteria: [
+      'Got to the point quickly',
+      'Led with value proposition',
+      'Respected time constraints',
+      'Asked efficient qualifying questions',
+      'Earned more time through relevance'
+    ]
+  },
+
+  'price-shopper': {
+    id: 'price-shopper',
+    title: 'Sales Objection - Price Shopper',
+    description: 'Handle a procurement manager who\'s comparing you to cheaper competitors and pushing hard on price.',
+    category: 'sales',
+    difficulty: 'Intermediate',
+    duration: '10-15 min',
+    elevenLabsAgentId: 'agent_2101khey048tev8ar79jtfsbxmzt',
+    briefing: {
+      background: 'Marcus Price is a Procurement Manager at a regional healthcare company. His bonus is tied to cost savings.',
+      issue: 'He\'s already gotten quotes from 3 competitors and claims one is 20% cheaper. He\'s patient and will wait for a better deal.',
+      goal: 'Defend your pricing with value, avoid premature discounting, and differentiate on factors beyond price.'
+    },
+    persona: {
+      name: 'Marcus Price',
+      avatar: '/avatars/marcus-price.png'
+    },
+    systemPrompt: `You are Marcus Price, Procurement Manager focused on getting the best deal possible.`,
+    openingLine: "Hey, thanks for sending over that proposal. I've been reviewing it alongside a few others. I like what I see, but honestly, your pricing is higher than what I was expecting. What can you do for me on cost?",
+    evaluationCriteria: [
+      'Defended pricing without immediate discounting',
+      'Articulated value beyond price',
+      'Asked about decision criteria',
+      'Offered creative alternatives to discounting',
+      'Maintained confidence in pricing'
+    ]
+  },
+
+  // ============ NEW SCENARIOS - DISCOVERY CALLS ============
+
+  'cautious-prospect': {
+    id: 'cautious-prospect',
+    title: 'Discovery Call - Cautious Prospect',
+    description: 'Build trust with a skeptical IT Director who was burned by a previous vendor and is risk-averse.',
+    category: 'sales',
+    difficulty: 'Intermediate',
+    duration: '10-15 min',
+    elevenLabsAgentId: 'agent_0201khey0619fagay55ce9h7b1vs',
+    briefing: {
+      background: 'Robert Chen is IT Director at a manufacturing company. 2 years ago, a similar solution was a disaster — cost overruns, missed deadlines, poor support.',
+      issue: 'He got blamed for that decision and is now extremely cautious. He needs a solution but won\'t rush into anything.',
+      goal: 'Build trust by acknowledging concerns, offering proof points, and proposing risk mitigation strategies.'
+    },
+    persona: {
+      name: 'Robert Chen',
+      avatar: '/avatars/robert-chen.png'
+    },
+    systemPrompt: `You are Robert Chen, a cautious IT Director who was burned by vendors before.`,
+    openingLine: "Hi. I'll be honest — I agreed to this call, but I'm not sure we're ready to make any changes right now. We tried something similar a couple years ago and it didn't go well. But I'm willing to listen. What exactly are you proposing?",
+    evaluationCriteria: [
+      'Acknowledged past concerns',
+      'Built trust through honesty',
+      'Offered references and proof',
+      'Proposed risk mitigation',
+      'Didn\'t push too hard'
+    ]
+  },
+
+  'chatty-executive': {
+    id: 'chatty-executive',
+    title: 'Discovery Call - Chatty Executive',
+    description: 'Navigate a conversation with a friendly but rambling CEO who goes off on tangents constantly.',
+    category: 'sales',
+    difficulty: 'Beginner',
+    duration: '10-15 min',
+    elevenLabsAgentId: 'agent_6801khey07z3fehsp3fefz9s9zjm',
+    briefing: {
+      background: 'Patricia Donovan is CEO of a growing wellness brand. She\'s friendly, enthusiastic, and loves to talk about her business.',
+      issue: 'She goes on tangents constantly and buries key information in her stories. Important challenges are hidden in her chatter.',
+      goal: 'Politely guide the conversation, pick up on buried challenges, and summarize key points to confirm understanding.'
+    },
+    persona: {
+      name: 'Patricia Donovan',
+      avatar: '/avatars/patricia-donovan.png'
+    },
+    systemPrompt: `You are Patricia Donovan, a friendly CEO who loves to talk and goes on tangents.`,
+    openingLine: "Oh hi! So glad we could connect! My friend Sarah — do you know Sarah from TechFlow? Anyway, she mentioned you might be able to help us with our systems. We're growing so fast right now, it's crazy. Just last month we launched this new product line and oh my gosh the response has been incredible. But anyway, what was I saying? Right — tell me about what you do!",
+    evaluationCriteria: [
+      'Politely redirected tangents',
+      'Picked up on buried challenges',
+      'Summarized key points',
+      'Asked focused questions',
+      'Managed conversation flow'
+    ]
+  },
+
+  'technical-buyer': {
+    id: 'technical-buyer',
+    title: 'Discovery Call - Technical Buyer',
+    description: 'Handle deep technical questions from a PhD CTO who has no patience for buzzwords or vague answers.',
+    category: 'sales',
+    difficulty: 'Advanced',
+    duration: '15-20 min',
+    elevenLabsAgentId: 'agent_6001khey09pwerrrkbq6rwpc1sz1',
+    briefing: {
+      background: 'Dr. Michael Torres is CTO at a fintech company with a PhD in Computer Science and 20 years of experience.',
+      issue: 'He evaluates solutions purely on technical merit. He\'s allergic to buzzwords and will push hard on architecture, security, and integrations.',
+      goal: 'Demonstrate technical credibility, know when to say "I don\'t know, let me find out," and avoid BS at all costs.'
+    },
+    persona: {
+      name: 'Dr. Michael Torres',
+      avatar: '/avatars/michael-torres.png'
+    },
+    systemPrompt: `You are Dr. Michael Torres, a technical CTO who asks deep technical questions.`,
+    openingLine: "Thanks for taking the time. Before we get into pricing or business cases, I need to understand the technical fundamentals. Can you walk me through your system architecture and how you handle data security?",
+    evaluationCriteria: [
+      'Demonstrated technical knowledge',
+      'Avoided buzzwords and fluff',
+      'Said "I\'ll find out" when appropriate',
+      'Asked clarifying questions',
+      'Engaged at the right technical level'
+    ]
+  },
+
+  // ============ NEW SCENARIOS - SUPPORT ============
+
+  'angry-customer-billing': {
+    id: 'angry-customer-billing',
+    title: 'Support - Unauthorized Billing Dispute',
+    description: 'De-escalate a furious small business owner who discovered $450 in unauthorized charges on their account.',
+    category: 'support',
+    difficulty: 'Intermediate',
+    duration: '10-15 min',
+    elevenLabsAgentId: 'agent_6701khey0bzmfpabg1dkse7degxg',
+    briefing: {
+      background: 'Derek Morrison has been a customer for 2 years. He\'s a small business owner where cash flow matters.',
+      issue: 'He found $450 in unauthorized charges — someone upgraded him to premium without consent. He\'s been on hold 30 minutes already.',
+      goal: 'Acknowledge the error, take ownership, process a refund, and restore trust without losing the customer.'
+    },
+    persona: {
+      name: 'Derek Morrison',
+      avatar: '/avatars/derek-morrison.png'
+    },
+    systemPrompt: `You are Derek Morrison, a furious customer who found unauthorized charges.`,
+    openingLine: "Finally! I've been on hold for thirty minutes! Look, I just found four hundred and fifty dollars in charges on my account that I never authorized. Someone upgraded me to some premium plan I never asked for. I want this fixed right now and I want my money back. This is completely unacceptable!",
+    evaluationCriteria: [
+      'Apologized sincerely',
+      'Took ownership immediately',
+      'De-escalated effectively',
+      'Processed resolution quickly',
+      'Retained the customer'
+    ]
+  },
+
+  // ============ NEW SCENARIOS - UPSELL & CROSS-SELL ============
+
+  'happy-customer-upsell': {
+    id: 'happy-customer-upsell',
+    title: 'Upsell - Happy Customer',
+    description: 'Identify expansion opportunities with a satisfied customer who doesn\'t know about premium features.',
+    category: 'sales',
+    difficulty: 'Beginner',
+    duration: '8-12 min',
+    elevenLabsAgentId: 'agent_4701khey0dsefn9abr1t392fh615',
+    briefing: {
+      background: 'Amanda Foster is Operations Manager at a boutique marketing agency. She\'s been a happy customer for a year.',
+      issue: 'Her team has grown from 3 to 8 people and she\'s doing manual workarounds. She doesn\'t know premium features exist.',
+      goal: 'Understand her current usage, identify pain points, and present the upgrade as a natural solution to her growth.'
+    },
+    persona: {
+      name: 'Amanda Foster',
+      avatar: '/avatars/amanda-foster.png'
+    },
+    systemPrompt: `You are Amanda Foster, a happy customer open to hearing about new features.`,
+    openingLine: "Hey! Great to hear from you. We've been loving the platform — my team uses it every day. What's up?",
+    evaluationCriteria: [
+      'Asked about current usage',
+      'Identified growth pain points',
+      'Connected features to needs',
+      'Presented upgrade naturally',
+      'Avoided being pushy'
+    ]
+  },
+
+  'budget-conscious-upsell': {
+    id: 'budget-conscious-upsell',
+    title: 'Upsell - Budget Conscious',
+    description: 'Present value to a nonprofit Finance Director who needs to justify every dollar to the board.',
+    category: 'sales',
+    difficulty: 'Intermediate',
+    duration: '10-15 min',
+    elevenLabsAgentId: 'agent_4301khey0fgtejct5et5svdme9vm',
+    briefing: {
+      background: 'Frank Deluca is Finance Director at a nonprofit. Every expense must be justified to the board.',
+      issue: 'He\'s satisfied but extremely cost-conscious. Premium features might help, but the ROI must be crystal clear.',
+      goal: 'Build a compelling ROI case, offer nonprofit pricing if available, and help him build his board presentation.'
+    },
+    persona: {
+      name: 'Frank Deluca',
+      avatar: '/avatars/frank-deluca.png'
+    },
+    systemPrompt: `You are Frank Deluca, a budget-conscious Finance Director at a nonprofit.`,
+    openingLine: "Hi, thanks for checking in. I saw your email about the new features. I'll be honest — we're on a tight budget here, so unless there's a really compelling reason to upgrade, we're probably going to stay where we are. But I'm happy to hear what you've got.",
+    evaluationCriteria: [
+      'Acknowledged budget constraints',
+      'Built compelling ROI case',
+      'Offered appropriate discounts',
+      'Helped with board justification',
+      'Was patient with the process'
+    ]
+  },
+
+  'growth-focused-upsell': {
+    id: 'growth-focused-upsell',
+    title: 'Upsell - Growth-Focused',
+    description: 'Position as a strategic partner to a Series B startup that\'s scaling rapidly and has budget to invest.',
+    category: 'sales',
+    difficulty: 'Intermediate',
+    duration: '10-15 min',
+    elevenLabsAgentId: 'agent_4901khey0hbrf41sekwa82pnamv6',
+    briefing: {
+      background: 'Rachel Okonkwo is Head of Revenue Ops at a Series B startup that just raised $30M. They\'re tripling the team.',
+      issue: 'Current plan works but won\'t scale. She\'s actively looking for tools that grow with them and has budget.',
+      goal: 'Understand her growth trajectory, position as a long-term partner, and help her plan for scale proactively.'
+    },
+    persona: {
+      name: 'Rachel Okonkwo',
+      avatar: '/avatars/rachel-okonkwo.png'
+    },
+    systemPrompt: `You are Rachel Okonkwo, scaling a startup and looking for tools that grow with you.`,
+    openingLine: "Good timing on this call. We just closed our Series B and we're about to triple the team. I'm looking at all our tools and figuring out what scales with us and what doesn't. Where do you think we should be focused?",
+    evaluationCriteria: [
+      'Understood growth trajectory',
+      'Positioned as strategic partner',
+      'Shared relevant customer stories',
+      'Helped plan for scale',
+      'Thought long-term, not transactional'
+    ]
   }
 };
 
