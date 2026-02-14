@@ -185,6 +185,93 @@ export default function ProductPage() {
         </div>
       </section>
 
+      {/* Pricing Section - Moved Up for Better Conversion */}
+      <section id="pricing" className="relative bg-navy-light/50 py-24">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <Badge className="mb-4 bg-cyan/20 text-cyan border-cyan/30">Pricing</Badge>
+            <h2 className="font-heading text-4xl font-bold mb-4">
+              Simple, Transparent{' '}
+              <span className="gradient-text">Pricing</span>
+            </h2>
+            <p className="text-xl text-muted-foreground">
+              Start free, upgrade when you're ready. No hidden fees.
+            </p>
+          </div>
+
+          {/* ROI Context */}
+          <div className="glass-card p-6 max-w-3xl mx-auto mb-12 border-cyan/30">
+            <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+              <div className="text-center md:text-left">
+                <p className="text-muted-foreground text-sm mb-1">Average cost to replace one sales rep</p>
+                <p className="text-2xl font-heading font-bold text-red-400">$114,957</p>
+              </div>
+              <div className="hidden md:block w-px h-12 bg-violet/30" />
+              <div className="text-center md:text-left">
+                <p className="text-muted-foreground text-sm mb-1">Business plan yearly (10 users)</p>
+                <p className="text-2xl font-heading font-bold text-cyan">$1,188</p>
+              </div>
+              <div className="hidden md:block w-px h-12 bg-violet/30" />
+              <div className="text-center md:text-left">
+                <p className="text-muted-foreground text-sm mb-1">ROI if you retain just 1 rep</p>
+                <p className="text-2xl font-heading font-bold text-green-400">9,578%</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+            {pricingPlans.map((plan, i) => (
+              <Card 
+                key={i} 
+                className={`glass-card border-violet/20 relative ${plan.popular ? 'border-cyan/50 glow-cyan' : ''}`}
+              >
+                {plan.popular && (
+                  <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
+                    <Badge className="bg-cyan text-white border-0">Most Popular</Badge>
+                  </div>
+                )}
+                <CardHeader className="text-center pb-4">
+                  <CardTitle className="font-heading text-2xl text-white">{plan.name}</CardTitle>
+                  <div className="mt-4">
+                    <span className="text-4xl font-heading font-bold gradient-text">{plan.price}</span>
+                    <span className="text-muted-foreground text-sm ml-2">{plan.period}</span>
+                  </div>
+                  <p className="text-muted-foreground mt-2">{plan.description}</p>
+                </CardHeader>
+                <CardContent>
+                  <ul className="space-y-3 mb-6">
+                    {plan.features.map((feature, j) => (
+                      <li key={j} className="flex items-center gap-2">
+                        <CheckCircle className="w-5 h-5 text-cyan flex-shrink-0" />
+                        <span className="text-muted-foreground">{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  {plan.name === 'Enterprise' ? (
+                    <Link href="/enterprise">
+                      <Button 
+                        className="w-full border-violet/30 hover:bg-violet/20"
+                        variant="outline"
+                      >
+                        {plan.cta}
+                        <ArrowRight className="ml-2 w-4 h-4" />
+                      </Button>
+                    </Link>
+                  ) : (
+                    <Button 
+                      className={`w-full ${plan.popular ? 'btn-gradient text-white border-0' : 'border-violet/30'}`}
+                      variant={plan.popular ? 'default' : 'outline'}
+                    >
+                      {plan.cta}
+                    </Button>
+                  )}
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Scenarios Section */}
       <section id="scenarios" className="relative bg-navy-light/50 py-24">
         <div className="container mx-auto px-4">
@@ -462,93 +549,6 @@ export default function ProductPage() {
                 This builds rapport and shows you're listening.
               </p>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Pricing Section */}
-      <section id="pricing" className="relative bg-navy-light/50 py-24">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <Badge className="mb-4 bg-cyan/20 text-cyan border-cyan/30">Pricing</Badge>
-            <h2 className="font-heading text-4xl font-bold mb-4">
-              Simple, Transparent{' '}
-              <span className="gradient-text">Pricing</span>
-            </h2>
-            <p className="text-xl text-muted-foreground">
-              Start free, upgrade when you're ready. No hidden fees.
-            </p>
-          </div>
-
-          {/* ROI Context */}
-          <div className="glass-card p-6 max-w-3xl mx-auto mb-12 border-cyan/30">
-            <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-              <div className="text-center md:text-left">
-                <p className="text-muted-foreground text-sm mb-1">Average cost to replace one sales rep</p>
-                <p className="text-2xl font-heading font-bold text-red-400">$114,957</p>
-              </div>
-              <div className="hidden md:block w-px h-12 bg-violet/30" />
-              <div className="text-center md:text-left">
-                <p className="text-muted-foreground text-sm mb-1">Business plan yearly (10 users)</p>
-                <p className="text-2xl font-heading font-bold text-cyan">$1,188</p>
-              </div>
-              <div className="hidden md:block w-px h-12 bg-violet/30" />
-              <div className="text-center md:text-left">
-                <p className="text-muted-foreground text-sm mb-1">ROI if you retain just 1 rep</p>
-                <p className="text-2xl font-heading font-bold text-green-400">9,578%</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-            {pricingPlans.map((plan, i) => (
-              <Card 
-                key={i} 
-                className={`glass-card border-violet/20 relative ${plan.popular ? 'border-cyan/50 glow-cyan' : ''}`}
-              >
-                {plan.popular && (
-                  <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                    <Badge className="bg-cyan text-white border-0">Most Popular</Badge>
-                  </div>
-                )}
-                <CardHeader className="text-center pb-4">
-                  <CardTitle className="font-heading text-2xl text-white">{plan.name}</CardTitle>
-                  <div className="mt-4">
-                    <span className="text-4xl font-heading font-bold gradient-text">{plan.price}</span>
-                    <span className="text-muted-foreground text-sm ml-2">{plan.period}</span>
-                  </div>
-                  <p className="text-muted-foreground mt-2">{plan.description}</p>
-                </CardHeader>
-                <CardContent>
-                  <ul className="space-y-3 mb-6">
-                    {plan.features.map((feature, j) => (
-                      <li key={j} className="flex items-center gap-2">
-                        <CheckCircle className="w-5 h-5 text-cyan flex-shrink-0" />
-                        <span className="text-muted-foreground">{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  {plan.name === 'Enterprise' ? (
-                    <Link href="/enterprise">
-                      <Button 
-                        className="w-full border-violet/30 hover:bg-violet/20"
-                        variant="outline"
-                      >
-                        {plan.cta}
-                        <ArrowRight className="ml-2 w-4 h-4" />
-                      </Button>
-                    </Link>
-                  ) : (
-                    <Button 
-                      className={`w-full ${plan.popular ? 'btn-gradient text-white border-0' : 'border-violet/30'}`}
-                      variant={plan.popular ? 'default' : 'outline'}
-                    >
-                      {plan.cta}
-                    </Button>
-                  )}
-                </CardContent>
-              </Card>
-            ))}
           </div>
         </div>
       </section>
