@@ -122,14 +122,14 @@ export default function Home() {
             No credit card required • Setup in 5 minutes • Cancel anytime
           </p>
 
-          {/* Trust Avatars */}
+          {/* Trust Avatars - Different from team/employee photos */}
           <div className="flex items-center justify-center gap-4 mt-8">
             <div className="flex -space-x-3">
-              <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop&crop=face" className="w-10 h-10 rounded-full border-2 border-navy" alt="User" />
-              <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face" className="w-10 h-10 rounded-full border-2 border-navy" alt="User" />
-              <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=100&h=100&fit=crop&crop=face" className="w-10 h-10 rounded-full border-2 border-navy" alt="User" />
-              <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face" className="w-10 h-10 rounded-full border-2 border-navy" alt="User" />
-              <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?w=100&h=100&fit=crop&crop=face" className="w-10 h-10 rounded-full border-2 border-navy" alt="User" />
+              <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop&crop=face" className="w-10 h-10 rounded-full border-2 border-navy" alt="User" />
+              <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=100&h=100&fit=crop&crop=face" className="w-10 h-10 rounded-full border-2 border-navy" alt="User" />
+              <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=face" className="w-10 h-10 rounded-full border-2 border-navy" alt="User" />
+              <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop&crop=face" className="w-10 h-10 rounded-full border-2 border-navy" alt="User" />
+              <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&h=100&fit=crop&crop=face" className="w-10 h-10 rounded-full border-2 border-navy" alt="User" />
             </div>
             <p className="text-muted-foreground text-sm">
               <span className="text-cyan font-semibold">10,000+</span> professionals already training
