@@ -488,7 +488,7 @@ export default function VoiceSessionPage() {
             </div>
 
             {/* Actions */}
-            <div className="flex gap-4 justify-center">
+            <div className="flex gap-4 justify-center pb-16">
               <button
                 onClick={() => router.push('/studio')}
                 className="px-8 py-4 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-xl transition-colors"

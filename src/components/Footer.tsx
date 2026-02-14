@@ -3,8 +3,12 @@ import { Sparkles, Twitter, Linkedin, Github } from 'lucide-react';
 
 export function Footer() {
   return (
-    <footer className="border-t border-violet/20 bg-navy-light">
-      <div className="container mx-auto px-4 py-12">
+    <footer className="relative bg-navy-light mt-16">
+      {/* Gradient separator line */}
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-violet/50 to-transparent" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/3 h-px bg-gradient-to-r from-transparent via-cyan/30 to-transparent blur-sm" />
+      
+      <div className="container mx-auto px-4 py-16">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Brand */}
           <div className="col-span-1 md:col-span-2">
