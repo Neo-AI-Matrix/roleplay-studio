@@ -109,10 +109,12 @@ export default function Home() {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-            <Button size="lg" className="btn-gradient text-lg h-14 px-8 border-0 text-white font-semibold">
-              Start 7-Day Free Trial
-              <ArrowRight className="ml-2 w-5 h-5" />
-            </Button>
+            <Link href="/sign-up">
+              <Button size="lg" className="btn-gradient text-lg h-14 px-8 border-0 text-white font-semibold">
+                Start 7-Day Free Trial
+                <ArrowRight className="ml-2 w-5 h-5" />
+              </Button>
+            </Link>
             <Button size="lg" variant="outline" className="text-lg h-14 px-8 border-violet/30 text-white hover:bg-violet/10">
               <Play className="mr-2 w-5 h-5" />
               Watch Demo
@@ -436,10 +438,12 @@ export default function Home() {
             Join 10,000+ professionals using Roleplay Studio to sharpen their skills and close more deals.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" className="btn-gradient text-lg h-14 px-8 border-0 text-white font-semibold">
-              Start 7-Day Free Trial
-              <ArrowRight className="ml-2 w-5 h-5" />
-            </Button>
+            <Link href="/sign-up">
+              <Button size="lg" className="btn-gradient text-lg h-14 px-8 border-0 text-white font-semibold">
+                Start 7-Day Free Trial
+                <ArrowRight className="ml-2 w-5 h-5" />
+              </Button>
+            </Link>
             <Link href="/contact">
               <Button size="lg" variant="outline" className="text-lg h-14 px-8 border-violet/30 text-white hover:bg-violet/10">
                 Talk to Sales

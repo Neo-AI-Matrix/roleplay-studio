@@ -258,12 +258,14 @@ export default function ProductPage() {
                       </Button>
                     </Link>
                   ) : (
-                    <Button 
-                      className={`w-full ${plan.popular ? 'btn-gradient text-white border-0' : 'border-violet/30'}`}
-                      variant={plan.popular ? 'default' : 'outline'}
-                    >
-                      {plan.cta}
-                    </Button>
+                    <Link href="/sign-up">
+                      <Button 
+                        className={`w-full ${plan.popular ? 'btn-gradient text-white border-0' : 'border-violet/30'}`}
+                        variant={plan.popular ? 'default' : 'outline'}
+                      >
+                        {plan.cta}
+                      </Button>
+                    </Link>
                   )}
                 </CardContent>
               </Card>
@@ -564,10 +566,12 @@ export default function ProductPage() {
             Start your free 7-day trial today. No credit card required.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" className="btn-gradient text-lg h-14 px-8 border-0 text-white font-semibold">
-              Start 7-Day Free Trial
-              <ArrowRight className="ml-2 w-5 h-5" />
-            </Button>
+            <Link href="/sign-up">
+              <Button size="lg" className="btn-gradient text-lg h-14 px-8 border-0 text-white font-semibold">
+                Start 7-Day Free Trial
+                <ArrowRight className="ml-2 w-5 h-5" />
+              </Button>
+            </Link>
             <Button size="lg" variant="outline" className="text-lg h-14 px-8 border-violet/30 text-white hover:bg-violet/10">
               <Play className="mr-2 w-5 h-5" />
               Watch Demo

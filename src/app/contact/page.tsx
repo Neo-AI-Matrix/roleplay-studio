@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -363,9 +364,11 @@ export default function ContactPage() {
           <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
             Start your free 14-day trial today. No credit card required, no commitment.
           </p>
-          <Button size="lg" className="btn-gradient text-lg h-14 px-8 border-0 text-white font-semibold">
-            Start Free Trial
-          </Button>
+          <Link href="/sign-up">
+            <Button size="lg" className="btn-gradient text-lg h-14 px-8 border-0 text-white font-semibold">
+              Start Free Trial
+            </Button>
+          </Link>
         </div>
       </section>
     </div>
