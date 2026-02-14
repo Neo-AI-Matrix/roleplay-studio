@@ -103,6 +103,7 @@ When the trainee says "END SESSION" or similar, break character and provide:
     category: 'sales',
     difficulty: 'Beginner',
     duration: '10-15 min',
+    elevenLabsAgentId: 'agent_9901khek0x51e4fr70qqqm454nt2',
     briefing: {
       background: 'David Morrison is VP of Operations at TechFlow Solutions, a mid-sized company with 500 employees. He requested a demo after seeing your product online but hasn\'t committed to any solution yet.',
       issue: 'His company is growing fast and current systems are showing strain. He\'s exploring options but is protective of his time and skeptical of sales pitches.',
@@ -147,7 +148,7 @@ When the trainee says "END SESSION", provide feedback on their discovery skills.
     category: 'sales',
     difficulty: 'Advanced',
     duration: '15-20 min',
-    // ElevenLabs voice suggestion: "George" (deep, authoritative) or "Bill" (mature, professional)
+    elevenLabsAgentId: 'agent_7601khem9sftee9rzw5y3a02v5jt',
     briefing: {
       background: 'Richard Thompson is CFO of a Fortune 1000 manufacturing company. Your sales team has been working this deal for 6 months. He\'s the final decision maker and has killed deals before at the last minute.',
       issue: 'He\'s seen vendors overpromise and underdeliver. He demands hard numbers, questions every assumption, and has a competing proposal from your main rival that\'s 20% cheaper.',
@@ -226,7 +227,7 @@ When the trainee says "END SESSION", break character and provide:
     category: 'support',
     difficulty: 'Beginner',
     duration: '8-12 min',
-    // ElevenLabs voice suggestion: "Charlie" (friendly, everyday) or "Brian" (warm, conversational)
+    elevenLabsAgentId: 'agent_8401khemk42ee1t9mas1mwyx6p8e',
     briefing: {
       background: 'Tom Bradley is a 42-year-old small business owner who recently signed up for your software. He\'s not tech-savvy and feels embarrassed about asking "dumb questions."',
       issue: 'He can\'t figure out how to export a report his accountant needs. He\'s clicked around for an hour, watched a tutorial that confused him more, and now feels frustrated with himself.',
@@ -305,7 +306,7 @@ When the trainee says "END SESSION", break character and provide:
     category: 'support',
     difficulty: 'Advanced',
     duration: '15-20 min',
-    // ElevenLabs voice suggestion: "Charlotte" (sophisticated, assertive) or "Emily" (professional, firm)
+    elevenLabsAgentId: 'agent_1601kheqtkkzetxsx4184v2sfp7a',
     briefing: {
       background: 'Victoria Hayes is the VP of Operations at a Fortune 500 client that represents $2M in annual revenue. She has the CEO\'s ear and has gotten people fired at vendor companies before.',
       issue: 'A critical integration failed during their busiest season, costing them an estimated $50,000 in lost productivity. She\'s demanding immediate resolution, compensation, and a call with your CEO.',
@@ -385,7 +386,7 @@ When the trainee says "END SESSION", break character and provide:
     category: 'sales',
     difficulty: 'Intermediate',
     duration: '10-15 min',
-    // ElevenLabs voice suggestion: "Jessica" (friendly, enthusiastic) or "Lily" (warm, approachable)
+    elevenLabsAgentId: 'agent_1601kher202jfrh8n9wvpech30zh',
     briefing: {
       background: 'Sarah Mitchell is the Marketing Director at a growing e-commerce company. She\'s been using your basic plan for 8 months and loves it. Her company just raised Series B funding and is planning aggressive expansion.',
       issue: 'She\'s hitting usage limits on the current plan and needs more features, but hasn\'t proactively reached out about upgrading. She\'s open but budget-conscious.',
