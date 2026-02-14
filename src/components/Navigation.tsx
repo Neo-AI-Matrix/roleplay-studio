@@ -10,6 +10,7 @@ import { Menu, Sparkles, LogOut } from 'lucide-react';
 const navItems = [
   { href: '/', label: 'Home' },
   { href: '/product', label: 'Product' },
+  { href: '/enterprise', label: 'Enterprise' },
   { href: '/about', label: 'About' },
   { href: '/contact', label: 'Contact' },
 ];

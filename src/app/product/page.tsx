@@ -17,6 +17,7 @@ import {
   Settings,
   Award
 } from 'lucide-react';
+import Link from 'next/link';
 
 const scenarios = [
   {
@@ -70,27 +71,27 @@ const howItWorks = [
 
 const pricingPlans = [
   {
-    name: 'Starter',
+    name: 'Individual',
     price: '$29',
-    period: 'per user/month',
-    description: 'Perfect for small teams getting started with AI training.',
+    period: 'per month',
+    description: 'Perfect for individual contributors looking to level up.',
     features: [
-      '5 team members',
-      '10 pre-built scenarios',
+      '1 user',
+      'All pre-built scenarios',
       'Basic analytics',
       'Email support',
-      '100 practice sessions/month',
+      'Unlimited practice sessions',
     ],
-    cta: 'Start Free Trial',
+    cta: 'Start 7-Day Free Trial',
     popular: false,
   },
   {
-    name: 'Professional',
-    price: '$79',
-    period: 'per user/month',
-    description: 'For growing teams that need advanced training capabilities.',
+    name: 'Business',
+    price: '$99',
+    period: 'per month',
+    description: 'For teams that need collaboration and advanced features.',
     features: [
-      '25 team members',
+      'Up to 10 users',
       'Unlimited scenarios',
       'Advanced analytics & reporting',
       'Custom persona builder',
@@ -98,24 +99,25 @@ const pricingPlans = [
       'Unlimited practice sessions',
       'Team leaderboards',
     ],
-    cta: 'Start Free Trial',
+    cta: 'Start 7-Day Free Trial',
     popular: true,
   },
   {
     name: 'Enterprise',
     price: 'Custom',
-    period: 'contact for pricing',
-    description: 'For large organizations with complex training needs.',
+    period: 'tailored to your needs',
+    description: 'For organizations that need fully custom AI training solutions.',
     features: [
       'Unlimited team members',
-      'Custom scenario development',
-      'API access & integrations',
+      'Custom AI agents for your business',
+      'Your products, customers & scenarios',
       'Dedicated success manager',
-      'SSO & advanced security',
-      'Custom analytics & exports',
+      'SSO, SCIM & enterprise security',
+      'API access & LMS integrations',
       'On-premise deployment option',
     ],
-    cta: 'Contact Sales',
+    cta: 'Learn More',
+    ctaLink: '/enterprise',
     popular: false,
   },
 ];
@@ -487,13 +489,13 @@ export default function ProductPage() {
               </div>
               <div className="hidden md:block w-px h-12 bg-violet/30" />
               <div className="text-center md:text-left">
-                <p className="text-muted-foreground text-sm mb-1">Roleplay Studio yearly (25 users)</p>
-                <p className="text-2xl font-heading font-bold text-cyan">$23,700</p>
+                <p className="text-muted-foreground text-sm mb-1">Business plan yearly (10 users)</p>
+                <p className="text-2xl font-heading font-bold text-cyan">$1,188</p>
               </div>
               <div className="hidden md:block w-px h-12 bg-violet/30" />
               <div className="text-center md:text-left">
                 <p className="text-muted-foreground text-sm mb-1">ROI if you retain just 1 rep</p>
-                <p className="text-2xl font-heading font-bold text-green-400">385%</p>
+                <p className="text-2xl font-heading font-bold text-green-400">9,578%</p>
               </div>
             </div>
           </div>
@@ -526,12 +528,24 @@ export default function ProductPage() {
                       </li>
                     ))}
                   </ul>
-                  <Button 
-                    className={`w-full ${plan.popular ? 'btn-gradient text-white border-0' : 'border-violet/30'}`}
-                    variant={plan.popular ? 'default' : 'outline'}
-                  >
-                    {plan.cta}
-                  </Button>
+                  {plan.name === 'Enterprise' ? (
+                    <Link href="/enterprise">
+                      <Button 
+                        className="w-full border-violet/30 hover:bg-violet/20"
+                        variant="outline"
+                      >
+                        {plan.cta}
+                        <ArrowRight className="ml-2 w-4 h-4" />
+                      </Button>
+                    </Link>
+                  ) : (
+                    <Button 
+                      className={`w-full ${plan.popular ? 'btn-gradient text-white border-0' : 'border-violet/30'}`}
+                      variant={plan.popular ? 'default' : 'outline'}
+                    >
+                      {plan.cta}
+                    </Button>
+                  )}
                 </CardContent>
               </Card>
             ))}
@@ -547,11 +561,11 @@ export default function ProductPage() {
             <span className="gradient-text">Action?</span>
           </h2>
           <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Start your free 14-day trial today. No credit card required.
+            Start your free 7-day trial today. No credit card required.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button size="lg" className="btn-gradient text-lg h-14 px-8 border-0 text-white font-semibold">
-              Start Free Trial
+              Start 7-Day Free Trial
               <ArrowRight className="ml-2 w-5 h-5" />
             </Button>
             <Button size="lg" variant="outline" className="text-lg h-14 px-8 border-violet/30 text-white hover:bg-violet/10">
