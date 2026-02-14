@@ -284,7 +284,7 @@ export default function EnterprisePage() {
       <section className="relative bg-navy-light/50 py-24">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <Badge className="mb-4 bg-violet/20 text-violet border-violet/30">Enterprise Features</Badge>
+            <Badge className="mb-4 bg-violet/30 text-white border-violet/50">Enterprise Features</Badge>
             <h2 className="font-heading text-4xl font-bold mb-4">
               Everything You Need to{' '}
               <span className="gradient-text">Transform Training</span>
@@ -313,7 +313,7 @@ export default function EnterprisePage() {
       {/* Custom AI Agents Deep Dive */}
       <section className="relative container mx-auto px-4 py-24">
         <div className="text-center mb-16">
-          <Badge className="mb-4 bg-cyan/20 text-cyan border-cyan/30">Custom AI Agents</Badge>
+          <Badge className="mb-4 bg-cyan/30 text-white border-cyan/50">Custom AI Agents</Badge>
           <h2 className="font-heading text-4xl font-bold mb-4">
             AI That Knows{' '}
             <span className="gradient-text">Your Business</span>
@@ -378,7 +378,7 @@ export default function EnterprisePage() {
       <section className="relative bg-navy-light/50 py-24">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <Badge className="mb-4 bg-violet/20 text-violet border-violet/30">Use Cases</Badge>
+            <Badge className="mb-4 bg-violet/30 text-white border-violet/50">Use Cases</Badge>
             <h2 className="font-heading text-4xl font-bold mb-4">
               Training for{' '}
               <span className="gradient-text">Every Team</span>
@@ -412,7 +412,7 @@ export default function EnterprisePage() {
       <section className="relative container mx-auto px-4 py-24">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           <div>
-            <Badge className="mb-4 bg-cyan/20 text-cyan border-cyan/30">Enterprise Security</Badge>
+            <Badge className="mb-4 bg-cyan/30 text-white border-cyan/50">Enterprise Security</Badge>
             <h2 className="font-heading text-4xl font-bold mb-6">
               Security That{' '}
               <span className="gradient-text">Your Team Demands</span>
@@ -464,7 +464,7 @@ export default function EnterprisePage() {
       <section className="relative bg-navy-light/50 py-24">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <Badge className="mb-4 bg-violet/20 text-violet border-violet/30">Implementation</Badge>
+            <Badge className="mb-4 bg-violet/30 text-white border-violet/50">Implementation</Badge>
             <h2 className="font-heading text-4xl font-bold mb-4">
               From Kickoff to{' '}
               <span className="gradient-text">Full Deployment</span>

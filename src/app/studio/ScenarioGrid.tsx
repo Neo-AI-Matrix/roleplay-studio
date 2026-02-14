@@ -233,8 +233,8 @@ function ScenarioTile({ scenario }: { scenario: Scenario }) {
   };
 
   const categoryColors = {
-    sales: "bg-violet/20 text-violet border-violet/30",
-    support: "bg-cyan/20 text-cyan border-cyan/30",
+    sales: "bg-violet/30 text-white border-violet/50",
+    support: "bg-cyan/30 text-white border-cyan/50",
   };
 
   return (

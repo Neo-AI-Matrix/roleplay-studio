@@ -92,7 +92,7 @@ export default function Home() {
       {/* Hero Section */}
       <section className="relative container mx-auto px-4 pt-20 pb-32">
         <div className="max-w-4xl mx-auto text-center">
-          <Badge className="mb-6 bg-violet/20 text-violet border-violet/30 hover:bg-violet/30">
+          <Badge className="mb-6 bg-violet/30 text-white border-violet/50 hover:bg-violet/40">
             <Sparkles className="w-3 h-3 mr-1" />
             AI-Powered Training Platform
           </Badge>
@@ -149,7 +149,7 @@ export default function Home() {
                   <p className="font-semibold text-white">AI Customer: Frustrated Enterprise Buyer</p>
                   <p className="text-sm text-muted-foreground">Objection Handling Scenario</p>
                 </div>
-                <Badge className="ml-auto bg-cyan/20 text-cyan border-cyan/30">Live Session</Badge>
+                <Badge className="ml-auto bg-cyan/30 text-white border-cyan/50">Live Session</Badge>
               </div>
               
               <div className="space-y-4">
@@ -325,7 +325,7 @@ export default function Home() {
       {/* Features Section */}
       <section className="relative container mx-auto px-4 py-24">
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <Badge className="mb-4 bg-cyan/20 text-cyan border-cyan/30">Features</Badge>
+          <Badge className="mb-4 bg-cyan/30 text-white border-cyan/50">Features</Badge>
           <h2 className="font-heading text-4xl md:text-5xl font-bold mb-4">
             Everything You Need to{' '}
             <span className="gradient-text">Level Up</span>
@@ -355,7 +355,7 @@ export default function Home() {
         <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div>
-              <Badge className="mb-4 bg-violet/20 text-violet border-violet/30">The ROI of Training</Badge>
+              <Badge className="mb-4 bg-violet/30 text-white border-violet/50">The ROI of Training</Badge>
               <h2 className="font-heading text-4xl md:text-5xl font-bold mb-6">
                 Turn Training Into{' '}
                 <span className="gradient-text">Revenue</span>
@@ -387,7 +387,7 @@ export default function Home() {
                 <div className="space-y-6">
                   <div className="flex items-center justify-between">
                     <span className="text-muted-foreground">Your Progress</span>
-                    <Badge className="bg-cyan/20 text-cyan border-cyan/30">Level 7</Badge>
+                    <Badge className="bg-cyan/30 text-white border-cyan/50">Level 7</Badge>
                   </div>
                   
                   <div className="space-y-4">
@@ -421,7 +421,7 @@ export default function Home() {
       {/* Testimonials Section */}
       <section className="relative container mx-auto px-4 py-24">
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <Badge className="mb-4 bg-violet/20 text-violet border-violet/30">Testimonials</Badge>
+          <Badge className="mb-4 bg-violet/30 text-white border-violet/50">Testimonials</Badge>
           <h2 className="font-heading text-4xl md:text-5xl font-bold mb-4">
             Loved by{' '}
             <span className="gradient-text">High-Performing Teams</span>

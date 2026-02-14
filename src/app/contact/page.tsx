@@ -64,7 +64,7 @@ export default function ContactPage() {
       {/* Hero Section */}
       <section className="relative container mx-auto px-4 pt-20 pb-16">
         <div className="max-w-4xl mx-auto text-center">
-          <Badge className="mb-6 bg-violet/20 text-violet border-violet/30">
+          <Badge className="mb-6 bg-violet/30 text-white border-violet/50">
             Contact Us
           </Badge>
           
@@ -194,7 +194,7 @@ export default function ContactPage() {
         <div className="grid lg:grid-cols-2 gap-16 max-w-6xl mx-auto">
           {/* Contact Form */}
           <div>
-            <Badge className="mb-4 bg-cyan/20 text-cyan border-cyan/30">Send a Message</Badge>
+            <Badge className="mb-4 bg-cyan/30 text-white border-cyan/50">Send a Message</Badge>
             <h2 className="font-heading text-3xl font-bold mb-6">
               Get in{' '}
               <span className="gradient-text">Touch</span>
@@ -288,7 +288,7 @@ export default function ContactPage() {
 
           {/* FAQ & Support Info */}
           <div>
-            <Badge className="mb-4 bg-violet/20 text-violet border-violet/30">FAQ</Badge>
+            <Badge className="mb-4 bg-violet/30 text-white border-violet/50">FAQ</Badge>
             <h2 className="font-heading text-3xl font-bold mb-6">
               Common{' '}
               <span className="gradient-text">Questions</span>

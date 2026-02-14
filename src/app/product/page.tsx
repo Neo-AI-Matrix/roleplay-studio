@@ -131,7 +131,7 @@ export default function ProductPage() {
       {/* Hero Section */}
       <section className="relative container mx-auto px-4 pt-20 pb-16">
         <div className="max-w-4xl mx-auto text-center">
-          <Badge className="mb-6 bg-violet/20 text-violet border-violet/30">
+          <Badge className="mb-6 bg-violet/30 text-white border-violet/50">
             Product
           </Badge>
           
@@ -160,7 +160,7 @@ export default function ProductPage() {
       {/* How It Works */}
       <section className="relative container mx-auto px-4 py-16">
         <div className="text-center mb-12">
-          <Badge className="mb-4 bg-cyan/20 text-cyan border-cyan/30">How It Works</Badge>
+          <Badge className="mb-4 bg-cyan/30 text-white border-cyan/50">How It Works</Badge>
           <h2 className="font-heading text-4xl font-bold">
             Four Steps to{' '}
             <span className="gradient-text">Better Performance</span>
@@ -189,7 +189,7 @@ export default function ProductPage() {
       <section id="pricing" className="relative bg-navy-light/50 py-24">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <Badge className="mb-4 bg-cyan/20 text-cyan border-cyan/30">Pricing</Badge>
+            <Badge className="mb-4 bg-cyan/30 text-white border-cyan/50">Pricing</Badge>
             <h2 className="font-heading text-4xl font-bold mb-4">
               Simple, Transparent{' '}
               <span className="gradient-text">Pricing</span>
@@ -276,7 +276,7 @@ export default function ProductPage() {
       <section id="scenarios" className="relative bg-navy-light/50 py-24">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <Badge className="mb-4 bg-violet/20 text-violet border-violet/30">Scenarios</Badge>
+            <Badge className="mb-4 bg-violet/30 text-white border-violet/50">Scenarios</Badge>
             <h2 className="font-heading text-4xl font-bold mb-4">
               Pre-Built Scenarios for{' '}
               <span className="gradient-text">Every Situation</span>
@@ -469,7 +469,7 @@ export default function ProductPage() {
       <section className="relative container mx-auto px-4 py-24">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           <div>
-            <Badge className="mb-4 bg-violet/20 text-violet border-violet/30">AI Coaching</Badge>
+            <Badge className="mb-4 bg-violet/30 text-white border-violet/50">AI Coaching</Badge>
             <h2 className="font-heading text-4xl font-bold mb-6">
               Instant Feedback That{' '}
               <span className="gradient-text">Actually Helps</span>
@@ -517,7 +517,7 @@ export default function ProductPage() {
           <div className="glass-card p-8 glow-violet">
             <div className="flex items-center justify-between mb-6">
               <h3 className="font-heading text-lg font-semibold text-white">Session Feedback</h3>
-              <Badge className="bg-cyan/20 text-cyan border-cyan/30">Score: 87/100</Badge>
+              <Badge className="bg-cyan/30 text-white border-cyan/50">Score: 87/100</Badge>
             </div>
 
             <div className="space-y-4 mb-6">

@@ -184,7 +184,7 @@ export default function CookiePolicyPage() {
         <div className="max-w-4xl mx-auto">
           {/* Header */}
           <div className="text-center mb-12">
-            <Badge className="mb-6 bg-violet/20 text-violet border-violet/30">
+            <Badge className="mb-6 bg-violet/30 text-white border-violet/50">
               <Cookie className="w-3 h-3 mr-1" />
               Legal
             </Badge>
