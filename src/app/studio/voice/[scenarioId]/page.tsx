@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { useParams, useRouter } from 'next/navigation';
+import Image from 'next/image';
 import { getScenario } from '@/lib/scenarios';
 import { 
   saveSession, 
@@ -254,9 +255,17 @@ export default function VoiceSessionPage() {
           
           <div className="max-w-2xl mx-auto text-center">
             <div className="bg-navy-light border border-white/10 rounded-2xl p-8 mb-8">
-              <div className="w-20 h-20 bg-gradient-to-br from-violet to-cyan rounded-full flex items-center justify-center mx-auto mb-6 animate-pulse">
-                <Mic className="w-10 h-10 text-white" />
+              {/* Persona Avatar */}
+              <div className="w-24 h-24 rounded-full overflow-hidden ring-4 ring-violet/50 mx-auto mb-4">
+                <Image 
+                  src={scenario.persona.avatar} 
+                  alt={scenario.persona.name}
+                  width={96}
+                  height={96}
+                  className="w-full h-full object-cover"
+                />
               </div>
+              <p className="text-gray-400 text-sm mb-6">You&apos;ll be speaking with <span className="text-white font-medium">{scenario.persona.name}</span></p>
               
               <h1 className="text-3xl font-bold text-white mb-2">Voice Training Session</h1>
               <h2 className="text-xl text-electric-blue mb-4">{scenario.title}</h2>
@@ -531,34 +540,51 @@ export default function VoiceSessionPage() {
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col items-center justify-center p-8">
-        {/* Status Visualization */}
+        {/* Status Visualization with Avatar */}
         <div className="relative mb-8">
-          <div className={`w-32 h-32 rounded-full flex items-center justify-center transition-all duration-300 ${
+          <div className={`w-32 h-32 rounded-full overflow-hidden transition-all duration-300 ${
             agentMode === 'speaking' 
-              ? 'bg-gradient-to-br from-violet to-cyan animate-pulse scale-110' 
-              : 'bg-navy-light border-2 border-white/20'
+              ? 'ring-4 ring-violet animate-pulse scale-110' 
+              : 'ring-2 ring-white/20'
           }`}>
-            {status === 'connecting' ? (
-              <Loader2 className="w-12 h-12 text-white animate-spin" />
-            ) : agentMode === 'speaking' ? (
-              <Volume2 className="w-12 h-12 text-white" />
-            ) : (
-              <Mic className="w-12 h-12 text-white" />
-            )}
+            <Image 
+              src={scenario.persona.avatar} 
+              alt={scenario.persona.name}
+              width={128}
+              height={128}
+              className="w-full h-full object-cover"
+            />
           </div>
+          
+          {/* Status overlay */}
+          {status === 'connecting' && (
+            <div className="absolute inset-0 rounded-full bg-navy/80 flex items-center justify-center">
+              <Loader2 className="w-12 h-12 text-white animate-spin" />
+            </div>
+          )}
+          
+          {/* Speaking indicator */}
+          {status === 'connected' && agentMode === 'speaking' && (
+            <div className="absolute -bottom-1 -right-1 w-8 h-8 bg-violet rounded-full flex items-center justify-center">
+              <Volume2 className="w-4 h-4 text-white" />
+            </div>
+          )}
           
           {/* Listening indicator rings */}
           {status === 'connected' && agentMode === 'listening' && (
             <>
               <div className="absolute inset-0 rounded-full border-2 border-electric-blue/30 animate-ping" />
               <div className="absolute inset-[-8px] rounded-full border border-electric-blue/20 animate-pulse" />
+              <div className="absolute -bottom-1 -right-1 w-8 h-8 bg-electric-blue rounded-full flex items-center justify-center">
+                <Mic className="w-4 h-4 text-white" />
+              </div>
             </>
           )}
         </div>
 
         <p className="text-xl text-white mb-2">
           {status === 'connecting' && 'Connecting...'}
-          {status === 'connected' && agentMode === 'speaking' && 'Margaret is speaking...'}
+          {status === 'connected' && agentMode === 'speaking' && `${scenario.persona.name} is speaking...`}
           {status === 'connected' && agentMode === 'listening' && 'Listening to you...'}
           {status === 'disconnected' && 'Session ended'}
         </p>

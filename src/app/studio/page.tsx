@@ -11,6 +11,7 @@ import {
   Users
 } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import { getAllScenarios } from "@/lib/scenarios";
 import { StudioStats } from "./StudioStats";
 
@@ -73,6 +74,8 @@ export default async function StudioPage() {
                   duration={scenario.duration}
                   category={scenario.category === 'sales' ? 'Sales' : 'Support'}
                   hasVoice={!!scenario.elevenLabsAgentId}
+                  personaName={scenario.persona.name}
+                  personaAvatar={scenario.persona.avatar}
                 />
               ))}
             </div>
@@ -136,7 +139,7 @@ export default async function StudioPage() {
   );
 }
 
-function ScenarioCard({ id, title, description, difficulty, duration, category, hasVoice }: {
+function ScenarioCard({ id, title, description, difficulty, duration, category, hasVoice, personaName, personaAvatar }: {
   id: string;
   title: string;
   description: string;
@@ -144,6 +147,8 @@ function ScenarioCard({ id, title, description, difficulty, duration, category, 
   duration: string;
   category: string;
   hasVoice?: boolean;
+  personaName: string;
+  personaAvatar: string;
 }) {
   const difficultyColors = {
     Beginner: "bg-green-500/20 text-green-400",
@@ -153,47 +158,66 @@ function ScenarioCard({ id, title, description, difficulty, duration, category, 
   
   return (
     <div className="bg-navy-light border border-white/10 rounded-xl p-6 hover:border-electric-blue/50 transition-colors group">
-      <div className="flex items-start justify-between mb-3">
-        <div>
-          <h3 className="text-lg font-semibold text-white group-hover:text-electric-blue transition-colors">
-            {title}
-          </h3>
-          <p className="text-gray-400 text-sm mt-1">{description}</p>
+      <div className="flex items-start gap-4">
+        {/* Persona Avatar */}
+        <div className="flex-shrink-0">
+          <div className="w-16 h-16 rounded-full overflow-hidden ring-2 ring-white/20 group-hover:ring-electric-blue/50 transition-all">
+            <Image 
+              src={personaAvatar} 
+              alt={personaName}
+              width={64}
+              height={64}
+              className="w-full h-full object-cover"
+            />
+          </div>
+          <p className="text-xs text-gray-500 text-center mt-1 truncate w-16">{personaName.split(' ')[0]}</p>
         </div>
-        <div className="flex items-center gap-2">
-          {hasVoice && (
-            <span className="px-2 py-1 bg-violet/20 text-violet text-xs rounded-full">
-              🎙️ Voice
+        
+        {/* Content */}
+        <div className="flex-1 min-w-0">
+          <div className="flex items-start justify-between mb-2">
+            <div>
+              <h3 className="text-lg font-semibold text-white group-hover:text-electric-blue transition-colors">
+                {title}
+              </h3>
+              <p className="text-gray-400 text-sm mt-1">{description}</p>
+            </div>
+            <div className="flex items-center gap-2 flex-shrink-0 ml-2">
+              {hasVoice && (
+                <span className="px-2 py-1 bg-violet/20 text-violet text-xs rounded-full">
+                  🎙️ Voice
+                </span>
+              )}
+              <span className="px-2 py-1 bg-white/10 text-gray-300 text-xs rounded-full">
+                {category}
+              </span>
+            </div>
+          </div>
+          <div className="flex items-center gap-4 mt-4">
+            <span className={`px-2 py-1 text-xs rounded-full ${difficultyColors[difficulty as keyof typeof difficultyColors]}`}>
+              {difficulty}
             </span>
-          )}
-          <span className="px-2 py-1 bg-white/10 text-gray-300 text-xs rounded-full">
-            {category}
-          </span>
-        </div>
-      </div>
-      <div className="flex items-center gap-4 mt-4">
-        <span className={`px-2 py-1 text-xs rounded-full ${difficultyColors[difficulty as keyof typeof difficultyColors]}`}>
-          {difficulty}
-        </span>
-        <span className="text-gray-500 text-sm flex items-center gap-1">
-          <Clock className="w-4 h-4" />
-          {duration}
-        </span>
-        <div className="ml-auto flex items-center gap-2">
-          <Link 
-            href={`/studio/session/${id}`}
-            className="px-4 py-2 bg-white/10 hover:bg-white/20 text-white text-sm font-medium rounded-lg transition-colors"
-          >
-            💬 Text
-          </Link>
-          {hasVoice && (
-            <Link 
-              href={`/studio/voice/${id}`}
-              className="px-4 py-2 bg-gradient-to-r from-violet to-cyan hover:opacity-90 text-white text-sm font-medium rounded-lg transition-colors"
-            >
-              🎙️ Voice
-            </Link>
-          )}
+            <span className="text-gray-500 text-sm flex items-center gap-1">
+              <Clock className="w-4 h-4" />
+              {duration}
+            </span>
+            <div className="ml-auto flex items-center gap-2">
+              <Link 
+                href={`/studio/session/${id}`}
+                className="px-4 py-2 bg-white/10 hover:bg-white/20 text-white text-sm font-medium rounded-lg transition-colors"
+              >
+                💬 Text
+              </Link>
+              {hasVoice && (
+                <Link 
+                  href={`/studio/voice/${id}`}
+                  className="px-4 py-2 bg-gradient-to-r from-violet to-cyan hover:opacity-90 text-white text-sm font-medium rounded-lg transition-colors"
+                >
+                  🎙️ Voice
+                </Link>
+              )}
+            </div>
+          </div>
         </div>
       </div>
     </div>

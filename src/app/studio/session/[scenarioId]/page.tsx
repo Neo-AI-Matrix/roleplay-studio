@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
+import Image from 'next/image';
 import { getScenario } from '@/lib/scenarios';
 import { 
   Send, 
@@ -270,9 +271,17 @@ export default function SessionPage() {
           
           <div className="max-w-2xl mx-auto text-center">
             <div className="bg-navy-light border border-white/10 rounded-2xl p-8 mb-8">
-              <div className="w-16 h-16 bg-red-500/20 rounded-full flex items-center justify-center mx-auto mb-6">
-                <AlertCircle className="w-8 h-8 text-red-400" />
+              {/* Persona Avatar */}
+              <div className="w-24 h-24 rounded-full overflow-hidden ring-4 ring-electric-blue/50 mx-auto mb-4">
+                <Image 
+                  src={scenario.persona.avatar} 
+                  alt={scenario.persona.name}
+                  width={96}
+                  height={96}
+                  className="w-full h-full object-cover"
+                />
               </div>
+              <p className="text-gray-400 text-sm mb-6">You&apos;ll be chatting with <span className="text-white font-medium">{scenario.persona.name}</span></p>
               
               <h1 className="text-3xl font-bold text-white mb-4">{scenario.title}</h1>
               <p className="text-gray-400 mb-6">{scenario.description}</p>

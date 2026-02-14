@@ -12,6 +12,10 @@ export interface Scenario {
   difficulty: 'Beginner' | 'Intermediate' | 'Advanced';
   duration: string;
   briefing: ScenarioBriefing;  // Structured context for the trainee
+  persona: {
+    name: string;
+    avatar: string;  // Path to avatar image in /public/avatars/
+  };
   systemPrompt: string;
   openingLine: string;
   evaluationCriteria: string[];
@@ -32,6 +36,10 @@ export const scenarios: Record<string, Scenario> = {
       background: 'Margaret Chen has been a customer for 3 years. She\'s calling the support line for the third time this week about a recurring account lockout issue. Previous agents promised follow-ups that never happened.',
       issue: 'Her online banking account keeps getting locked every 48 hours, causing her to miss an important payment. She\'s had to reset her password 3 times and feels ignored.',
       goal: 'De-escalate the situation, take ownership of the problem, and provide a concrete resolution with clear next steps. Prevent customer churn by rebuilding trust.'
+    },
+    persona: {
+      name: 'Margaret Chen',
+      avatar: '/avatars/margaret-chen.png'
     },
     systemPrompt: `You are an extremely frustrated and angry customer in a training roleplay scenario.
 
@@ -99,6 +107,10 @@ When the trainee says "END SESSION" or similar, break character and provide:
       background: 'David Morrison is VP of Operations at TechFlow Solutions, a mid-sized company with 500 employees. He requested a demo after seeing your product online but hasn\'t committed to any solution yet.',
       issue: 'His company is growing fast and current systems are showing strain. He\'s exploring options but is protective of his time and skeptical of sales pitches.',
       goal: 'Conduct effective discovery by asking open-ended questions to uncover pain points, qualify the opportunity, build rapport, and establish clear next steps for the sales process.'
+    },
+    persona: {
+      name: 'David Morrison',
+      avatar: '/avatars/david-morrison.png'
     },
     systemPrompt: `You are a VP of Operations at a mid-sized company exploring new solutions.
 
