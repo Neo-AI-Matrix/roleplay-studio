@@ -15,7 +15,10 @@ import {
   Loader2,
   Star,
   CheckCircle,
-  AlertCircle
+  AlertCircle,
+  FileText,
+  AlertTriangle,
+  Target
 } from 'lucide-react';
 
 interface Message {
@@ -281,17 +284,45 @@ export default function SessionPage() {
                 <span>{scenario.duration}</span>
               </div>
               
-              <div className="bg-navy/50 rounded-xl p-6 text-left mb-8">
-                <h3 className="text-white font-semibold mb-3">Scenario Brief:</h3>
-                <p className="text-gray-400 text-sm leading-relaxed">
-                  A customer named <strong className="text-white">Margaret Chen</strong> has called multiple times 
-                  about her account being repeatedly locked. She's frustrated, has missed payments, and is 
-                  considering switching banks. Your goal is to de-escalate the situation and find a resolution.
-                </p>
+              {/* Scenario Briefing */}
+              <div className="bg-navy/50 rounded-xl p-6 text-left mb-8 border border-white/5">
+                <h3 className="text-white font-semibold mb-4 text-lg">📋 Scenario Briefing</h3>
+                
+                <div className="space-y-4">
+                  <div className="flex gap-3">
+                    <div className="flex-shrink-0 w-8 h-8 bg-electric-blue/20 rounded-lg flex items-center justify-center">
+                      <FileText className="w-4 h-4 text-electric-blue" />
+                    </div>
+                    <div>
+                      <h4 className="text-electric-blue font-medium text-sm mb-1">Background</h4>
+                      <p className="text-gray-400 text-sm leading-relaxed">{scenario.briefing.background}</p>
+                    </div>
+                  </div>
+
+                  <div className="flex gap-3">
+                    <div className="flex-shrink-0 w-8 h-8 bg-red-500/20 rounded-lg flex items-center justify-center">
+                      <AlertTriangle className="w-4 h-4 text-red-400" />
+                    </div>
+                    <div>
+                      <h4 className="text-red-400 font-medium text-sm mb-1">The Issue</h4>
+                      <p className="text-gray-400 text-sm leading-relaxed">{scenario.briefing.issue}</p>
+                    </div>
+                  </div>
+
+                  <div className="flex gap-3">
+                    <div className="flex-shrink-0 w-8 h-8 bg-green-500/20 rounded-lg flex items-center justify-center">
+                      <Target className="w-4 h-4 text-green-400" />
+                    </div>
+                    <div>
+                      <h4 className="text-green-400 font-medium text-sm mb-1">Your Goal</h4>
+                      <p className="text-gray-400 text-sm leading-relaxed">{scenario.briefing.goal}</p>
+                    </div>
+                  </div>
+                </div>
               </div>
               
               <div className="bg-navy/50 rounded-xl p-6 text-left mb-8">
-                <h3 className="text-white font-semibold mb-3">You'll be evaluated on:</h3>
+                <h3 className="text-white font-semibold mb-3">You&apos;ll be evaluated on:</h3>
                 <ul className="grid grid-cols-2 gap-2">
                   {scenario.evaluationCriteria.map((criteria, i) => (
                     <li key={i} className="flex items-center gap-2 text-gray-400 text-sm">

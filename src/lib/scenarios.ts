@@ -1,3 +1,9 @@
+export interface ScenarioBriefing {
+  background: string;  // Who, what, when - sets the scene
+  issue: string;       // What is the customer's problem
+  goal: string;        // What the trainee should accomplish
+}
+
 export interface Scenario {
   id: string;
   title: string;
@@ -5,6 +11,7 @@ export interface Scenario {
   category: 'sales' | 'support';
   difficulty: 'Beginner' | 'Intermediate' | 'Advanced';
   duration: string;
+  briefing: ScenarioBriefing;  // Structured context for the trainee
   systemPrompt: string;
   openingLine: string;
   evaluationCriteria: string[];
@@ -21,6 +28,11 @@ export const scenarios: Record<string, Scenario> = {
     difficulty: 'Intermediate',
     duration: '10-15 min',
     elevenLabsAgentId: 'agent_3901khdf29g6ej0th4936tv0v5kp',
+    briefing: {
+      background: 'Margaret Chen has been a customer for 3 years. She\'s calling the support line for the third time this week about a recurring account lockout issue. Previous agents promised follow-ups that never happened.',
+      issue: 'Her online banking account keeps getting locked every 48 hours, causing her to miss an important payment. She\'s had to reset her password 3 times and feels ignored.',
+      goal: 'De-escalate the situation, take ownership of the problem, and provide a concrete resolution with clear next steps. Prevent customer churn by rebuilding trust.'
+    },
     systemPrompt: `You are an extremely frustrated and angry customer in a training roleplay scenario.
 
 SCENARIO BACKGROUND:
@@ -83,6 +95,11 @@ When the trainee says "END SESSION" or similar, break character and provide:
     category: 'sales',
     difficulty: 'Beginner',
     duration: '10-15 min',
+    briefing: {
+      background: 'David Morrison is VP of Operations at TechFlow Solutions, a mid-sized company with 500 employees. He requested a demo after seeing your product online but hasn\'t committed to any solution yet.',
+      issue: 'His company is growing fast and current systems are showing strain. He\'s exploring options but is protective of his time and skeptical of sales pitches.',
+      goal: 'Conduct effective discovery by asking open-ended questions to uncover pain points, qualify the opportunity, build rapport, and establish clear next steps for the sales process.'
+    },
     systemPrompt: `You are a VP of Operations at a mid-sized company exploring new solutions.
 
 SCENARIO BACKGROUND:
