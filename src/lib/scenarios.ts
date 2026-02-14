@@ -8,7 +8,7 @@ export interface Scenario {
   id: string;
   title: string;
   description: string;
-  category: 'sales' | 'support';
+  category: 'sales' | 'support' | 'hr';
   difficulty: 'Beginner' | 'Intermediate' | 'Advanced';
   duration: string;
   briefing: ScenarioBriefing;  // Structured context for the trainee
@@ -745,6 +745,132 @@ When the trainee says "END SESSION", break character and provide:
       'Demonstrated understanding of startup challenges',
       'Offered roadmap for growing with them',
       'Aligned on mutual success metrics'
+    ]
+  },
+
+  // ============ HR TRAINING SCENARIOS ============
+
+  'asking-for-raise': {
+    id: 'asking-for-raise',
+    title: 'HR - Asking for a Raise',
+    description: 'Practice negotiating a salary increase with a demanding, data-driven manager who doesn\'t give raises easily.',
+    category: 'hr',
+    difficulty: 'Intermediate',
+    duration: '10-15 min',
+    elevenLabsAgentId: 'agent_4601khf0r5jhfhyrq4k73fapnw8v',
+    briefing: {
+      background: 'Karen Mitchell is VP of Engineering who manages a team of 40. She\'s known for being tough on budget and skeptical of raise requests.',
+      issue: 'You believe you deserve a raise based on your contributions, but she\'s heard every pitch before and doesn\'t respond to emotional appeals.',
+      goal: 'Present a compelling, data-driven case for your raise. Come prepared with specific accomplishments, market data, and a clear ask.'
+    },
+    persona: {
+      name: 'Karen Mitchell',
+      avatar: '/avatars/karen-mitchell.png'
+    },
+    systemPrompt: `You are Karen Mitchell, a demanding VP who doesn't give raises easily.`,
+    openingLine: "Come in, have a seat. I got your meeting request about compensation. I have 15 minutes before my next call. What's on your mind?",
+    evaluationCriteria: [
+      'Came prepared with specific accomplishments',
+      'Used data and market research',
+      'Quantified impact and contributions',
+      'Made a clear, specific ask',
+      'Handled pushback professionally',
+      'Avoided emotional appeals',
+      'Demonstrated confidence without arrogance',
+      'Had a backup plan if answer was no'
+    ]
+  },
+
+  'underperforming-employee': {
+    id: 'underperforming-employee',
+    title: 'HR - Managing Underperformance',
+    description: 'As a manager, have a difficult conversation with an employee whose performance has declined over the past 3 months.',
+    category: 'hr',
+    difficulty: 'Intermediate',
+    duration: '10-15 min',
+    elevenLabsAgentId: 'agent_0801khf0r79hed782pbpvxtw72d6',
+    briefing: {
+      background: 'Jason Peters is a developer who performed well for 18 months but has been missing deadlines and producing poor quality work for 3 months.',
+      issue: 'He\'s defensive about feedback and makes excuses. Unknown to you, he\'s going through a difficult divorce but hasn\'t shared this.',
+      goal: 'Address the performance issues directly while showing empathy. Set clear expectations and create a path forward without being harsh or lenient.'
+    },
+    persona: {
+      name: 'Jason Peters',
+      avatar: '/avatars/jason-peters.png'
+    },
+    systemPrompt: `You are Jason Peters, an underperforming employee who is defensive but dealing with personal issues.`,
+    openingLine: "Hey... you wanted to see me? Look, I know things haven't been perfect lately, but I've been really busy and—",
+    evaluationCriteria: [
+      'Addressed issues directly with specific examples',
+      'Balanced accountability with empathy',
+      'Asked about underlying causes',
+      'Listened actively without interrupting',
+      'Set clear expectations and timeline',
+      'Created a concrete improvement plan',
+      'Offered support and resources',
+      'Maintained dignity throughout'
+    ]
+  },
+
+  'difficult-coworker': {
+    id: 'difficult-coworker',
+    title: 'HR - Difficult Coworker Conflict',
+    description: 'Address ongoing issues with a passive-aggressive colleague who takes credit for your work and undermines you subtly.',
+    category: 'hr',
+    difficulty: 'Advanced',
+    duration: '12-18 min',
+    elevenLabsAgentId: 'agent_9701khf0r91cebwacg766ev30zh8',
+    briefing: {
+      background: 'Steve Collins is a senior account manager who\'s been at the company 8 years. He\'s territorial, takes credit for others\' work, and is passive-aggressive.',
+      issue: 'He denies wrongdoing, deflects blame, and plays the victim when confronted. He\'s not overtly hostile, which makes him harder to address.',
+      goal: 'Use conflict resolution techniques to address specific behaviors, find common ground, and establish better working boundaries.'
+    },
+    persona: {
+      name: 'Steve Collins',
+      avatar: '/avatars/steve-collins.png'
+    },
+    systemPrompt: `You are Steve Collins, a passive-aggressive coworker who is territorial and deflects blame.`,
+    openingLine: "Oh, hey. Yeah, I got your message. Look, I'm not sure what this is about — I thought we were doing fine? But sure, what's up?",
+    evaluationCriteria: [
+      'Used "I" statements instead of accusations',
+      'Gave specific examples of behavior',
+      'Stayed calm when met with deflection',
+      'Acknowledged their perspective',
+      'Focused on mutual goals and outcomes',
+      'Did not take the bait on passive-aggression',
+      'Proposed concrete solutions',
+      'Set clear boundaries going forward'
+    ]
+  },
+
+  'termination-conversation': {
+    id: 'termination-conversation',
+    title: 'HR - Letting Someone Go',
+    description: 'Deliver the difficult news of a termination to a good employee whose position is being eliminated due to restructuring.',
+    category: 'hr',
+    difficulty: 'Advanced',
+    duration: '15-20 min',
+    elevenLabsAgentId: 'agent_7901khf0ratsfa6t0ey04gzt0dhp',
+    briefing: {
+      background: 'Lisa Chen is a marketing manager who\'s been with the company 4 years with good reviews. Her position is being eliminated due to restructuring.',
+      issue: 'She has no idea this is a termination meeting. She has a mortgage and young child. This is not about her performance.',
+      goal: 'Deliver the news with clarity and compassion. Be direct but humane. Address practical concerns about severance, insurance, and references.'
+    },
+    persona: {
+      name: 'Lisa Chen',
+      avatar: '/avatars/lisa-chen.png'
+    },
+    systemPrompt: `You are Lisa Chen, about to be let go and completely blindsided by the news.`,
+    openingLine: "Hi! Thanks for making time to meet. I wanted to talk to you about the new campaign timeline — I have some ideas I think you'll like. What did you want to discuss?",
+    evaluationCriteria: [
+      'Delivered news clearly and directly',
+      'Showed genuine empathy and compassion',
+      'Explained the reason honestly',
+      'Did not blame or make it personal',
+      'Addressed practical concerns (severance, insurance)',
+      'Gave time to process emotions',
+      'Offered support (references, job search help)',
+      'Maintained dignity throughout'
     ]
   }
 };

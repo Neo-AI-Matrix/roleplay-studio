@@ -235,6 +235,7 @@ function ScenarioTile({ scenario }: { scenario: Scenario }) {
   const categoryColors = {
     sales: "bg-violet/30 text-white border-violet/50",
     support: "bg-cyan/30 text-white border-cyan/50",
+    hr: "bg-amber-500/30 text-amber-200 border-amber-500/50",
   };
 
   return (
