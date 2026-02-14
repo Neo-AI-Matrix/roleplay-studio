@@ -37,10 +37,10 @@ const values = [
 
 const team = [
   {
-    name: 'Alex Chen',
-    role: 'CEO & Co-Founder',
-    bio: 'Former VP of Sales at SalesForce. 15+ years building high-performance sales teams.',
-    image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&h=300&fit=crop&crop=face',
+    name: 'Jessica Martin',
+    role: 'CEO & Founder',
+    bio: 'Former VP of Digital Experience at AT&T. 30+ years building enterprise digital teams.',
+    image: '/avatars/jessica-martin.png',
   },
   {
     name: 'Sarah Kim',
