@@ -8,6 +8,8 @@ export interface Scenario {
   systemPrompt: string;
   openingLine: string;
   evaluationCriteria: string[];
+  // ElevenLabs Conversational AI Agent ID (created in ElevenLabs dashboard)
+  elevenLabsAgentId?: string;
 }
 
 export const scenarios: Record<string, Scenario> = {

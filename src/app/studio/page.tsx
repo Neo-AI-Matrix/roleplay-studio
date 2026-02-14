@@ -171,13 +171,14 @@ function StatCard({ icon, label, value, trend }: {
   );
 }
 
-function ScenarioCard({ id, title, description, difficulty, duration, category }: {
+function ScenarioCard({ id, title, description, difficulty, duration, category, hasVoice }: {
   id: string;
   title: string;
   description: string;
   difficulty: string;
   duration: string;
   category: string;
+  hasVoice?: boolean;
 }) {
   const difficultyColors = {
     Beginner: "bg-green-500/20 text-green-400",
@@ -206,12 +207,20 @@ function ScenarioCard({ id, title, description, difficulty, duration, category }
           <Clock className="w-4 h-4" />
           {duration}
         </span>
-        <Link 
-          href={`/studio/session/${id}`}
-          className="ml-auto px-4 py-2 bg-electric-blue/20 hover:bg-electric-blue text-electric-blue hover:text-white text-sm font-medium rounded-lg transition-colors"
-        >
-          Start Session
-        </Link>
+        <div className="ml-auto flex items-center gap-2">
+          <Link 
+            href={`/studio/session/${id}`}
+            className="px-4 py-2 bg-white/10 hover:bg-white/20 text-white text-sm font-medium rounded-lg transition-colors"
+          >
+            💬 Text
+          </Link>
+          <Link 
+            href={`/studio/voice/${id}`}
+            className="px-4 py-2 bg-gradient-to-r from-violet to-cyan hover:opacity-90 text-white text-sm font-medium rounded-lg transition-colors"
+          >
+            🎙️ Voice
+          </Link>
+        </div>
       </div>
     </div>
   );
