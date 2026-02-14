@@ -612,138 +612,145 @@ export default function VoiceSessionPage() {
         </div>
       )}
 
-      {/* Main Content */}
-      <div className="flex-1 flex flex-col items-center justify-center p-8">
-        {/* Status Visualization with Avatar */}
-        <div className="relative mb-8">
-          <div className={`w-32 h-32 rounded-full overflow-hidden transition-all duration-300 ${
-            agentMode === 'speaking' 
-              ? 'ring-4 ring-violet animate-pulse scale-110' 
-              : 'ring-2 ring-white/20'
-          }`}>
-            <Image 
-              src={scenario.persona.avatar} 
-              alt={scenario.persona.name}
-              width={128}
-              height={128}
-              className="w-full h-full object-cover"
-            />
-          </div>
+      {/* Main Content - Side by Side Layout */}
+      <div className="flex-1 container mx-auto px-4 py-6 overflow-hidden">
+        <div className="h-full grid grid-cols-1 lg:grid-cols-2 gap-6">
           
-          {/* Status overlay */}
-          {status === 'connecting' && (
-            <div className="absolute inset-0 rounded-full bg-navy/80 flex items-center justify-center">
-              <Loader2 className="w-12 h-12 text-white animate-spin" />
-            </div>
-          )}
-          
-          {/* Speaking indicator */}
-          {status === 'connected' && agentMode === 'speaking' && (
-            <div className="absolute -bottom-1 -right-1 w-8 h-8 bg-violet rounded-full flex items-center justify-center">
-              <Volume2 className="w-4 h-4 text-white" />
-            </div>
-          )}
-          
-          {/* Listening indicator rings */}
-          {status === 'connected' && agentMode === 'listening' && (
-            <>
-              <div className="absolute inset-0 rounded-full border-2 border-electric-blue/30 animate-ping" />
-              <div className="absolute inset-[-8px] rounded-full border border-electric-blue/20 animate-pulse" />
-              <div className="absolute -bottom-1 -right-1 w-8 h-8 bg-electric-blue rounded-full flex items-center justify-center">
-                <Mic className="w-4 h-4 text-white" />
+          {/* Left Side - Agent & Controls */}
+          <div className="flex flex-col items-center justify-center">
+            {/* Status Visualization with Avatar */}
+            <div className="relative mb-6">
+              <div className={`w-28 h-28 lg:w-32 lg:h-32 rounded-full overflow-hidden transition-all duration-300 ${
+                agentMode === 'speaking' 
+                  ? 'ring-4 ring-violet animate-pulse scale-110' 
+                  : 'ring-2 ring-white/20'
+              }`}>
+                <Image 
+                  src={scenario.persona.avatar} 
+                  alt={scenario.persona.name}
+                  width={128}
+                  height={128}
+                  className="w-full h-full object-cover"
+                />
               </div>
-            </>
-          )}
-        </div>
-
-        <p className="text-xl text-white mb-2">
-          {status === 'connecting' && 'Connecting...'}
-          {status === 'connected' && agentMode === 'speaking' && `${scenario.persona.name} is speaking...`}
-          {status === 'connected' && agentMode === 'listening' && 'Listening to you...'}
-          {status === 'disconnected' && 'Session ended'}
-        </p>
-        
-        <p className="text-gray-400 text-sm mb-8">
-          {status === 'connected' && `Speak naturally — ${scenario.persona.name.split(' ')[0]} will respond`}
-        </p>
-
-        {error && (
-          <div className="bg-red-500/10 border border-red-500/30 rounded-xl p-4 mb-8 max-w-md">
-            <p className="text-red-400 text-sm flex items-center gap-2">
-              <AlertCircle className="w-5 h-5" />
-              {error}
-            </p>
-          </div>
-        )}
-
-        {/* Controls */}
-        <div className="flex items-center gap-4">
-          <button
-            onClick={toggleMute}
-            disabled={status !== 'connected'}
-            className={`p-4 rounded-full transition-all ${
-              isMuted 
-                ? 'bg-red-500/20 text-red-400 hover:bg-red-500/30' 
-                : 'bg-white/10 text-white hover:bg-white/20'
-            } disabled:opacity-50 disabled:cursor-not-allowed`}
-          >
-            {isMuted ? <MicOff className="w-6 h-6" /> : <Mic className="w-6 h-6" />}
-          </button>
-          
-          <button
-            onClick={status === 'connected' ? endConversation : startConversation}
-            className={`px-8 py-4 rounded-full font-semibold transition-all flex items-center gap-2 ${
-              status === 'connected'
-                ? 'bg-red-500 hover:bg-red-600 text-white'
-                : 'bg-gradient-to-r from-violet to-cyan hover:opacity-90 text-white'
-            }`}
-          >
-            {status === 'connected' ? (
-              <>
-                <PhoneOff className="w-5 h-5" />
-                End Session
-              </>
-            ) : (
-              <>
-                <Phone className="w-5 h-5" />
-                {status === 'connecting' ? 'Connecting...' : 'Reconnect'}
-              </>
-            )}
-          </button>
-        </div>
-      </div>
-
-      {/* Transcript Panel */}
-      <div className="border-t border-white/10 bg-navy-light/50 max-h-64 overflow-y-auto">
-        <div className="container mx-auto px-4 py-4">
-          <h3 className="text-white font-semibold mb-3 text-sm flex items-center justify-between">
-            <span>Live Transcript</span>
-            <span className="text-gray-500 font-normal">{transcript.length} messages</span>
-          </h3>
-          <div className="space-y-2">
-            {transcript.length === 0 ? (
-              <p className="text-gray-500 text-sm italic">Transcript will appear here...</p>
-            ) : (
-              transcript.map((msg, i) => (
-                <div key={i} className={`flex gap-2 ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                  {msg.role === 'agent' && (
-                    <Bot className="w-5 h-5 text-red-400 flex-shrink-0 mt-1" />
-                  )}
-                  <p className={`text-sm rounded-lg px-3 py-2 max-w-[80%] ${
-                    msg.role === 'user' 
-                      ? 'bg-electric-blue/20 text-electric-blue' 
-                      : 'bg-white/10 text-gray-300'
-                  }`}>
-                    {msg.text}
-                  </p>
-                  {msg.role === 'user' && (
-                    <User className="w-5 h-5 text-electric-blue flex-shrink-0 mt-1" />
-                  )}
+              
+              {/* Status overlay */}
+              {status === 'connecting' && (
+                <div className="absolute inset-0 rounded-full bg-navy/80 flex items-center justify-center">
+                  <Loader2 className="w-10 h-10 text-white animate-spin" />
                 </div>
-              ))
+              )}
+              
+              {/* Speaking indicator */}
+              {status === 'connected' && agentMode === 'speaking' && (
+                <div className="absolute -bottom-1 -right-1 w-8 h-8 bg-violet rounded-full flex items-center justify-center">
+                  <Volume2 className="w-4 h-4 text-white" />
+                </div>
+              )}
+              
+              {/* Listening indicator rings */}
+              {status === 'connected' && agentMode === 'listening' && (
+                <>
+                  <div className="absolute inset-0 rounded-full border-2 border-electric-blue/30 animate-ping" />
+                  <div className="absolute inset-[-8px] rounded-full border border-electric-blue/20 animate-pulse" />
+                  <div className="absolute -bottom-1 -right-1 w-8 h-8 bg-electric-blue rounded-full flex items-center justify-center">
+                    <Mic className="w-4 h-4 text-white" />
+                  </div>
+                </>
+              )}
+            </div>
+
+            <p className="text-lg text-white mb-1 text-center">
+              {status === 'connecting' && 'Connecting...'}
+              {status === 'connected' && agentMode === 'speaking' && `${scenario.persona.name} is speaking...`}
+              {status === 'connected' && agentMode === 'listening' && 'Listening to you...'}
+              {status === 'disconnected' && 'Session ended'}
+            </p>
+            
+            <p className="text-gray-400 text-sm mb-6 text-center">
+              {status === 'connected' && `Speak naturally — ${scenario.persona.name.split(' ')[0]} will respond`}
+            </p>
+
+            {error && (
+              <div className="bg-red-500/10 border border-red-500/30 rounded-xl p-3 mb-6 max-w-sm">
+                <p className="text-red-400 text-sm flex items-center gap-2">
+                  <AlertCircle className="w-4 h-4" />
+                  {error}
+                </p>
+              </div>
             )}
-            <div ref={transcriptEndRef} />
+
+            {/* Controls */}
+            <div className="flex items-center gap-3">
+              <button
+                onClick={toggleMute}
+                disabled={status !== 'connected'}
+                className={`p-3 rounded-full transition-all ${
+                  isMuted 
+                    ? 'bg-red-500/20 text-red-400 hover:bg-red-500/30' 
+                    : 'bg-white/10 text-white hover:bg-white/20'
+                } disabled:opacity-50 disabled:cursor-not-allowed`}
+              >
+                {isMuted ? <MicOff className="w-5 h-5" /> : <Mic className="w-5 h-5" />}
+              </button>
+              
+              <button
+                onClick={status === 'connected' ? endConversation : startConversation}
+                className={`px-6 py-3 rounded-full font-semibold transition-all flex items-center gap-2 ${
+                  status === 'connected'
+                    ? 'bg-red-500 hover:bg-red-600 text-white'
+                    : 'bg-gradient-to-r from-violet to-cyan hover:opacity-90 text-white'
+                }`}
+              >
+                {status === 'connected' ? (
+                  <>
+                    <PhoneOff className="w-5 h-5" />
+                    End Session
+                  </>
+                ) : (
+                  <>
+                    <Phone className="w-5 h-5" />
+                    {status === 'connecting' ? 'Connecting...' : 'Reconnect'}
+                  </>
+                )}
+              </button>
+            </div>
           </div>
+
+          {/* Right Side - Transcript */}
+          <div className="bg-navy-light/50 border border-white/10 rounded-xl flex flex-col min-h-0">
+            <div className="px-4 py-3 border-b border-white/10 flex-shrink-0">
+              <h3 className="text-white font-semibold text-sm flex items-center justify-between">
+                <span>Live Transcript</span>
+                <span className="text-gray-500 font-normal">{transcript.length} messages</span>
+              </h3>
+            </div>
+            <div className="flex-1 overflow-y-auto px-4 py-3 space-y-2">
+              {transcript.length === 0 ? (
+                <p className="text-gray-500 text-sm italic">Transcript will appear here...</p>
+              ) : (
+                transcript.map((msg, i) => (
+                  <div key={i} className={`flex gap-2 ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                    {msg.role === 'agent' && (
+                      <Bot className="w-5 h-5 text-red-400 flex-shrink-0 mt-1" />
+                    )}
+                    <p className={`text-sm rounded-lg px-3 py-2 max-w-[85%] ${
+                      msg.role === 'user' 
+                        ? 'bg-electric-blue/20 text-electric-blue' 
+                        : 'bg-white/10 text-gray-300'
+                    }`}>
+                      {msg.text}
+                    </p>
+                    {msg.role === 'user' && (
+                      <User className="w-5 h-5 text-electric-blue flex-shrink-0 mt-1" />
+                    )}
+                  </div>
+                ))
+              )}
+              <div ref={transcriptEndRef} />
+            </div>
+          </div>
+
         </div>
       </div>
     </div>
