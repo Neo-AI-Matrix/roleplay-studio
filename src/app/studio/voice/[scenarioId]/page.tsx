@@ -55,13 +55,16 @@ export default function VoiceSessionPage() {
   const [showBriefing, setShowBriefing] = useState(true);
   
   const conversationRef = useRef<any>(null);
+  const transcriptContainerRef = useRef<HTMLDivElement>(null);
   const transcriptEndRef = useRef<HTMLDivElement>(null);
   const startTimeRef = useRef<Date | null>(null);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Auto-scroll transcript
+  // Auto-scroll transcript within its container only (not the page)
   useEffect(() => {
-    transcriptEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    if (transcriptContainerRef.current && transcriptEndRef.current) {
+      transcriptContainerRef.current.scrollTop = transcriptContainerRef.current.scrollHeight;
+    }
   }, [transcript]);
 
   // Scroll to top when session starts
@@ -725,7 +728,7 @@ export default function VoiceSessionPage() {
                 <span className="text-gray-500 font-normal">{transcript.length} messages</span>
               </h3>
             </div>
-            <div className="flex-1 overflow-y-auto px-4 py-3 space-y-2">
+            <div ref={transcriptContainerRef} className="flex-1 overflow-y-auto px-4 py-3 space-y-2">
               {transcript.length === 0 ? (
                 <p className="text-gray-500 text-sm italic">Transcript will appear here...</p>
               ) : (
