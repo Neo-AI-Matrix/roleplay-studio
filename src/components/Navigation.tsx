@@ -3,7 +3,6 @@
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
-import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Menu, Sparkles } from 'lucide-react';
 
@@ -59,22 +58,25 @@ export function Navigation() {
         {/* CTA Buttons */}
         <div className="hidden md:flex items-center gap-4">
           <SignedOut>
-            <Link href="/sign-in">
-              <Button variant="ghost" className="text-muted-foreground hover:text-white">
-                Sign In
-              </Button>
+            <Link 
+              href="/sign-in"
+              className="px-4 py-2 text-muted-foreground hover:text-white transition-colors font-medium"
+            >
+              Sign In
             </Link>
-            <Link href="/sign-up">
-              <Button className="btn-gradient border-0 text-white font-semibold">
-                Start Free Trial
-              </Button>
+            <Link 
+              href="/sign-up"
+              className="px-4 py-2 btn-gradient rounded-lg text-white font-semibold hover:opacity-90 transition-opacity"
+            >
+              Start Free Trial
             </Link>
           </SignedOut>
           <SignedIn>
-            <Link href="/studio">
-              <Button className="btn-gradient border-0 text-white font-semibold">
-                Go to Studio
-              </Button>
+            <Link 
+              href="/studio"
+              className="px-4 py-2 btn-gradient rounded-lg text-white font-semibold hover:opacity-90 transition-opacity"
+            >
+              Go to Studio
             </Link>
             <UserButton 
               afterSignOutUrl="/"
@@ -91,9 +93,9 @@ export function Navigation() {
         {mounted ? (
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
             <SheetTrigger asChild className="md:hidden">
-              <Button variant="ghost" size="icon">
+              <button className="p-2 text-white">
                 <Menu className="w-6 h-6" />
-              </Button>
+              </button>
             </SheetTrigger>
             <SheetContent side="right" className="bg-navy-light border-violet/20">
               <div className="flex flex-col gap-6 mt-8">
@@ -118,22 +120,28 @@ export function Navigation() {
                 </SignedIn>
                 <div className="flex flex-col gap-3 mt-4">
                   <SignedOut>
-                    <Link href="/sign-in" onClick={() => setIsOpen(false)}>
-                      <Button variant="outline" className="w-full border-violet/30 text-white">
-                        Sign In
-                      </Button>
+                    <Link 
+                      href="/sign-in" 
+                      onClick={() => setIsOpen(false)}
+                      className="w-full text-center px-4 py-3 border border-violet/30 rounded-lg text-white font-medium"
+                    >
+                      Sign In
                     </Link>
-                    <Link href="/sign-up" onClick={() => setIsOpen(false)}>
-                      <Button className="w-full btn-gradient border-0 text-white font-semibold">
-                        Start Free Trial
-                      </Button>
+                    <Link 
+                      href="/sign-up" 
+                      onClick={() => setIsOpen(false)}
+                      className="w-full text-center px-4 py-3 btn-gradient rounded-lg text-white font-semibold"
+                    >
+                      Start Free Trial
                     </Link>
                   </SignedOut>
                   <SignedIn>
-                    <Link href="/studio" onClick={() => setIsOpen(false)}>
-                      <Button className="w-full btn-gradient border-0 text-white font-semibold">
-                        Go to Studio
-                      </Button>
+                    <Link 
+                      href="/studio" 
+                      onClick={() => setIsOpen(false)}
+                      className="w-full text-center px-4 py-3 btn-gradient rounded-lg text-white font-semibold"
+                    >
+                      Go to Studio
                     </Link>
                     <div className="flex justify-center mt-2">
                       <UserButton 
@@ -151,9 +159,9 @@ export function Navigation() {
             </SheetContent>
           </Sheet>
         ) : (
-          <Button variant="ghost" size="icon" className="md:hidden">
+          <button className="md:hidden p-2 text-white">
             <Menu className="w-6 h-6" />
-          </Button>
+          </button>
         )}
       </nav>
     </header>
