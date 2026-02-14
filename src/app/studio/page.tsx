@@ -8,7 +8,7 @@ import {
 import { getAllScenarios } from "@/lib/scenarios";
 import { StudioStats } from "./StudioStats";
 import { ScenarioGrid } from "./ScenarioGrid";
-import { TrialCountdownDemo } from "./TrialCountdown";
+import { TrialCountdown } from "./TrialCountdown";
 
 export default async function StudioPage() {
   const user = await currentUser();
@@ -29,7 +29,7 @@ export default async function StudioPage() {
             <p className="text-gray-400">Ready to sharpen your skills?</p>
           </div>
           <div className="flex items-center gap-4">
-            <TrialCountdownDemo />
+            <TrialCountdown />
             <div className="text-right mr-4 hidden sm:block">
               <p className="text-sm text-gray-400">Signed in as</p>
               <p className="text-white font-medium">{user?.emailAddresses[0]?.emailAddress}</p>
