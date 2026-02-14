@@ -86,21 +86,23 @@ export function Navigation() {
                 Sign Out
               </button>
             ) : (
-              <Link 
-                href="/studio"
-                className="px-4 py-2 btn-gradient rounded-lg text-white font-semibold hover:opacity-90 transition-opacity"
-              >
-                Go to Studio
-              </Link>
+              <>
+                <Link 
+                  href="/studio"
+                  className="px-4 py-2 btn-gradient rounded-lg text-white font-semibold hover:opacity-90 transition-opacity"
+                >
+                  Go to Studio
+                </Link>
+                <UserButton 
+                  afterSignOutUrl="/"
+                  appearance={{
+                    elements: {
+                      avatarBox: "w-9 h-9 ring-2 ring-electric-blue/50"
+                    }
+                  }}
+                />
+              </>
             )}
-            <UserButton 
-              afterSignOutUrl="/"
-              appearance={{
-                elements: {
-                  avatarBox: "w-9 h-9 ring-2 ring-electric-blue/50"
-                }
-              }}
-            />
           </SignedIn>
         </div>
 
@@ -163,24 +165,26 @@ export function Navigation() {
                         Sign Out
                       </button>
                     ) : (
-                      <Link 
-                        href="/studio" 
-                        onClick={() => setIsOpen(false)}
-                        className="w-full text-center px-4 py-3 btn-gradient rounded-lg text-white font-semibold"
-                      >
-                        Go to Studio
-                      </Link>
+                      <>
+                        <Link 
+                          href="/studio" 
+                          onClick={() => setIsOpen(false)}
+                          className="w-full text-center px-4 py-3 btn-gradient rounded-lg text-white font-semibold"
+                        >
+                          Go to Studio
+                        </Link>
+                        <div className="flex justify-center mt-2">
+                          <UserButton 
+                            afterSignOutUrl="/"
+                            appearance={{
+                              elements: {
+                                avatarBox: "w-10 h-10 ring-2 ring-electric-blue/50"
+                              }
+                            }}
+                          />
+                        </div>
+                      </>
                     )}
-                    <div className="flex justify-center mt-2">
-                      <UserButton 
-                        afterSignOutUrl="/"
-                        appearance={{
-                          elements: {
-                            avatarBox: "w-10 h-10 ring-2 ring-electric-blue/50"
-                          }
-                        }}
-                      />
-                    </div>
                   </SignedIn>
                 </div>
               </div>
