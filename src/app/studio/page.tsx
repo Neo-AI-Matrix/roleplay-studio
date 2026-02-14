@@ -24,7 +24,12 @@ export default async function StudioPage() {
       <div className="border-b border-white/10 bg-navy-light/50 backdrop-blur-sm">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-white">Welcome back, {user?.firstName || 'Agent'}!</h1>
+            <div className="flex items-center gap-3 mb-1">
+              <span className="px-3 py-1 bg-gradient-to-r from-violet to-cyan text-white text-sm font-semibold rounded-lg">
+                Studio
+              </span>
+              <h1 className="text-2xl font-bold text-white">Welcome back, {user?.firstName || 'Agent'}!</h1>
+            </div>
             <p className="text-gray-400">Ready to sharpen your skills?</p>
           </div>
           <div className="flex items-center gap-4">

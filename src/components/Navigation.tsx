@@ -2,9 +2,10 @@
 
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
-import { SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
+import { usePathname } from 'next/navigation';
+import { SignedIn, SignedOut, UserButton, useClerk } from '@clerk/nextjs';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { Menu, Sparkles } from 'lucide-react';
+import { Menu, Sparkles, LogOut } from 'lucide-react';
 
 const navItems = [
   { href: '/', label: 'Home' },
@@ -16,6 +17,10 @@ const navItems = [
 export function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const pathname = usePathname();
+  const { signOut } = useClerk();
+  
+  const isInStudio = pathname?.startsWith('/studio');
 
   useEffect(() => {
     setMounted(true);
@@ -72,12 +77,22 @@ export function Navigation() {
             </Link>
           </SignedOut>
           <SignedIn>
-            <Link 
-              href="/studio"
-              className="px-4 py-2 btn-gradient rounded-lg text-white font-semibold hover:opacity-90 transition-opacity"
-            >
-              Go to Studio
-            </Link>
+            {isInStudio ? (
+              <button 
+                onClick={() => signOut({ redirectUrl: '/' })}
+                className="px-4 py-2 flex items-center gap-2 bg-white/10 hover:bg-white/20 rounded-lg text-white font-semibold transition-colors"
+              >
+                <LogOut className="w-4 h-4" />
+                Sign Out
+              </button>
+            ) : (
+              <Link 
+                href="/studio"
+                className="px-4 py-2 btn-gradient rounded-lg text-white font-semibold hover:opacity-90 transition-opacity"
+              >
+                Go to Studio
+              </Link>
+            )}
             <UserButton 
               afterSignOutUrl="/"
               appearance={{
@@ -136,13 +151,26 @@ export function Navigation() {
                     </Link>
                   </SignedOut>
                   <SignedIn>
-                    <Link 
-                      href="/studio" 
-                      onClick={() => setIsOpen(false)}
-                      className="w-full text-center px-4 py-3 btn-gradient rounded-lg text-white font-semibold"
-                    >
-                      Go to Studio
-                    </Link>
+                    {isInStudio ? (
+                      <button 
+                        onClick={() => {
+                          setIsOpen(false);
+                          signOut({ redirectUrl: '/' });
+                        }}
+                        className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-white/10 hover:bg-white/20 rounded-lg text-white font-semibold transition-colors"
+                      >
+                        <LogOut className="w-4 h-4" />
+                        Sign Out
+                      </button>
+                    ) : (
+                      <Link 
+                        href="/studio" 
+                        onClick={() => setIsOpen(false)}
+                        className="w-full text-center px-4 py-3 btn-gradient rounded-lg text-white font-semibold"
+                      >
+                        Go to Studio
+                      </Link>
+                    )}
                     <div className="flex justify-center mt-2">
                       <UserButton 
                         afterSignOutUrl="/"
