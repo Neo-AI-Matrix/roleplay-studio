@@ -50,7 +50,7 @@ const homeFAQs = [
 ];
 
 const stats = [
-  { value: '10,000+', label: 'Active Users' },
+  { value: '25+', label: 'AI Scenarios' },
   { value: '95%', label: 'Success Rate' },
   { value: '2.5x', label: 'Faster Ramp Time' },
   { value: '40%', label: 'Higher Win Rates' },
@@ -165,7 +165,7 @@ export default function Home() {
               <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&h=100&fit=crop&crop=face" className="w-10 h-10 rounded-full border-2 border-navy" alt="User" />
             </div>
             <p className="text-muted-foreground text-sm">
-              <span className="text-cyan font-semibold">10,000+</span> professionals already training
+              <span className="text-cyan font-semibold">Unlimited practice</span> — no awkward peer roleplays
             </p>
           </div>
         </div>
@@ -471,7 +471,7 @@ export default function Home() {
             <span className="gradient-text">Your Team?</span>
           </h2>
           <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Join 10,000+ professionals using Roleplay Studio to sharpen their skills and close more deals.
+            The best performers practice relentlessly. Now you can too — with AI that never judges, always challenges, and helps you get better every session.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/sign-up">

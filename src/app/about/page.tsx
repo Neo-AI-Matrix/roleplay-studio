@@ -14,7 +14,7 @@ import { FAQ } from '@/components/FAQ';
 const aboutFAQs = [
   {
     question: "When was Roleplay Studio founded?",
-    answer: "Roleplay Studio was founded in 2024 by a team of AI researchers and sales training experts who saw an opportunity to democratize elite training through artificial intelligence. We launched our beta program in late 2024 and have grown to over 10,000 users since."
+    answer: "Roleplay Studio was founded in 2024 by a team of AI researchers and sales training experts who saw an opportunity to democratize elite training through artificial intelligence. We launched our platform in 2024 and are growing rapidly as companies discover the power of AI-powered practice."
   },
   {
     question: "Where is your team located?",
@@ -93,7 +93,7 @@ const milestones = [
   { year: '2024', event: 'Launched beta with 50 early adopter companies' },
   { year: '2025', event: 'Reached 5,000 active users across 200+ companies' },
   { year: '2025', event: 'Raised Series A funding to accelerate product development' },
-  { year: '2026', event: '10,000+ users and counting. Expanding into customer support training' },
+  { year: '2026', event: 'Expanded to 5 training categories: Sales, Support, HR, Communication, Leadership' },
 ];
 
 export default function AboutPage() {
@@ -160,8 +160,8 @@ export default function AboutPage() {
 
           <div className="glass-card p-8 glow-cyan">
             <div className="text-center">
-              <div className="text-6xl font-heading font-bold gradient-text mb-4">10,000+</div>
-              <p className="text-xl text-white mb-8">Professionals trained and counting</p>
+              <div className="text-6xl font-heading font-bold gradient-text mb-4">25+</div>
+              <p className="text-xl text-white mb-8">AI scenarios across 5 skill categories</p>
               
               <div className="grid grid-cols-2 gap-6">
                 <div>
@@ -250,8 +250,8 @@ export default function AboutPage() {
           <div className="text-center mb-12">
             <Badge className="mb-4 bg-violet/30 text-white border-violet/50">Our Journey</Badge>
             <h2 className="font-heading text-4xl font-bold">
-              From Idea to{' '}
-              <span className="gradient-text">10,000+ Users</span>
+              Building the{' '}
+              <span className="gradient-text">Future of Training</span>
             </h2>
           </div>
 
