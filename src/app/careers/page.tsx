@@ -480,10 +480,12 @@ export default function CareersPage() {
                       </span>
                     </div>
                   </div>
-                  <Button variant="outline" className="border-violet/30 hover:bg-violet/20 shrink-0">
-                    View Role
-                    <ArrowRight className="ml-2 w-4 h-4" />
-                  </Button>
+                  <a href={`mailto:careers@roleplaystudio.ai?subject=Application: ${job.title}`}>
+                    <Button variant="outline" className="border-violet/30 hover:bg-violet/20 shrink-0">
+                      Apply Now
+                      <ArrowRight className="ml-2 w-4 h-4" />
+                    </Button>
+                  </a>
                 </div>
                 
                 {/* Expandable details */}

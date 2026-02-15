@@ -485,9 +485,11 @@ export default function ProductPage() {
                     </div>
                   ))}
                 </div>
-                <Button className="w-full mt-4 bg-cyan/20 text-cyan hover:bg-cyan/30 border-0">
-                  Browse All Templates →
-                </Button>
+                <Link href="/sign-up">
+                  <Button className="w-full mt-4 bg-cyan/20 text-cyan hover:bg-cyan/30 border-0">
+                    Browse All Templates →
+                  </Button>
+                </Link>
               </div>
             </CardContent>
           </Card>
@@ -550,9 +552,11 @@ export default function ProductPage() {
                     </div>
                   </div>
                 </div>
-                <Button className="w-full mt-4 btn-gradient text-white border-0">
-                  Create AI Agent →
-                </Button>
+                <Link href="/sign-up">
+                  <Button className="w-full mt-4 btn-gradient text-white border-0">
+                    Create AI Agent →
+                  </Button>
+                </Link>
               </div>
             </CardContent>
           </Card>
@@ -688,10 +692,12 @@ export default function ProductPage() {
                 <ArrowRight className="ml-2 w-5 h-5" />
               </Button>
             </Link>
-            <Button size="lg" variant="outline" className="text-lg h-14 px-8 border-violet/30 text-white hover:bg-violet/10">
-              <Play className="mr-2 w-5 h-5" />
-              Watch Demo
-            </Button>
+            <Link href="/contact">
+              <Button size="lg" variant="outline" className="text-lg h-14 px-8 border-violet/30 text-white hover:bg-violet/10">
+                <Play className="mr-2 w-5 h-5" />
+                Request Demo
+              </Button>
+            </Link>
           </div>
         </div>
       </section>

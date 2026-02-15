@@ -143,10 +143,12 @@ export default function Home() {
                 <ArrowRight className="ml-2 w-5 h-5" />
               </Button>
             </Link>
-            <Button size="lg" variant="outline" className="text-lg h-14 px-8 border-violet/30 text-white hover:bg-violet/10">
-              <Play className="mr-2 w-5 h-5" />
-              Watch Demo
-            </Button>
+            <Link href="/product">
+              <Button size="lg" variant="outline" className="text-lg h-14 px-8 border-violet/30 text-white hover:bg-violet/10">
+                <Play className="mr-2 w-5 h-5" />
+                See How It Works
+              </Button>
+            </Link>
           </div>
 
           <p className="text-sm text-muted-foreground">

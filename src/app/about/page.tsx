@@ -241,12 +241,12 @@ export default function AboutPage() {
                 <p className="text-cyan text-sm mb-3">{member.role}</p>
                 <p className="text-muted-foreground text-sm mb-4">{member.bio}</p>
                 <div className="flex justify-center gap-3">
-                  <a href="#" className="text-muted-foreground hover:text-cyan transition-colors">
+                  <span className="text-muted-foreground/50 cursor-default">
                     <Linkedin className="w-4 h-4" />
-                  </a>
-                  <a href="#" className="text-muted-foreground hover:text-cyan transition-colors">
+                  </span>
+                  <span className="text-muted-foreground/50 cursor-default">
                     <Twitter className="w-4 h-4" />
-                  </a>
+                  </span>
                 </div>
               </CardContent>
             </Card>
@@ -303,10 +303,12 @@ export default function AboutPage() {
             We're always looking for passionate people to join our team. Check out our open positions.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" className="btn-gradient text-lg h-14 px-8 border-0 text-white font-semibold">
-              View Open Positions
-              <ArrowRight className="ml-2 w-5 h-5" />
-            </Button>
+            <Link href="/careers">
+              <Button size="lg" className="btn-gradient text-lg h-14 px-8 border-0 text-white font-semibold">
+                View Open Positions
+                <ArrowRight className="ml-2 w-5 h-5" />
+              </Button>
+            </Link>
             <Link href="/contact">
               <Button size="lg" variant="outline" className="text-lg h-14 px-8 border-violet/30 text-white hover:bg-violet/10">
                 Get in Touch

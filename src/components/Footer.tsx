@@ -25,15 +25,15 @@ export function Footer() {
               Practice real-world scenarios and receive instant feedback.
             </p>
             <div className="flex gap-4 mt-6">
-              <a href="#" className="text-muted-foreground hover:text-cyan transition-colors">
+              <span className="text-muted-foreground/40 cursor-default" title="Coming soon">
                 <Twitter className="w-5 h-5" />
-              </a>
-              <a href="#" className="text-muted-foreground hover:text-cyan transition-colors">
+              </span>
+              <span className="text-muted-foreground/40 cursor-default" title="Coming soon">
                 <Linkedin className="w-5 h-5" />
-              </a>
-              <a href="#" className="text-muted-foreground hover:text-cyan transition-colors">
+              </span>
+              <span className="text-muted-foreground/40 cursor-default" title="Coming soon">
                 <Github className="w-5 h-5" />
-              </a>
+              </span>
             </div>
           </div>
 

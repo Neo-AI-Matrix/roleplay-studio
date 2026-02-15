@@ -215,10 +215,12 @@ export default function EnterprisePage() {
                 <ArrowRight className="ml-2 w-5 h-5" />
               </Button>
             </Link>
-            <Button size="lg" variant="outline" className="text-lg h-14 px-8 border-violet/30 text-white hover:bg-violet/10">
-              <Phone className="mr-2 w-5 h-5" />
-              Talk to Sales
-            </Button>
+            <a href="mailto:enterprise@roleplaystudio.com">
+              <Button size="lg" variant="outline" className="text-lg h-14 px-8 border-violet/30 text-white hover:bg-violet/10">
+                <Phone className="mr-2 w-5 h-5" />
+                Talk to Sales
+              </Button>
+            </a>
           </div>
 
           <p className="text-sm text-muted-foreground">
@@ -558,10 +560,12 @@ export default function EnterprisePage() {
                 <ArrowRight className="ml-2 w-5 h-5" />
               </Button>
             </Link>
-            <Button size="lg" variant="outline" className="text-lg h-14 px-8 border-violet/30 text-white hover:bg-violet/10">
-              <MessageSquare className="mr-2 w-5 h-5" />
-              Contact Sales
-            </Button>
+            <a href="mailto:enterprise@roleplaystudio.com">
+              <Button size="lg" variant="outline" className="text-lg h-14 px-8 border-violet/30 text-white hover:bg-violet/10">
+                <MessageSquare className="mr-2 w-5 h-5" />
+                Contact Sales
+              </Button>
+            </a>
           </div>
           <p className="text-sm text-muted-foreground mt-6">
             Or email us directly at <a href="mailto:enterprise@roleplaystudio.com" className="text-cyan hover:underline">enterprise@roleplaystudio.com</a>
