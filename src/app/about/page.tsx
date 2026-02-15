@@ -6,9 +6,7 @@ import {
   Heart, 
   Lightbulb, 
   Users,
-  ArrowRight,
-  Linkedin,
-  Twitter
+  ArrowRight
 } from 'lucide-react';
 import Link from 'next/link';
 import { FAQ } from '@/components/FAQ';
@@ -239,15 +237,7 @@ export default function AboutPage() {
                 />
                 <h3 className="font-heading text-xl font-semibold text-white mb-1">{member.name}</h3>
                 <p className="text-cyan text-sm mb-3">{member.role}</p>
-                <p className="text-muted-foreground text-sm mb-4">{member.bio}</p>
-                <div className="flex justify-center gap-3">
-                  <span className="text-muted-foreground/50 cursor-default">
-                    <Linkedin className="w-4 h-4" />
-                  </span>
-                  <span className="text-muted-foreground/50 cursor-default">
-                    <Twitter className="w-4 h-4" />
-                  </span>
-                </div>
+                <p className="text-muted-foreground text-sm">{member.bio}</p>
               </CardContent>
             </Card>
           ))}

@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Sparkles, Twitter, Linkedin, Github } from 'lucide-react';
+import { Sparkles } from 'lucide-react';
 
 export function Footer() {
   return (
@@ -24,17 +24,6 @@ export function Footer() {
               AI-powered training platform for sales and customer support teams. 
               Practice real-world scenarios and receive instant feedback.
             </p>
-            <div className="flex gap-4 mt-6">
-              <span className="text-muted-foreground/40 cursor-default" title="Coming soon">
-                <Twitter className="w-5 h-5" />
-              </span>
-              <span className="text-muted-foreground/40 cursor-default" title="Coming soon">
-                <Linkedin className="w-5 h-5" />
-              </span>
-              <span className="text-muted-foreground/40 cursor-default" title="Coming soon">
-                <Github className="w-5 h-5" />
-              </span>
-            </div>
           </div>
 
           {/* Product Links */}
