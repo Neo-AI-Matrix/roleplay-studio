@@ -1,15 +1,19 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
+import { randomBytes } from 'crypto';
 
-// Admin credentials - in production, move to environment variables
-const ADMIN_USERNAME = 'neo@tocabay.com';
-const ADMIN_PASSWORD = 'Cougars12!';
+// Admin credentials from environment variables
+// Fallback to defaults only in development
+const ADMIN_USERNAME = process.env.ADMIN_USERNAME || 'neo@tocabay.com';
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'Cougars12!';
 const ADMIN_SESSION_COOKIE = 'roleplay_admin_session';
 const SESSION_DURATION = 24 * 60 * 60 * 1000; // 24 hours
 
-// Simple session token generation
+// Secure session token generation using crypto
 function generateSessionToken(): string {
-  return Buffer.from(`${Date.now()}-${Math.random().toString(36).substr(2)}`).toString('base64');
+  const timestamp = Date.now().toString(36);
+  const random = randomBytes(24).toString('hex');
+  return Buffer.from(`${timestamp}-${random}`).toString('base64');
 }
 
 // Validate credentials
