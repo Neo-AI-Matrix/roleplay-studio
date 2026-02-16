@@ -48,7 +48,6 @@ export default function SessionPage() {
   const [sessionStarted, setSessionStarted] = useState(false);
   const [showBriefing, setShowBriefing] = useState(true);
   
-  const messagesEndRef = useRef<HTMLDivElement>(null);
   const messagesContainerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -60,10 +59,10 @@ export default function SessionPage() {
     }
   }, [sessionStarted]);
 
-  // Auto-scroll transcript within its container
+  // Auto-scroll transcript to top when new messages arrive
   useEffect(() => {
     if (messagesContainerRef.current) {
-      messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
+      messagesContainerRef.current.scrollTop = 0;
     }
   }, [messages]);
 
@@ -517,13 +516,39 @@ export default function SessionPage() {
         </div>
       )}
 
-      {/* Chat Messages - Scrollable transcript */}
+      {/* Chat Messages - Scrollable transcript (newest at top) */}
       <div 
         ref={messagesContainerRef}
         className="flex-1 overflow-y-auto px-4 py-3"
       >
         <div className="container mx-auto max-w-3xl space-y-3">
-          {messages.map((message) => (
+          {/* Loading indicator at top */}
+          {isLoading && (
+            <div className="flex gap-3">
+              <div className="w-8 h-8 rounded-full overflow-hidden ring-2 ring-white/20 flex-shrink-0">
+                <Image 
+                  src={scenario.persona.avatar} 
+                  alt={scenario.persona.name}
+                  width={32}
+                  height={32}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div className="bg-navy-light border border-white/10 rounded-2xl px-4 py-2">
+                <Loader2 className="w-4 h-4 text-gray-400 animate-spin" />
+              </div>
+            </div>
+          )}
+          
+          {isSpeaking && (
+            <div className="flex items-center gap-2 text-gray-500 text-sm">
+              <Volume2 className="w-4 h-4 animate-pulse" />
+              Speaking...
+            </div>
+          )}
+          
+          {/* Messages in reverse order (newest first) */}
+          {[...messages].reverse().map((message) => (
             <div
               key={message.id}
               className={`flex gap-3 ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
@@ -557,32 +582,6 @@ export default function SessionPage() {
               )}
             </div>
           ))}
-          
-          {isLoading && (
-            <div className="flex gap-3">
-              <div className="w-8 h-8 rounded-full overflow-hidden ring-2 ring-white/20 flex-shrink-0">
-                <Image 
-                  src={scenario.persona.avatar} 
-                  alt={scenario.persona.name}
-                  width={32}
-                  height={32}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div className="bg-navy-light border border-white/10 rounded-2xl px-4 py-2">
-                <Loader2 className="w-4 h-4 text-gray-400 animate-spin" />
-              </div>
-            </div>
-          )}
-          
-          {isSpeaking && (
-            <div className="flex items-center gap-2 text-gray-500 text-sm">
-              <Volume2 className="w-4 h-4 animate-pulse" />
-              Speaking...
-            </div>
-          )}
-          
-          <div ref={messagesEndRef} />
         </div>
       </div>
 
