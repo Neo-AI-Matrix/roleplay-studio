@@ -909,6 +909,7 @@ When the trainee says "END SESSION", break character and provide:
     category: 'communication',
     difficulty: 'Beginner',
     duration: '8-12 min',
+    elevenLabsAgentId: 'agent_2601khks3eqkft692ceyg181jte4',
     briefing: {
       background: 'You\'ve developed an idea to streamline the weekly reporting process that could save the team 5 hours per week. You\'re presenting it to your team in an informal meeting.',
       issue: 'Your colleague Mark has been doing reports the same way for 3 years and doesn\'t see why things need to change. He tends to dominate discussions.',
@@ -962,6 +963,7 @@ MODERATION RULES:
     category: 'communication',
     difficulty: 'Intermediate',
     duration: '10-15 min',
+    elevenLabsAgentId: 'agent_3801khks3gsfen091w8wsvwyv1et',
     briefing: {
       background: 'You\'re presenting a monthly project status update to the COO. The project is behind schedule but recoverable. She gets dozens of these updates weekly.',
       issue: 'She has 15 minutes, wants bottom-line answers, and will drill into anything that seems like spin. She values honesty over optimism.',
@@ -1017,6 +1019,7 @@ MODERATION RULES:
     category: 'communication',
     difficulty: 'Intermediate',
     duration: '12-18 min',
+    elevenLabsAgentId: 'agent_5701khks3k42ev39xt2vvfqz3agd',
     briefing: {
       background: 'You\'re presenting your department\'s quarterly results at the company all-hands. 200 people are watching, from engineers to salespeople to the CEO.',
       issue: 'You need to make technical content accessible without dumbing it down. The audience member you\'re practicing with tends to zone out during long presentations.',
@@ -1071,6 +1074,7 @@ MODERATION RULES:
     category: 'communication',
     difficulty: 'Advanced',
     duration: '15-20 min',
+    elevenLabsAgentId: 'agent_7401khks3n74efhrw4fewvn6hpab',
     briefing: {
       background: 'You just finished a presentation on AI implementation at an industry conference. Now it\'s Q&A time with an audience of 100 peers and competitors.',
       issue: 'The audience includes skeptics, competitors fishing for information, and genuinely curious attendees. You need to handle hostile questions gracefully.',
@@ -1128,6 +1132,7 @@ MODERATION RULES:
     category: 'leadership',
     difficulty: 'Intermediate',
     duration: '10-15 min',
+    elevenLabsAgentId: 'agent_1901khks3q6bem4a47cjvjfkyyn5',
     briefing: {
       background: 'Sam is your top performer who delivers great results but has been dismissive of junior team members\' ideas in meetings, damaging team morale.',
       issue: 'Sam doesn\'t see the problem — they think they\'re just being direct and efficient. They may become defensive as they\'re used to praise.',
@@ -1183,6 +1188,7 @@ MODERATION RULES:
     category: 'leadership',
     difficulty: 'Intermediate',
     duration: '12-18 min',
+    elevenLabsAgentId: 'agent_7101khks3s4je98998b4zhns80hg',
     briefing: {
       background: 'Taylor came to you frustrated about a project that\'s not going well. They want you to tell them what to do.',
       issue: 'Taylor has the skills to figure this out but lacks confidence. If you just give answers, they won\'t develop. You need to coach, not solve.',
@@ -1237,6 +1243,7 @@ MODERATION RULES:
     category: 'leadership',
     difficulty: 'Advanced',
     duration: '10-15 min',
+    elevenLabsAgentId: 'agent_8801khks3v4dfcfstg69vqewy3kh',
     briefing: {
       background: 'You\'re in an elevator with the CEO who asks "How\'s the product launch going?" You have 3 floors to make an impression.',
       issue: 'This is your chance to demonstrate executive presence. You need to be concise, confident, strategic, and memorable without over-sharing.',
@@ -1291,6 +1298,7 @@ MODERATION RULES:
     category: 'leadership',
     difficulty: 'Advanced',
     duration: '15-20 min',
+    elevenLabsAgentId: 'agent_2201khks3xmrf7s9qp40ncp6aj2p',
     briefing: {
       background: 'The company just announced a reorganization that affects your team. People are worried about job security and role changes. You need to address this in a team meeting.',
       issue: 'You don\'t have all the answers yet, but your team needs to hear from you. Some are anxious, some are angry, and some are checked out.',
