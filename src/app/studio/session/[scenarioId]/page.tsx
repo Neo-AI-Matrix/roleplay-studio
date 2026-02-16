@@ -492,7 +492,7 @@ export default function SessionPage() {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={handleKeyDown}
-                placeholder="Type your response as the support agent..."
+                placeholder="Type your response here..."
                 className="flex-1 bg-navy border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-gray-500 focus:outline-none focus:border-electric-blue"
                 disabled={isLoading}
               />
