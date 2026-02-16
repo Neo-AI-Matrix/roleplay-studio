@@ -124,8 +124,6 @@ export function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
 
   if (!isOpen || !profile) return null;
 
-  const earnedAchievements = calculateAchievements(sessions);
-
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       {/* Backdrop */}
