@@ -53,12 +53,22 @@ export default function SessionPage() {
   const [showBriefing, setShowBriefing] = useState(true);
   
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const messagesContainerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  // Scroll to bottom when messages change
+  // Scroll to top when session starts
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    if (sessionStarted) {
+      window.scrollTo({ top: 0, behavior: 'instant' });
+    }
+  }, [sessionStarted]);
+
+  // Auto-scroll transcript within its container
+  useEffect(() => {
+    if (messagesContainerRef.current) {
+      messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
+    }
   }, [messages]);
 
   // Cleanup audio on unmount
@@ -436,9 +446,9 @@ export default function SessionPage() {
 
       {/* Collapsible Briefing Panel */}
       {showBriefing && (
-        <div className="border-b border-white/10 bg-navy-light/50 px-4 py-4 animate-in slide-in-from-top duration-200">
-          <div className="container mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+        <div className="border-b border-white/10 bg-navy-light/50 px-4 py-3">
+          <div className="container mx-auto max-w-3xl">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-sm">
               <div className="flex gap-2">
                 <div className="flex-shrink-0 w-6 h-6 bg-electric-blue/20 rounded flex items-center justify-center">
                   <FileText className="w-3 h-3 text-electric-blue" />
@@ -471,91 +481,9 @@ export default function SessionPage() {
         </div>
       )}
 
-      {/* Chat Messages */}
-      <div className="flex-1 overflow-y-auto px-4 py-3">
-        <div className="container mx-auto max-w-3xl space-y-3">
-          {messages.map((message) => (
-            <div
-              key={message.id}
-              className={`flex gap-3 ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
-            >
-              {message.role === 'assistant' && (
-                <div className="w-10 h-10 rounded-full bg-red-500/20 flex items-center justify-center flex-shrink-0">
-                  <Bot className="w-5 h-5 text-red-400" />
-                </div>
-              )}
-              
-              <div
-                className={`max-w-[80%] rounded-2xl px-4 py-3 ${
-                  message.role === 'user'
-                    ? 'bg-electric-blue text-white'
-                    : 'bg-navy-light border border-white/10 text-gray-200'
-                }`}
-              >
-                <p className="whitespace-pre-wrap">{message.content}</p>
-              </div>
-              
-              {message.role === 'user' && (
-                <div className="w-10 h-10 rounded-full bg-electric-blue/20 flex items-center justify-center flex-shrink-0">
-                  <User className="w-5 h-5 text-electric-blue" />
-                </div>
-              )}
-            </div>
-          ))}
-          
-          {isLoading && (
-            <div className="flex gap-3">
-              <div className="w-10 h-10 rounded-full bg-red-500/20 flex items-center justify-center">
-                <Bot className="w-5 h-5 text-red-400" />
-              </div>
-              <div className="bg-navy-light border border-white/10 rounded-2xl px-4 py-3">
-                <Loader2 className="w-5 h-5 text-gray-400 animate-spin" />
-              </div>
-            </div>
-          )}
-          
-          {isSpeaking && (
-            <div className="flex items-center gap-2 text-gray-500 text-sm">
-              <Volume2 className="w-4 h-4 animate-pulse" />
-              Speaking...
-            </div>
-          )}
-          
-          <div ref={messagesEndRef} />
-        </div>
-      </div>
-
-      {/* Session Ended Feedback */}
-      {sessionEnded && feedback && (
-        <div className="border-t border-white/10 bg-navy-light/80 backdrop-blur-sm px-4 py-6">
-          <div className="container mx-auto max-w-3xl">
-            <div className="bg-navy border border-white/10 rounded-xl p-6">
-              <div className="flex items-center gap-4 mb-4">
-                <div className="text-4xl font-bold text-white">{feedback.rating}/10</div>
-                <div className="flex">
-                  {[...Array(10)].map((_, i) => (
-                    <Star 
-                      key={i} 
-                      className={`w-5 h-5 ${i < feedback.rating ? 'text-yellow-400 fill-yellow-400' : 'text-gray-600'}`} 
-                    />
-                  ))}
-                </div>
-              </div>
-              <p className="text-gray-400 text-sm mb-4">Session complete! Review the feedback above.</p>
-              <button
-                onClick={() => router.push('/studio')}
-                className="px-6 py-3 bg-electric-blue hover:bg-electric-blue/90 text-white font-semibold rounded-lg transition-colors"
-              >
-                Back to Studio
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Input Area */}
+      {/* Input Area - Now above transcript */}
       {!sessionEnded && (
-        <div className="border-t border-white/10 bg-navy-light/80 backdrop-blur-sm px-4 py-3">
+        <div className="border-b border-white/10 bg-navy-light/80 backdrop-blur-sm px-4 py-3">
           <div className="container mx-auto max-w-3xl">
             <div className="flex gap-3">
               <input
@@ -576,9 +504,94 @@ export default function SessionPage() {
                 <Send className="w-5 h-5" />
               </button>
             </div>
-            <p className="text-gray-600 text-xs mt-2 text-center">
+            <p className="text-gray-600 text-xs mt-1 text-center">
               Press Enter to send • Type "END SESSION" to get your feedback
             </p>
+          </div>
+        </div>
+      )}
+
+      {/* Chat Messages - Scrollable transcript */}
+      <div 
+        ref={messagesContainerRef}
+        className="flex-1 overflow-y-auto px-4 py-3"
+      >
+        <div className="container mx-auto max-w-3xl space-y-3">
+          {messages.map((message) => (
+            <div
+              key={message.id}
+              className={`flex gap-3 ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
+            >
+              {message.role === 'assistant' && (
+                <div className="w-8 h-8 rounded-full bg-red-500/20 flex items-center justify-center flex-shrink-0">
+                  <Bot className="w-4 h-4 text-red-400" />
+                </div>
+              )}
+              
+              <div
+                className={`max-w-[80%] rounded-2xl px-4 py-2 ${
+                  message.role === 'user'
+                    ? 'bg-electric-blue text-white'
+                    : 'bg-navy-light border border-white/10 text-gray-200'
+                }`}
+              >
+                <p className="whitespace-pre-wrap text-sm">{message.content}</p>
+              </div>
+              
+              {message.role === 'user' && (
+                <div className="w-8 h-8 rounded-full bg-electric-blue/20 flex items-center justify-center flex-shrink-0">
+                  <User className="w-4 h-4 text-electric-blue" />
+                </div>
+              )}
+            </div>
+          ))}
+          
+          {isLoading && (
+            <div className="flex gap-3">
+              <div className="w-8 h-8 rounded-full bg-red-500/20 flex items-center justify-center">
+                <Bot className="w-4 h-4 text-red-400" />
+              </div>
+              <div className="bg-navy-light border border-white/10 rounded-2xl px-4 py-2">
+                <Loader2 className="w-4 h-4 text-gray-400 animate-spin" />
+              </div>
+            </div>
+          )}
+          
+          {isSpeaking && (
+            <div className="flex items-center gap-2 text-gray-500 text-sm">
+              <Volume2 className="w-4 h-4 animate-pulse" />
+              Speaking...
+            </div>
+          )}
+          
+          <div ref={messagesEndRef} />
+        </div>
+      </div>
+
+      {/* Session Ended Feedback */}
+      {sessionEnded && feedback && (
+        <div className="border-t border-white/10 bg-navy-light/80 backdrop-blur-sm px-4 py-4">
+          <div className="container mx-auto max-w-3xl">
+            <div className="bg-navy border border-white/10 rounded-xl p-4">
+              <div className="flex items-center gap-4 mb-3">
+                <div className="text-3xl font-bold text-white">{feedback.rating}/10</div>
+                <div className="flex">
+                  {[...Array(10)].map((_, i) => (
+                    <Star 
+                      key={i} 
+                      className={`w-4 h-4 ${i < feedback.rating ? 'text-yellow-400 fill-yellow-400' : 'text-gray-600'}`} 
+                    />
+                  ))}
+                </div>
+              </div>
+              <p className="text-gray-400 text-sm mb-3">Session complete! Review the feedback above.</p>
+              <button
+                onClick={() => router.push('/studio')}
+                className="px-4 py-2 bg-electric-blue hover:bg-electric-blue/90 text-white font-semibold rounded-lg transition-colors"
+              >
+                Back to Studio
+              </button>
+            </div>
           </div>
         </div>
       )}
