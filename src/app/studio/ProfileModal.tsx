@@ -30,42 +30,12 @@ import {
   emojiOptions,
   defaultProfile
 } from '@/lib/profile-storage';
-import { getSessions, SessionData } from '@/lib/session-storage';
+import { getSessions, getStats, SessionRecord } from '@/lib/session-storage';
+import { achievements, calculateEarnedAchievements } from '@/lib/achievements';
 
 interface ProfileModalProps {
   isOpen: boolean;
   onClose: () => void;
-}
-
-// Achievement definitions
-const achievementDefinitions = [
-  { id: 'first-session', name: 'First Steps', description: 'Complete your first session', icon: '🎯' },
-  { id: 'five-sessions', name: 'Getting Warmed Up', description: 'Complete 5 sessions', icon: '🔥' },
-  { id: 'ten-sessions', name: 'Dedicated Learner', description: 'Complete 10 sessions', icon: '📚' },
-  { id: 'perfect-score', name: 'Perfect 10', description: 'Score 10/10 on any session', icon: '⭐' },
-  { id: 'high-scorer', name: 'High Achiever', description: 'Score 8+ on 5 sessions', icon: '🏆' },
-  { id: 'category-master', name: 'Well Rounded', description: 'Complete scenarios in 3 categories', icon: '🎖️' },
-  { id: 'streak-3', name: 'On a Roll', description: '3-day practice streak', icon: '🔥' },
-  { id: 'voice-master', name: 'Voice Pro', description: 'Complete 5 voice sessions', icon: '🎙️' },
-];
-
-function calculateAchievements(sessions: SessionData[]) {
-  const earned: string[] = [];
-  
-  if (sessions.length >= 1) earned.push('first-session');
-  if (sessions.length >= 5) earned.push('five-sessions');
-  if (sessions.length >= 10) earned.push('ten-sessions');
-  if (sessions.some(s => s.score === 10)) earned.push('perfect-score');
-  if (sessions.filter(s => s.score && s.score >= 8).length >= 5) earned.push('high-scorer');
-  
-  const categories = new Set(sessions.map(s => {
-    if (s.scenarioId.includes('angry') || s.scenarioId.includes('irate')) return 'difficult';
-    if (s.scenarioId.includes('sales') || s.scenarioId.includes('upgrade')) return 'sales';
-    return 'support';
-  }));
-  if (categories.size >= 3) earned.push('category-master');
-  
-  return earned;
 }
 
 export function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
@@ -74,7 +44,8 @@ export function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
   const [activeTab, setActiveTab] = useState<'profile' | 'preferences' | 'achievements'>('profile');
   const [isSaving, setIsSaving] = useState(false);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
-  const [sessions, setSessions] = useState<SessionData[]>([]);
+  const [sessions, setSessions] = useState<SessionRecord[]>([]);
+  const [earnedAchievements, setEarnedAchievements] = useState<string[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -88,7 +59,10 @@ export function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
       });
       
       setProfile(existingProfile || initializedProfile);
-      setSessions(getSessions());
+      const loadedSessions = getSessions();
+      const stats = getStats();
+      setSessions(loadedSessions);
+      setEarnedAchievements(calculateEarnedAchievements(stats, loadedSessions));
     }
   }, [isOpen, user]);
 
@@ -511,29 +485,29 @@ export function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
           {activeTab === 'achievements' && (
             <div className="space-y-4">
               <p className="text-gray-400 text-sm mb-4">
-                You&apos;ve earned {earnedAchievements.length} of {achievementDefinitions.length} achievements
+                You&apos;ve earned {earnedAchievements.length} of {achievements.length} achievements
               </p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {achievementDefinitions.map((achievement) => {
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-[400px] overflow-y-auto">
+                {achievements.map((achievement) => {
                   const isEarned = earnedAchievements.includes(achievement.id);
                   return (
                     <div
                       key={achievement.id}
-                      className={`p-4 rounded-xl border transition-colors ${
+                      className={`p-3 rounded-xl border transition-colors ${
                         isEarned
                           ? 'bg-electric-blue/10 border-electric-blue/30'
                           : 'bg-white/5 border-white/10 opacity-50'
                       }`}
                     >
                       <div className="flex items-start gap-3">
-                        <span className={`text-2xl ${isEarned ? '' : 'grayscale'}`}>
+                        <span className={`text-xl ${isEarned ? '' : 'grayscale'}`}>
                           {achievement.icon}
                         </span>
-                        <div>
-                          <p className={`font-medium ${isEarned ? 'text-white' : 'text-gray-400'}`}>
+                        <div className="min-w-0">
+                          <p className={`font-medium text-sm ${isEarned ? 'text-white' : 'text-gray-400'}`}>
                             {achievement.name}
                           </p>
-                          <p className="text-xs text-gray-500">{achievement.description}</p>
+                          <p className="text-xs text-gray-500 truncate">{achievement.description}</p>
                           {isEarned && (
                             <p className="text-xs text-electric-blue mt-1 flex items-center gap-1">
                               <Check className="w-3 h-3" /> Earned

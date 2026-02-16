@@ -221,7 +221,8 @@ export default function VoiceSessionPage() {
         transcript,
         score,
         scoreBreakdown: breakdown,
-        completed: true
+        completed: true,
+        isVoice: true
       });
     }
   };

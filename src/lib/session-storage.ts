@@ -17,6 +17,7 @@ export interface SessionRecord {
   score: number;
   scoreBreakdown: ScoreBreakdown;
   completed: boolean;
+  isVoice?: boolean; // true for voice sessions, false/undefined for text
 }
 
 export interface ScoreBreakdown {

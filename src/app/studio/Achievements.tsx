@@ -3,81 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Trophy, Lock, CheckCircle } from 'lucide-react';
 import { getStats, getSessions, UserStats, SessionRecord } from '@/lib/session-storage';
-
-interface Achievement {
-  id: string;
-  title: string;
-  description: string;
-  icon: 'trophy' | 'star' | 'target' | 'fire';
-  checkUnlocked: (stats: UserStats, sessions: SessionRecord[]) => boolean;
-}
-
-const achievements: Achievement[] = [
-  {
-    id: 'getting-started',
-    title: 'Getting Started',
-    description: 'Complete your first session',
-    icon: 'trophy',
-    checkUnlocked: (stats) => stats.totalSessions >= 1
-  },
-  {
-    id: 'quick-learner',
-    title: 'Quick Learner',
-    description: 'Complete 5 sessions',
-    icon: 'trophy',
-    checkUnlocked: (stats) => stats.totalSessions >= 5
-  },
-  {
-    id: 'dedicated-trainer',
-    title: 'Dedicated Trainer',
-    description: 'Practice for 1 hour total',
-    icon: 'trophy',
-    checkUnlocked: (stats) => stats.totalPracticeTimeSeconds >= 3600
-  },
-  {
-    id: 'deescalation-pro',
-    title: 'De-escalation Pro',
-    description: 'Score 8+ on angry customer',
-    icon: 'trophy',
-    checkUnlocked: (stats) => {
-      const angryCustomer = stats.scenarioStats?.['angry-customer'];
-      return angryCustomer?.bestScore >= 8;
-    }
-  },
-  {
-    id: 'sales-starter',
-    title: 'Sales Starter',
-    description: 'Complete any sales scenario',
-    icon: 'trophy',
-    checkUnlocked: (stats, sessions) => {
-      const salesScenarios = ['sales-discovery', 'skeptical-cfo', 'upsell-opportunity', 
-        'busy-decision-maker', 'price-shopper', 'cautious-prospect', 'chatty-executive', 
-        'technical-buyer', 'happy-customer-upsell'];
-      return sessions.some(s => salesScenarios.includes(s.scenarioId) && s.completed);
-    }
-  },
-  {
-    id: 'perfect-score',
-    title: 'Perfect 10',
-    description: 'Score 10/10 on any scenario',
-    icon: 'trophy',
-    checkUnlocked: (stats, sessions) => sessions.some(s => s.score === 10)
-  },
-  {
-    id: 'consistent-performer',
-    title: 'Consistent Performer',
-    description: 'Average score of 7+ across 5 sessions',
-    icon: 'trophy',
-    checkUnlocked: (stats) => stats.totalSessions >= 5 && stats.averageScore >= 7
-  },
-  {
-    id: 'marathon-trainer',
-    title: 'Marathon Trainer',
-    description: 'Complete 10 sessions',
-    icon: 'trophy',
-    checkUnlocked: (stats) => stats.totalSessions >= 10
-  }
-];
+import { achievements, calculateEarnedAchievements } from '@/lib/achievements';
 
 export function Achievements() {
   const [stats, setStats] = useState<UserStats>({
@@ -117,7 +43,17 @@ export function Achievements() {
     );
   }
 
-  const unlockedCount = achievements.filter(a => a.checkUnlocked(stats, sessions)).length;
+  const earnedIds = calculateEarnedAchievements(stats, sessions);
+  const unlockedCount = earnedIds.length;
+
+  // Show first 4 achievements, prioritizing unlocked ones
+  const sortedAchievements = [...achievements].sort((a, b) => {
+    const aUnlocked = earnedIds.includes(a.id);
+    const bUnlocked = earnedIds.includes(b.id);
+    if (aUnlocked && !bUnlocked) return -1;
+    if (!aUnlocked && bUnlocked) return 1;
+    return 0;
+  });
 
   return (
     <div className="bg-navy-light border border-white/10 rounded-xl p-6">
@@ -129,13 +65,14 @@ export function Achievements() {
         <span className="text-sm text-gray-400">{unlockedCount}/{achievements.length}</span>
       </div>
       <div className="space-y-3">
-        {achievements.slice(0, 4).map(achievement => {
-          const unlocked = achievement.checkUnlocked(stats, sessions);
+        {sortedAchievements.slice(0, 4).map(achievement => {
+          const unlocked = earnedIds.includes(achievement.id);
           return (
             <AchievementCard
               key={achievement.id}
-              title={achievement.title}
+              title={achievement.name}
               description={achievement.description}
+              icon={achievement.icon}
               unlocked={unlocked}
             />
           );
@@ -150,9 +87,10 @@ export function Achievements() {
   );
 }
 
-function AchievementCard({ title, description, unlocked }: {
+function AchievementCard({ title, description, icon, unlocked }: {
   title: string;
   description: string;
+  icon: string;
   unlocked: boolean;
 }) {
   return (
@@ -165,17 +103,17 @@ function AchievementCard({ title, description, unlocked }: {
         unlocked ? 'bg-yellow-500/20' : 'bg-white/10'
       }`}>
         {unlocked ? (
-          <CheckCircle className="w-5 h-5 text-yellow-500" />
+          <span className="text-xl">{icon}</span>
         ) : (
           <Lock className="w-4 h-4 text-gray-500" />
         )}
       </div>
-      <div>
-        <p className={`font-medium ${unlocked ? 'text-white' : 'text-gray-400'}`}>{title}</p>
-        <p className="text-xs text-gray-500">{description}</p>
+      <div className="flex-1 min-w-0">
+        <p className={`font-medium truncate ${unlocked ? 'text-white' : 'text-gray-400'}`}>{title}</p>
+        <p className="text-xs text-gray-500 truncate">{description}</p>
       </div>
       {unlocked && (
-        <Trophy className="w-4 h-4 text-yellow-500 ml-auto" />
+        <CheckCircle className="w-4 h-4 text-yellow-500 flex-shrink-0" />
       )}
     </div>
   );
