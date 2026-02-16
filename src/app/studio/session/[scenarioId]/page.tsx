@@ -287,12 +287,21 @@ export default function SessionPage() {
               <h1 className="text-3xl font-bold text-white mb-4">{scenario.title}</h1>
               <p className="text-gray-400 mb-6">{scenario.description}</p>
               
-              <div className="flex items-center justify-center gap-6 text-sm text-gray-500 mb-8">
+              <div className="flex items-center justify-center gap-6 text-sm text-gray-500 mb-6">
                 <span className="px-3 py-1 bg-yellow-500/20 text-yellow-400 rounded-full">
                   {scenario.difficulty}
                 </span>
                 <span>{scenario.duration}</span>
               </div>
+
+              {/* Quick Start Button */}
+              <button
+                onClick={startSession}
+                className="w-full py-4 mb-8 bg-electric-blue hover:bg-electric-blue/90 text-white font-semibold rounded-xl transition-colors text-lg flex items-center justify-center gap-3"
+              >
+                <Send className="w-6 h-6" />
+                Start Text Session
+              </button>
               
               {/* Scenario Briefing */}
               <div className="bg-navy/50 rounded-xl p-6 text-left mb-8 border border-white/5">
