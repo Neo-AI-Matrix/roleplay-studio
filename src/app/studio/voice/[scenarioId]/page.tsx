@@ -247,9 +247,13 @@ export default function VoiceSessionPage() {
     setIsPaused(true);
     pauseStartRef.current = new Date();
     
-    // Mute mic while paused
-    if (conversationRef.current && !isMuted) {
-      conversationRef.current.setMicMuted(true);
+    // Mute mic and agent audio while paused
+    if (conversationRef.current) {
+      if (!isMuted) {
+        conversationRef.current.setMicMuted(true);
+      }
+      // Mute agent's voice output
+      conversationRef.current.setVolume({ volume: 0 });
     }
     
     // Stop duration timer
@@ -285,9 +289,14 @@ export default function VoiceSessionPage() {
     }
     setPauseTimeRemaining(0);
     
-    // Restore mic state (unmute if it wasn't muted before pause)
-    if (conversationRef.current && !isMuted) {
-      conversationRef.current.setMicMuted(false);
+    // Restore mic state and agent volume
+    if (conversationRef.current) {
+      // Unmute mic if it wasn't muted before pause
+      if (!isMuted) {
+        conversationRef.current.setMicMuted(false);
+      }
+      // Restore agent's voice output
+      conversationRef.current.setVolume({ volume: 1 });
     }
     
     // Resume duration timer
