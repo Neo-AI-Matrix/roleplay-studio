@@ -1,56 +1,70 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-// ElevenLabs voice IDs mapped by scenario
+// ElevenLabs voice IDs
 // Male voices: Josh, Antoni, Arnold, Adam, Sam
 // Female voices: Rachel, Bella, Elli, Domi
 
+const VOICE_IDS = {
+  // Male voices
+  josh: 'TxGEqnHWrfWFTfGW9XjX',
+  antoni: 'ErXwobaYiN019PkySvjV',
+  arnold: 'VR6AewLTigWG4xSOukaG',
+  adam: 'pNInz6obpgDQGcFmaJgB',
+  sam: 'yoZ06aMxZJJ28mfd3POQ',
+  // Female voices
+  rachel: '21m00Tcm4TlvDq8ikWAM',
+  bella: 'EXAVITQu4vr4xnSDxMaL',
+  elli: 'MF3mGyEYCl7XYWbV9V6O',
+  domi: 'AZnzlk1XvdvUeBnXmlld',
+};
+
+// Scenario to voice mapping - matched to persona gender
 const SCENARIO_VOICES: Record<string, string> = {
-  // Support - Female personas
-  'angry-customer': '21m00Tcm4TlvDq8ikWAM',           // Rachel - Margaret Chen (female)
-  'angry-customer-billing': 'EXAVITQu4vr4xnSDxMaL',  // Bella - Karen Mitchell (female)
-  'confused-user': 'MF3mGyEYCl7XYWbV9V6O',           // Elli - Sarah Mitchell (female)
-  'happy-customer-upsell': 'AZnzlk1XvdvUeBnXmlld',   // Domi - Lisa Chen (female)
+  // ============ SUPPORT SCENARIOS ============
+  'angry-customer': VOICE_IDS.rachel,           // Margaret Chen (female)
+  'angry-customer-billing': VOICE_IDS.josh,     // Derek Morrison (male)
+  'confused-user': VOICE_IDS.sam,               // Tom Bradley (male)
+  'demanding-client': VOICE_IDS.bella,          // Victoria Hayes (female)
   
-  // Sales - Male personas
-  'sales-discovery': 'ErXwobaYiN019PkySvjV',         // Antoni - David Morrison (male)
-  'skeptical-cfo': 'VR6AewLTigWG4xSOukaG',           // Arnold - Richard Thompson (male)
-  'demanding-client': 'TxGEqnHWrfWFTfGW9XjX',        // Josh - Tom Bradley (male)
-  'upsell-opportunity': 'ErXwobaYiN019PkySvjV',      // Antoni - Derek Morrison (male)
-  'busy-decision-maker': 'pNInz6obpgDQGcFmaJgB',     // Adam - Jason Peters (male)
-  'price-shopper': 'yoZ06aMxZJJ28mfd3POQ',           // Sam - Steve Collins (male)
-  'technical-buyer': 'VR6AewLTigWG4xSOukaG',         // Arnold - Dr. Michael Torres (male)
+  // ============ SALES - DISCOVERY ============
+  'sales-discovery': VOICE_IDS.antoni,          // David Morrison (male)
+  'cautious-prospect': VOICE_IDS.adam,          // Robert Chen (male)
+  'chatty-executive': VOICE_IDS.rachel,         // Patricia Donovan (female)
+  'technical-buyer': VOICE_IDS.arnold,          // Dr. Michael Torres (male)
   
-  // Sales - Female personas
-  'cautious-prospect': 'MF3mGyEYCl7XYWbV9V6O',       // Elli - Jennifer Walsh (female)
-  'chatty-executive': '21m00Tcm4TlvDq8ikWAM',        // Rachel - Victoria Hayes (female)
-  'budget-conscious-upsell': 'EXAVITQu4vr4xnSDxMaL', // Bella - Amanda Foster (female)
-  'growth-focused-upsell': 'AZnzlk1XvdvUeBnXmlld',   // Domi - Rachel Okonkwo (female)
+  // ============ SALES - OBJECTION HANDLING ============
+  'skeptical-cfo': VOICE_IDS.arnold,            // Richard Thompson (male)
+  'busy-decision-maker': VOICE_IDS.domi,        // Jennifer Walsh (female)
+  'price-shopper': VOICE_IDS.adam,              // Marcus Price (male)
   
-  // Sales - Male personas continued
-  'sales-prospect': 'TxGEqnHWrfWFTfGW9XjX',          // Josh - Marcus Price (male)
+  // ============ SALES - UPSELL ============
+  'upsell-opportunity': VOICE_IDS.elli,         // Sarah Mitchell (female)
+  'happy-customer-upsell': VOICE_IDS.domi,      // Amanda Foster (female)
+  'budget-conscious-upsell': VOICE_IDS.josh,    // Frank Deluca (male)
+  'growth-focused-upsell': VOICE_IDS.bella,     // Rachel Okonkwo (female)
   
-  // HR - Mixed
-  'asking-for-raise': 'ErXwobaYiN019PkySvjV',        // Antoni - Robert Chen (male)
-  'underperforming-employee': 'EXAVITQu4vr4xnSDxMaL', // Bella - Patricia Donovan (female)
-  'difficult-coworker': 'TxGEqnHWrfWFTfGW9XjX',      // Josh - Frank Deluca (male)
-  'termination-conversation': '21m00Tcm4TlvDq8ikWAM', // Rachel - (female manager delivering news)
+  // ============ HR SCENARIOS ============
+  'asking-for-raise': VOICE_IDS.bella,          // Karen Mitchell (female)
+  'underperforming-employee': VOICE_IDS.sam,    // Jason Peters (male)
+  'difficult-coworker': VOICE_IDS.adam,         // Steve Collins (male)
+  'termination-conversation': VOICE_IDS.rachel, // Lisa Chen (female)
   
-  // Communication - Mixed
-  'team-pitch': 'pNInz6obpgDQGcFmaJgB',              // Adam - Mark Davidson (male)
-  'stakeholder-update': 'AZnzlk1XvdvUeBnXmlld',      // Domi - Diana Reeves (female)
-  'all-hands-presentation': 'ErXwobaYiN019PkySvjV',  // Antoni - Alex Torres (male)
-  'public-speaking-qa': 'TxGEqnHWrfWFTfGW9XjX',      // Josh - Jordan Blake (male)
+  // ============ COMMUNICATION SCENARIOS ============
+  'team-pitch': VOICE_IDS.josh,                 // Mark Davidson (male)
+  'stakeholder-update': VOICE_IDS.domi,         // Diana Reeves (female)
+  'all-hands-presentation': VOICE_IDS.antoni,   // Alex Torres (male)
+  'public-speaking-qa': VOICE_IDS.sam,          // Jordan Blake (male)
   
-  // Leadership - Mixed
-  'giving-feedback': 'yoZ06aMxZJJ28mfd3POQ',         // Sam - Sam Parker (male)
-  'coaching-conversation': 'pNInz6obpgDQGcFmaJgB',   // Adam - Taylor Morgan (male)
-  'executive-presence': '21m00Tcm4TlvDq8ikWAM',      // Rachel - Catherine Walsh (female)
-  'leading-change': 'VR6AewLTigWG4xSOukaG',          // Arnold - Jamie Chen (male)
+  // ============ LEADERSHIP SCENARIOS ============
+  'giving-feedback': VOICE_IDS.adam,            // Sam Parker (male)
+  'coaching-conversation': VOICE_IDS.josh,      // Taylor Morgan (male)
+  'executive-presence': VOICE_IDS.bella,        // Catherine Walsh (female)
+  'leading-change': VOICE_IDS.arnold,           // Jamie Chen (male)
 };
 
 // Default voices by gender (fallback)
-const DEFAULT_MALE_VOICE = 'TxGEqnHWrfWFTfGW9XjX';   // Josh
-const DEFAULT_FEMALE_VOICE = '21m00Tcm4TlvDq8ikWAM'; // Rachel
+const DEFAULT_MALE_VOICE = VOICE_IDS.josh;
+const DEFAULT_FEMALE_VOICE = VOICE_IDS.rachel;
 
 export async function POST(request: NextRequest) {
   try {
