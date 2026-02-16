@@ -1,15 +1,14 @@
 import { currentUser } from "@clerk/nextjs/server";
 import { UserButton } from "@clerk/nextjs";
-import { 
-  BarChart3, 
-  Trophy,
-  Sparkles
-} from "lucide-react";
+import { Sparkles } from "lucide-react";
 import { getAllScenarios } from "@/lib/scenarios";
 import { StudioStats } from "./StudioStats";
 import { ScenarioGrid } from "./ScenarioGrid";
 import { CategoryOverview } from "./CategoryOverview";
 import { TrialCountdown } from "./TrialCountdown";
+import { Achievements } from "./Achievements";
+import { SidebarProgress } from "./SidebarProgress";
+import { QuickActions } from "./QuickActions";
 
 export default async function StudioPage() {
   const user = await currentUser();
@@ -74,89 +73,16 @@ export default async function StudioPage() {
 
           {/* Sidebar - 1/4 width on XL screens */}
           <div className="space-y-6">
-            {/* Quick Stats Summary */}
-            <div className="bg-navy-light border border-white/10 rounded-xl p-6">
-              <h3 className="text-lg font-semibold text-white mb-4">Your Progress</h3>
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <span className="text-gray-400">Sessions Completed</span>
-                  <span className="text-white font-semibold">0</span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-gray-400">Average Score</span>
-                  <span className="text-white font-semibold">--</span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-gray-400">Time Trained</span>
-                  <span className="text-white font-semibold">0 min</span>
-                </div>
-                <div className="w-full h-2 bg-white/10 rounded-full overflow-hidden">
-                  <div className="h-full w-0 bg-gradient-to-r from-violet to-cyan rounded-full" />
-                </div>
-                <p className="text-xs text-gray-500">Complete your first session to start tracking progress</p>
-              </div>
-            </div>
+            {/* Your Progress - Now uses real data */}
+            <SidebarProgress />
 
-            {/* Achievements */}
-            <div className="bg-navy-light border border-white/10 rounded-xl p-6">
-              <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-                <Trophy className="w-5 h-5 text-yellow-500" />
-                Achievements
-              </h3>
-              <div className="space-y-3">
-                <Achievement 
-                  title="Getting Started"
-                  description="Complete your first session"
-                  locked={true}
-                />
-                <Achievement 
-                  title="Quick Learner"
-                  description="Complete 5 sessions"
-                  locked={true}
-                />
-                <Achievement 
-                  title="De-escalation Pro"
-                  description="Score 8+ on angry customer"
-                  locked={true}
-                />
-                <Achievement 
-                  title="Sales Master"
-                  description="Score 9+ on all sales scenarios"
-                  locked={true}
-                />
-              </div>
-            </div>
+            {/* Achievements - Now checks real session data */}
+            <Achievements />
 
-            {/* Quick Actions */}
-            <div className="bg-navy-light border border-white/10 rounded-xl p-6">
-              <h3 className="text-lg font-semibold text-white mb-4">Quick Actions</h3>
-              <div className="space-y-3">
-                <button className="w-full flex items-center gap-3 px-4 py-3 bg-white/10 hover:bg-white/20 text-white rounded-lg transition-colors">
-                  <BarChart3 className="w-5 h-5" />
-                  View Full Analytics
-                </button>
-              </div>
-            </div>
+            {/* Quick Actions - Analytics button now works */}
+            <QuickActions />
           </div>
         </div>
-      </div>
-    </div>
-  );
-}
-
-function Achievement({ title, description, locked }: {
-  title: string;
-  description: string;
-  locked: boolean;
-}) {
-  return (
-    <div className={`flex items-center gap-3 p-3 rounded-lg ${locked ? 'bg-white/5 opacity-50' : 'bg-yellow-500/10'}`}>
-      <div className={`w-10 h-10 rounded-full flex items-center justify-center ${locked ? 'bg-white/10' : 'bg-yellow-500/20'}`}>
-        <Trophy className={`w-5 h-5 ${locked ? 'text-gray-500' : 'text-yellow-500'}`} />
-      </div>
-      <div>
-        <p className={`font-medium ${locked ? 'text-gray-400' : 'text-white'}`}>{title}</p>
-        <p className="text-xs text-gray-500">{description}</p>
       </div>
     </div>
   );
