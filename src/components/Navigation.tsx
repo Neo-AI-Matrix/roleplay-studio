@@ -154,7 +154,7 @@ export function Navigation() {
               </button>
             </SheetTrigger>
             <SheetContent side="right" className="bg-navy-light border-violet/20">
-              <div className="flex flex-col gap-6 mt-8">
+              <div className="flex flex-col gap-6 mt-8 pl-[15px]">
                 {navItems.map((item) => (
                   <Link
                     key={item.href}
