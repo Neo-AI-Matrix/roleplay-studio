@@ -6,17 +6,13 @@ import Image from 'next/image';
 import { getScenario } from '@/lib/scenarios';
 import { 
   Send, 
-  Mic, 
-  MicOff, 
   Volume2, 
   VolumeX,
   ArrowLeft,
   User,
-  Bot,
   Loader2,
   Star,
   CheckCircle,
-  AlertCircle,
   FileText,
   AlertTriangle,
   Target
@@ -402,9 +398,19 @@ export default function SessionPage() {
             >
               <ArrowLeft className="w-5 h-5" />
             </button>
+            {/* Persona Avatar & Name */}
+            <div className="w-10 h-10 rounded-full overflow-hidden ring-2 ring-electric-blue/50 flex-shrink-0">
+              <Image 
+                src={scenario.persona.avatar} 
+                alt={scenario.persona.name}
+                width={40}
+                height={40}
+                className="w-full h-full object-cover"
+              />
+            </div>
             <div>
-              <h1 className="text-white font-semibold">{scenario.title}</h1>
-              <p className="text-gray-500 text-sm">Session in progress</p>
+              <h1 className="text-white font-semibold">{scenario.persona.name}</h1>
+              <p className="text-gray-500 text-sm">{scenario.title}</p>
             </div>
           </div>
           
@@ -523,8 +529,14 @@ export default function SessionPage() {
               className={`flex gap-3 ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
             >
               {message.role === 'assistant' && (
-                <div className="w-8 h-8 rounded-full bg-red-500/20 flex items-center justify-center flex-shrink-0">
-                  <Bot className="w-4 h-4 text-red-400" />
+                <div className="w-8 h-8 rounded-full overflow-hidden ring-2 ring-white/20 flex-shrink-0">
+                  <Image 
+                    src={scenario.persona.avatar} 
+                    alt={scenario.persona.name}
+                    width={32}
+                    height={32}
+                    className="w-full h-full object-cover"
+                  />
                 </div>
               )}
               
@@ -548,8 +560,14 @@ export default function SessionPage() {
           
           {isLoading && (
             <div className="flex gap-3">
-              <div className="w-8 h-8 rounded-full bg-red-500/20 flex items-center justify-center">
-                <Bot className="w-4 h-4 text-red-400" />
+              <div className="w-8 h-8 rounded-full overflow-hidden ring-2 ring-white/20 flex-shrink-0">
+                <Image 
+                  src={scenario.persona.avatar} 
+                  alt={scenario.persona.name}
+                  width={32}
+                  height={32}
+                  className="w-full h-full object-cover"
+                />
               </div>
               <div className="bg-navy-light border border-white/10 rounded-2xl px-4 py-2">
                 <Loader2 className="w-4 h-4 text-gray-400 animate-spin" />
