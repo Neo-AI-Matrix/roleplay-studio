@@ -1,6 +1,7 @@
 import { Badge } from '@/components/ui/badge';
 import { Shield } from 'lucide-react';
 import { FAQ } from '@/components/FAQ';
+import { SchemaScript, getPrivacyPageSchema } from '@/lib/schema';
 
 const privacyFAQs = [
   {
@@ -32,6 +33,8 @@ const privacyFAQs = [
 export default function PrivacyPolicyPage() {
   return (
     <div className="relative overflow-hidden">
+      <SchemaScript schema={getPrivacyPageSchema()} />
+      
       {/* Background Effects */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-violet/20 via-transparent to-transparent" />
 

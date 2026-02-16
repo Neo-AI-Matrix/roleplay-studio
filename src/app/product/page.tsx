@@ -19,6 +19,7 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import { FAQ } from '@/components/FAQ';
+import { SchemaScript, getProductPageSchema } from '@/lib/schema';
 
 const productFAQs = [
   {
@@ -210,6 +211,8 @@ const pricingPlans = [
 export default function ProductPage() {
   return (
     <div className="relative overflow-hidden">
+      <SchemaScript schema={getProductPageSchema()} />
+      
       {/* Background Effects */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-violet/20 via-transparent to-transparent" />
 

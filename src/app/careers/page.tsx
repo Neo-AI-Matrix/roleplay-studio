@@ -25,6 +25,7 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import { FAQ } from '@/components/FAQ';
+import { SchemaScript, getCareersPageSchema } from '@/lib/schema';
 
 const careersFAQs = [
   {
@@ -325,6 +326,8 @@ const jobOpenings = [
 export default function CareersPage() {
   return (
     <div className="relative overflow-hidden">
+      <SchemaScript schema={getCareersPageSchema()} />
+      
       {/* Background Effects */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-violet/20 via-transparent to-transparent" />
       <div className="absolute top-1/4 -left-1/4 w-1/2 h-1/2 bg-violet/10 rounded-full blur-3xl" />

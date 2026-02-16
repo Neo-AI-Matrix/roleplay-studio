@@ -1,6 +1,7 @@
 import { Badge } from '@/components/ui/badge';
 import { FileText } from 'lucide-react';
 import { FAQ } from '@/components/FAQ';
+import { SchemaScript, getTermsPageSchema } from '@/lib/schema';
 
 const termsFAQs = [
   {
@@ -32,6 +33,8 @@ const termsFAQs = [
 export default function TermsOfServicePage() {
   return (
     <div className="relative overflow-hidden">
+      <SchemaScript schema={getTermsPageSchema()} />
+      
       {/* Background Effects */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-violet/20 via-transparent to-transparent" />
 

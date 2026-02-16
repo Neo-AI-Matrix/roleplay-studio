@@ -19,6 +19,7 @@ import {
   Sparkles
 } from 'lucide-react';
 import { FAQ } from '@/components/FAQ';
+import { SchemaScript, getContactPageSchema } from '@/lib/schema';
 
 // ElevenLabs Conversational AI Widget Agent ID (create in ElevenLabs dashboard)
 const ELEVENLABS_AGENT_ID = 'YOUR_AGENT_ID_HERE'; // TODO: Replace with actual agent ID
@@ -68,6 +69,8 @@ export default function ContactPage() {
 
   return (
     <div className="relative overflow-hidden">
+      <SchemaScript schema={getContactPageSchema()} />
+      
       {/* Background Effects */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-violet/20 via-transparent to-transparent" />
 

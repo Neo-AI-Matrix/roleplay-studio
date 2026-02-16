@@ -2,6 +2,7 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { Cookie } from 'lucide-react';
 import { FAQ } from '@/components/FAQ';
+import { SchemaScript, getCookiesPageSchema } from '@/lib/schema';
 
 const cookiesFAQs = [
   {
@@ -205,6 +206,8 @@ const thirdPartyServices = [
 export default function CookiePolicyPage() {
   return (
     <div className="relative overflow-hidden">
+      <SchemaScript schema={getCookiesPageSchema()} />
+      
       {/* Background Effects */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-violet/20 via-transparent to-transparent" />
 

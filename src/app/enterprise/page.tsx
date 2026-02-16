@@ -28,6 +28,7 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import { FAQ } from '@/components/FAQ';
+import { SchemaScript, getEnterprisePageSchema } from '@/lib/schema';
 
 const enterpriseFAQs = [
   {
@@ -185,6 +186,8 @@ const useCases = [
 export default function EnterprisePage() {
   return (
     <div className="relative overflow-hidden">
+      <SchemaScript schema={getEnterprisePageSchema()} />
+      
       {/* Background Effects */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-violet/20 via-transparent to-transparent" />
       <div className="absolute top-1/4 -left-1/4 w-1/2 h-1/2 bg-violet/10 rounded-full blur-3xl" />
