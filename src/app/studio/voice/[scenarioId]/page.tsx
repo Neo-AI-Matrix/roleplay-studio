@@ -34,6 +34,7 @@ import {
   Pause,
   Play
 } from 'lucide-react';
+import { StarRating } from '@/components/StarRating';
 
 type ConversationStatus = 'disconnected' | 'connecting' | 'connected';
 type AgentMode = 'listening' | 'speaking';
@@ -57,6 +58,9 @@ export default function VoiceSessionPage() {
   const [scoreBreakdown, setScoreBreakdown] = useState<ScoreBreakdown | null>(null);
   const [sessionDuration, setSessionDuration] = useState(0);
   const [showBriefing, setShowBriefing] = useState(true);
+  const [userRating, setUserRating] = useState<number>(0);
+  const [ratingSubmitted, setRatingSubmitted] = useState(false);
+  const [isSubmittingRating, setIsSubmittingRating] = useState(false);
   
   const conversationRef = useRef<any>(null);
   const transcriptContainerRef = useRef<HTMLDivElement>(null);
@@ -328,6 +332,31 @@ export default function VoiceSessionPage() {
     URL.revokeObjectURL(url);
   };
 
+  // Submit user rating
+  const submitRating = async (rating: number) => {
+    setUserRating(rating);
+    setIsSubmittingRating(true);
+    
+    try {
+      const response = await fetch('/api/ratings', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          scenarioId,
+          rating
+        })
+      });
+      
+      if (response.ok) {
+        setRatingSubmitted(true);
+      }
+    } catch (error) {
+      console.error('Failed to submit rating:', error);
+    } finally {
+      setIsSubmittingRating(false);
+    }
+  };
+
   if (!scenario) {
     return (
       <div className="min-h-screen bg-navy flex items-center justify-center">
@@ -583,6 +612,46 @@ export default function VoiceSessionPage() {
               </div>
             </div>
 
+            {/* Rate the Agent */}
+            <div className="bg-navy-light border border-white/10 rounded-2xl p-8 mb-8">
+              <div className="flex items-center gap-4">
+                <div className="w-16 h-16 rounded-full overflow-hidden ring-2 ring-white/20 flex-shrink-0">
+                  <Image 
+                    src={scenario.persona.avatar} 
+                    alt={scenario.persona.name}
+                    width={64}
+                    height={64}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-xl font-semibold text-white mb-2">Rate {scenario.persona.name}</h3>
+                  {ratingSubmitted ? (
+                    <div className="flex items-center gap-2">
+                      <StarRating rating={userRating} showCount={false} />
+                      <span className="text-green-400">Thanks for your feedback!</span>
+                    </div>
+                  ) : (
+                    <div className="flex items-center gap-2">
+                      <StarRating 
+                        rating={userRating} 
+                        interactive 
+                        onRate={submitRating}
+                        showCount={false}
+                        size="lg"
+                      />
+                      {isSubmittingRating && (
+                        <Loader2 className="w-5 h-5 text-gray-400 animate-spin" />
+                      )}
+                      {!userRating && (
+                        <span className="text-gray-400 text-sm">Click to rate</span>
+                      )}
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+
             {/* Actions */}
             <div className="flex gap-4 justify-center pb-16">
               <button
@@ -600,6 +669,8 @@ export default function VoiceSessionPage() {
                   setScoreBreakdown(null);
                   setSessionDuration(0);
                   setError(null);
+                  setUserRating(0);
+                  setRatingSubmitted(false);
                   // Scroll to top
                   window.scrollTo({ top: 0, behavior: 'instant' });
                   // Start new session immediately

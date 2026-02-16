@@ -1,11 +1,18 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Search, Filter, Clock, MessageSquare, Mic, X, ChevronDown } from "lucide-react";
 import type { Scenario } from "@/lib/scenarios";
 import { categoryLabels, categoryColors, type ScenarioCategory } from "@/lib/scenarios";
+import { StarRatingDisplay } from "@/components/StarRating";
+
+interface ScenarioRating {
+  scenarioId: string;
+  averageRating: number;
+  totalRatings: number;
+}
 
 interface ScenarioGridProps {
   scenarios: Scenario[];
@@ -16,6 +23,23 @@ export function ScenarioGrid({ scenarios }: ScenarioGridProps) {
   const [categoryFilter, setCategoryFilter] = useState<string>("all");
   const [difficultyFilter, setDifficultyFilter] = useState<string>("all");
   const [showFilters, setShowFilters] = useState(false);
+  const [ratings, setRatings] = useState<Record<string, ScenarioRating>>({});
+
+  // Fetch all ratings on mount
+  useEffect(() => {
+    async function fetchRatings() {
+      try {
+        const response = await fetch('/api/ratings?all=true');
+        if (response.ok) {
+          const data = await response.json();
+          setRatings(data);
+        }
+      } catch (error) {
+        console.error('Failed to fetch ratings:', error);
+      }
+    }
+    fetchRatings();
+  }, []);
 
   // Get unique categories and difficulties
   const categories = useMemo(() => {
@@ -220,7 +244,11 @@ export function ScenarioGrid({ scenarios }: ScenarioGridProps) {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredScenarios.map((scenario) => (
-            <ScenarioTile key={scenario.id} scenario={scenario} />
+            <ScenarioTile 
+              key={scenario.id} 
+              scenario={scenario} 
+              rating={ratings[scenario.id]}
+            />
           ))}
         </div>
       )}
@@ -228,7 +256,7 @@ export function ScenarioGrid({ scenarios }: ScenarioGridProps) {
   );
 }
 
-function ScenarioTile({ scenario }: { scenario: Scenario }) {
+function ScenarioTile({ scenario, rating }: { scenario: Scenario; rating?: ScenarioRating }) {
   const difficultyColorMap = {
     Beginner: "bg-green-500/20 text-green-400 border-green-500/30",
     Intermediate: "bg-yellow-500/20 text-yellow-400 border-yellow-500/30",
@@ -274,8 +302,14 @@ function ScenarioTile({ scenario }: { scenario: Scenario }) {
 
       {/* Content */}
       <div className="p-5">
-        {/* Persona Name */}
-        <p className="text-sm text-electric-blue font-medium mb-1">{scenario.persona.name}</p>
+        {/* Persona Name & Rating */}
+        <div className="flex items-center justify-between mb-1">
+          <p className="text-sm text-electric-blue font-medium">{scenario.persona.name}</p>
+          <StarRatingDisplay 
+            rating={rating?.averageRating || 0} 
+            totalRatings={rating?.totalRatings || 0} 
+          />
+        </div>
         
         {/* Title */}
         <h3 className="text-lg font-semibold text-white mb-2 group-hover:text-electric-blue transition-colors line-clamp-1">

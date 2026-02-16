@@ -17,6 +17,7 @@ import {
   AlertTriangle,
   Target
 } from 'lucide-react';
+import { StarRating } from '@/components/StarRating';
 
 interface Message {
   id: string;
@@ -47,6 +48,9 @@ export default function SessionPage() {
   const [feedback, setFeedback] = useState<SessionFeedback | null>(null);
   const [sessionStarted, setSessionStarted] = useState(false);
   const [showBriefing, setShowBriefing] = useState(true);
+  const [userRating, setUserRating] = useState<number>(0);
+  const [ratingSubmitted, setRatingSubmitted] = useState(false);
+  const [isSubmittingRating, setIsSubmittingRating] = useState(false);
   
   const messagesContainerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -244,6 +248,31 @@ export default function SessionPage() {
   const endSession = () => {
     setInput('END SESSION - Please provide your feedback and rating.');
     setTimeout(() => sendMessage(), 100);
+  };
+
+  // Submit user rating
+  const submitRating = async (rating: number) => {
+    setUserRating(rating);
+    setIsSubmittingRating(true);
+    
+    try {
+      const response = await fetch('/api/ratings', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          scenarioId,
+          rating
+        })
+      });
+      
+      if (response.ok) {
+        setRatingSubmitted(true);
+      }
+    } catch (error) {
+      console.error('Failed to submit rating:', error);
+    } finally {
+      setIsSubmittingRating(false);
+    }
   };
 
   if (!scenario) {
@@ -590,7 +619,8 @@ export default function SessionPage() {
         <div className="border-t border-white/10 bg-navy-light/80 backdrop-blur-sm px-4 py-4">
           <div className="container mx-auto max-w-3xl">
             <div className="bg-navy border border-white/10 rounded-xl p-4">
-              <div className="flex items-center gap-4 mb-3">
+              {/* AI Performance Rating */}
+              <div className="flex items-center gap-4 mb-4">
                 <div className="text-3xl font-bold text-white">{feedback.rating}/10</div>
                 <div className="flex">
                   {[...Array(10)].map((_, i) => (
@@ -601,7 +631,45 @@ export default function SessionPage() {
                   ))}
                 </div>
               </div>
-              <p className="text-gray-400 text-sm mb-3">Session complete! Review the feedback above.</p>
+              <p className="text-gray-400 text-sm mb-4">Session complete! Review the feedback above.</p>
+              
+              {/* User Rating Section */}
+              <div className="border-t border-white/10 pt-4 mb-4">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-full overflow-hidden ring-2 ring-white/20 flex-shrink-0">
+                    <Image 
+                      src={scenario.persona.avatar} 
+                      alt={scenario.persona.name}
+                      width={48}
+                      height={48}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div className="flex-1">
+                    <p className="text-white font-medium mb-1">Rate {scenario.persona.name}</p>
+                    {ratingSubmitted ? (
+                      <div className="flex items-center gap-2">
+                        <StarRating rating={userRating} showCount={false} />
+                        <span className="text-green-400 text-sm">Thanks for your feedback!</span>
+                      </div>
+                    ) : (
+                      <div className="flex items-center gap-2">
+                        <StarRating 
+                          rating={userRating} 
+                          interactive 
+                          onRate={submitRating}
+                          showCount={false}
+                          size="lg"
+                        />
+                        {isSubmittingRating && (
+                          <Loader2 className="w-4 h-4 text-gray-400 animate-spin" />
+                        )}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+              
               <button
                 onClick={() => router.push('/studio')}
                 className="px-4 py-2 bg-electric-blue hover:bg-electric-blue/90 text-white font-semibold rounded-lg transition-colors"
