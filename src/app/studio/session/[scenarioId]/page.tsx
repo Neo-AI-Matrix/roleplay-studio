@@ -472,8 +472,8 @@ export default function SessionPage() {
       )}
 
       {/* Chat Messages */}
-      <div className="flex-1 overflow-y-auto px-4 py-6">
-        <div className="container mx-auto max-w-3xl space-y-4">
+      <div className="flex-1 overflow-y-auto px-4 py-3">
+        <div className="container mx-auto max-w-3xl space-y-3">
           {messages.map((message) => (
             <div
               key={message.id}
@@ -555,7 +555,7 @@ export default function SessionPage() {
 
       {/* Input Area */}
       {!sessionEnded && (
-        <div className="border-t border-white/10 bg-navy-light/80 backdrop-blur-sm px-4 py-4">
+        <div className="border-t border-white/10 bg-navy-light/80 backdrop-blur-sm px-4 py-3">
           <div className="container mx-auto max-w-3xl">
             <div className="flex gap-3">
               <input
