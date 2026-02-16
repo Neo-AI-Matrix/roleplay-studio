@@ -234,6 +234,75 @@ function checkDeescalated(agentMessages: string[]): boolean {
   return earlyAnger && lateCalm;
 }
 
+// Filler word detection
+const FILLER_WORDS = [
+  'um', 'uh', 'uhh', 'umm', 'ummm',
+  'like',  // when used as filler, not comparison
+  'you know',
+  'i mean',
+  'basically',
+  'actually',
+  'literally',
+  'honestly',
+  'right',  // when used as filler tag
+  'so',     // when starting sentences
+  'well',   // when used as filler
+  'kind of',
+  'sort of',
+  'anyway',
+  'whatever'
+];
+
+export interface FillerWordAnalysis {
+  totalFillerWords: number;
+  fillerWordCounts: Record<string, number>;
+  fillerWordsPerMinute: number;
+  rating: 'excellent' | 'good' | 'needs-work' | 'poor';
+}
+
+export function analyzeFillerWords(transcript: TranscriptEntry[], durationSeconds: number): FillerWordAnalysis {
+  const userMessages = transcript.filter(t => t.role === 'user').map(t => t.text.toLowerCase());
+  const allUserText = userMessages.join(' ');
+  
+  const fillerWordCounts: Record<string, number> = {};
+  let totalFillerWords = 0;
+  
+  for (const filler of FILLER_WORDS) {
+    // Use word boundary matching to avoid false positives
+    const regex = new RegExp(`\\b${filler}\\b`, 'gi');
+    const matches = allUserText.match(regex);
+    const count = matches ? matches.length : 0;
+    
+    if (count > 0) {
+      fillerWordCounts[filler] = count;
+      totalFillerWords += count;
+    }
+  }
+  
+  // Calculate filler words per minute
+  const durationMinutes = Math.max(durationSeconds / 60, 1); // Avoid division by zero
+  const fillerWordsPerMinute = totalFillerWords / durationMinutes;
+  
+  // Rate the performance
+  let rating: FillerWordAnalysis['rating'];
+  if (fillerWordsPerMinute < 1) {
+    rating = 'excellent';
+  } else if (fillerWordsPerMinute < 3) {
+    rating = 'good';
+  } else if (fillerWordsPerMinute < 6) {
+    rating = 'needs-work';
+  } else {
+    rating = 'poor';
+  }
+  
+  return {
+    totalFillerWords,
+    fillerWordCounts,
+    fillerWordsPerMinute: Math.round(fillerWordsPerMinute * 10) / 10,
+    rating
+  };
+}
+
 // Format duration for display
 export function formatDuration(seconds: number): string {
   if (seconds < 60) return `${seconds}s`;

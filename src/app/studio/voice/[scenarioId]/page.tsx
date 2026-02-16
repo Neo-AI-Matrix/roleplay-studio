@@ -8,8 +8,10 @@ import {
   saveSession, 
   calculateScore, 
   formatDuration,
+  analyzeFillerWords,
   TranscriptEntry,
-  ScoreBreakdown 
+  ScoreBreakdown,
+  FillerWordAnalysis
 } from '@/lib/session-storage';
 import { Conversation } from '@elevenlabs/client';
 import { 
@@ -56,6 +58,7 @@ export default function VoiceSessionPage() {
   const [sessionEnded, setSessionEnded] = useState(false);
   const [sessionScore, setSessionScore] = useState<number | null>(null);
   const [scoreBreakdown, setScoreBreakdown] = useState<ScoreBreakdown | null>(null);
+  const [fillerWordAnalysis, setFillerWordAnalysis] = useState<FillerWordAnalysis | null>(null);
   const [sessionDuration, setSessionDuration] = useState(0);
   const [showBriefing, setShowBriefing] = useState(true);
   const [userRating, setUserRating] = useState<number>(0);
@@ -212,6 +215,10 @@ export default function VoiceSessionPage() {
     const { score, breakdown } = calculateScore(transcript);
     setSessionScore(score);
     setScoreBreakdown(breakdown);
+    
+    // Analyze filler words
+    const fillerAnalysis = analyzeFillerWords(transcript, sessionDuration);
+    setFillerWordAnalysis(fillerAnalysis);
     
     // Save session
     if (scenario && startTimeRef.current) {
@@ -573,6 +580,68 @@ export default function VoiceSessionPage() {
                   </div>
                 ))}
               </div>
+              
+              {/* Filler Words Analysis */}
+              {fillerWordAnalysis && (
+                <div className="mt-8 pt-6 border-t border-white/10">
+                  <h3 className="text-xl font-semibold text-white mb-4">Speech Clarity</h3>
+                  <div className="flex items-center gap-6 mb-4">
+                    <div className="text-center">
+                      <div className={`text-4xl font-bold ${
+                        fillerWordAnalysis.rating === 'excellent' ? 'text-green-400' :
+                        fillerWordAnalysis.rating === 'good' ? 'text-blue-400' :
+                        fillerWordAnalysis.rating === 'needs-work' ? 'text-yellow-400' :
+                        'text-red-400'
+                      }`}>
+                        {fillerWordAnalysis.totalFillerWords}
+                      </div>
+                      <div className="text-gray-400 text-sm">Filler Words</div>
+                    </div>
+                    <div className="text-center">
+                      <div className={`text-4xl font-bold ${
+                        fillerWordAnalysis.rating === 'excellent' ? 'text-green-400' :
+                        fillerWordAnalysis.rating === 'good' ? 'text-blue-400' :
+                        fillerWordAnalysis.rating === 'needs-work' ? 'text-yellow-400' :
+                        'text-red-400'
+                      }`}>
+                        {fillerWordAnalysis.fillerWordsPerMinute}
+                      </div>
+                      <div className="text-gray-400 text-sm">Per Minute</div>
+                    </div>
+                    <div className={`px-4 py-2 rounded-full text-sm font-medium ${
+                      fillerWordAnalysis.rating === 'excellent' ? 'bg-green-500/20 text-green-400' :
+                      fillerWordAnalysis.rating === 'good' ? 'bg-blue-500/20 text-blue-400' :
+                      fillerWordAnalysis.rating === 'needs-work' ? 'bg-yellow-500/20 text-yellow-400' :
+                      'bg-red-500/20 text-red-400'
+                    }`}>
+                      {fillerWordAnalysis.rating === 'excellent' ? '✨ Excellent' :
+                       fillerWordAnalysis.rating === 'good' ? '👍 Good' :
+                       fillerWordAnalysis.rating === 'needs-work' ? '⚠️ Needs Work' :
+                       '🎯 Focus Area'}
+                    </div>
+                  </div>
+                  
+                  {Object.keys(fillerWordAnalysis.fillerWordCounts).length > 0 && (
+                    <div className="flex flex-wrap gap-2">
+                      {Object.entries(fillerWordAnalysis.fillerWordCounts)
+                        .sort(([,a], [,b]) => b - a)
+                        .map(([word, count]) => (
+                          <span 
+                            key={word} 
+                            className="px-3 py-1 bg-white/10 rounded-full text-sm text-gray-300"
+                          >
+                            &ldquo;{word}&rdquo; × {count}
+                          </span>
+                        ))}
+                    </div>
+                  )}
+                  
+                  <p className="text-gray-500 text-sm mt-4">
+                    💡 Tip: Filler words like &ldquo;um&rdquo; and &ldquo;uh&rdquo; can reduce perceived confidence. 
+                    Try pausing instead of filling silence.
+                  </p>
+                </div>
+              )}
             </div>
 
             {/* Transcript */}
@@ -667,6 +736,7 @@ export default function VoiceSessionPage() {
                   setTranscript([]);
                   setSessionScore(null);
                   setScoreBreakdown(null);
+                  setFillerWordAnalysis(null);
                   setSessionDuration(0);
                   setError(null);
                   setUserRating(0);
