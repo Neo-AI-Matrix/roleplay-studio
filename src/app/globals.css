@@ -106,6 +106,14 @@ h1, h2, h3, h4, h5, h6 {
   background-clip: text;
 }
 
+/* Gradient text stays the same in both modes - it's the brand color */
+.light .gradient-text {
+  background: linear-gradient(135deg, #6d28d9 0%, #0891b2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
 /* Gradient border */
 .gradient-border {
   position: relative;
@@ -178,29 +186,52 @@ h1, h2, h3, h4, h5, h6 {
   box-shadow: 0 0 40px rgba(6, 182, 212, 0.15);
 }
 
-/* Light mode text color overrides */
-.light .text-white {
+/* Light mode text color overrides - high specificity */
+:root.light .text-white,
+html.light .text-white,
+.light .text-white,
+.light [class*="text-white"] {
   color: #0f172a !important;
 }
 
+:root.light .text-gray-400,
+html.light .text-gray-400,
 .light .text-gray-400 {
-  color: #64748b !important;
-}
-
-.light .text-gray-500 {
-  color: #64748b !important;
-}
-
-.light .text-gray-300 {
   color: #475569 !important;
 }
 
-.light .text-gray-200 {
+:root.light .text-gray-500,
+html.light .text-gray-500,
+.light .text-gray-500 {
+  color: #475569 !important;
+}
+
+:root.light .text-gray-300,
+html.light .text-gray-300,
+.light .text-gray-300 {
   color: #334155 !important;
 }
 
+:root.light .text-gray-200,
+html.light .text-gray-200,
+.light .text-gray-200 {
+  color: #1e293b !important;
+}
+
+:root.light .text-muted-foreground,
+html.light .text-muted-foreground,
 .light .text-muted-foreground {
-  color: #64748b !important;
+  color: #475569 !important;
+}
+
+/* Navigation and headers - extra specificity for light mode */
+html.light span.font-heading.text-white,
+html.light h1.text-white,
+html.light h2.text-white,
+html.light h3.text-white,
+html.light p.text-white,
+html.light span.text-white {
+  color: #0f172a !important;
 }
 
 /* Light mode background overrides */
@@ -252,6 +283,23 @@ h1, h2, h3, h4, h5, h6 {
 
 .light .to-navy-light {
   --tw-gradient-to: #ffffff !important;
+}
+
+/* Light mode navigation */
+html.light header,
+html.light .bg-navy\/80 {
+  background-color: rgba(255, 255, 255, 0.9) !important;
+  border-color: rgba(124, 58, 237, 0.1) !important;
+}
+
+html.light nav a,
+html.light nav button {
+  color: #334155;
+}
+
+html.light nav a:hover,
+html.light nav button:hover {
+  color: #0f172a;
 }
 
 /* Light mode placeholder text */
