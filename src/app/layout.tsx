@@ -4,6 +4,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import "./globals.css";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
+import { ThemeProvider } from "@/components/ThemeProvider";
 
 const inter = Inter({ 
   subsets: ["latin"],
@@ -28,13 +29,20 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider>
-      <html lang="en" className={`${inter.variable} ${outfit.variable}`}>
-        <body className="min-h-screen bg-navy antialiased font-sans">
-          <Navigation />
-          <main className="pt-16">
-            {children}
-          </main>
-          <Footer />
+      <html lang="en" className={`${inter.variable} ${outfit.variable}`} suppressHydrationWarning>
+        <body className="min-h-screen bg-background text-foreground antialiased font-sans">
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="dark"
+            enableSystem
+            disableTransitionOnChange={false}
+          >
+            <Navigation />
+            <main className="pt-16">
+              {children}
+            </main>
+            <Footer />
+          </ThemeProvider>
         </body>
       </html>
     </ClerkProvider>

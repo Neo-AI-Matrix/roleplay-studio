@@ -10,6 +10,7 @@ import { Achievements } from "./Achievements";
 import { SidebarProgress } from "./SidebarProgress";
 import { QuickActions } from "./QuickActions";
 import { ProfileButton } from "./ProfileButton";
+import { ThemeToggleSimple } from "@/components/ThemeToggle";
 
 export default async function StudioPage() {
   const user = await currentUser();
@@ -31,6 +32,7 @@ export default async function StudioPage() {
           </div>
           <div className="flex items-center gap-4">
             <TrialCountdown />
+            <ThemeToggleSimple />
             <div className="text-right mr-2 hidden sm:block">
               <p className="text-sm text-gray-400">Signed in as</p>
               <p className="text-white font-medium">{user?.emailAddresses[0]?.emailAddress}</p>
