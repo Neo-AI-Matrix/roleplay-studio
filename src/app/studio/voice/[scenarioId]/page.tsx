@@ -30,7 +30,9 @@ import {
   Download,
   FileText,
   AlertTriangle,
-  Target
+  Target,
+  Pause,
+  Play
 } from 'lucide-react';
 
 type ConversationStatus = 'disconnected' | 'connecting' | 'connected';
@@ -45,6 +47,8 @@ export default function VoiceSessionPage() {
   const [status, setStatus] = useState<ConversationStatus>('disconnected');
   const [agentMode, setAgentMode] = useState<AgentMode>('listening');
   const [isMuted, setIsMuted] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
+  const [pauseTimeRemaining, setPauseTimeRemaining] = useState(0);
   const [error, setError] = useState<string | null>(null);
   const [transcript, setTranscript] = useState<TranscriptEntry[]>([]);
   const [sessionStarted, setSessionStarted] = useState(false);
@@ -59,6 +63,11 @@ export default function VoiceSessionPage() {
   const transcriptEndRef = useRef<HTMLDivElement>(null);
   const startTimeRef = useRef<Date | null>(null);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const pauseTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const pauseStartRef = useRef<Date | null>(null);
+  
+  // Max pause time: 5 minutes (300 seconds)
+  const MAX_PAUSE_SECONDS = 300;
 
   // Auto-scroll transcript within its container only (not the page)
   useEffect(() => {
@@ -82,6 +91,9 @@ export default function VoiceSessionPage() {
       }
       if (timerRef.current) {
         clearInterval(timerRef.current);
+      }
+      if (pauseTimerRef.current) {
+        clearInterval(pauseTimerRef.current);
       }
     };
   }, []);
@@ -219,6 +231,77 @@ export default function VoiceSessionPage() {
       conversationRef.current.setMicMuted(!isMuted);
       setIsMuted(!isMuted);
     }
+  };
+
+  const togglePause = () => {
+    if (isPaused) {
+      // Resume
+      resumeSession();
+    } else {
+      // Pause
+      pauseSession();
+    }
+  };
+
+  const pauseSession = () => {
+    setIsPaused(true);
+    pauseStartRef.current = new Date();
+    
+    // Mute mic while paused
+    if (conversationRef.current && !isMuted) {
+      conversationRef.current.setMicMuted(true);
+    }
+    
+    // Stop duration timer
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+      timerRef.current = null;
+    }
+    
+    // Start pause countdown timer
+    setPauseTimeRemaining(MAX_PAUSE_SECONDS);
+    pauseTimerRef.current = setInterval(() => {
+      setPauseTimeRemaining(prev => {
+        if (prev <= 1) {
+          // Time's up - auto-end session
+          if (pauseTimerRef.current) {
+            clearInterval(pauseTimerRef.current);
+          }
+          endConversation();
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+  };
+
+  const resumeSession = () => {
+    setIsPaused(false);
+    
+    // Clear pause timer
+    if (pauseTimerRef.current) {
+      clearInterval(pauseTimerRef.current);
+      pauseTimerRef.current = null;
+    }
+    setPauseTimeRemaining(0);
+    
+    // Restore mic state (unmute if it wasn't muted before pause)
+    if (conversationRef.current && !isMuted) {
+      conversationRef.current.setMicMuted(false);
+    }
+    
+    // Resume duration timer
+    timerRef.current = setInterval(() => {
+      if (startTimeRef.current && !isPaused) {
+        // Adjust for paused time
+        const pausedDuration = pauseStartRef.current 
+          ? Math.floor((Date.now() - pauseStartRef.current.getTime()) / 1000)
+          : 0;
+        startTimeRef.current = new Date(startTimeRef.current.getTime() + (pausedDuration * 1000));
+        pauseStartRef.current = null;
+        setSessionDuration(Math.floor((Date.now() - startTimeRef.current.getTime()) / 1000));
+      }
+    }, 1000);
   };
 
   const downloadTranscript = () => {
@@ -665,13 +748,15 @@ export default function VoiceSessionPage() {
 
             <p className="text-lg text-white mb-1 text-center">
               {status === 'connecting' && 'Connecting...'}
-              {status === 'connected' && agentMode === 'speaking' && `${scenario.persona.name} is speaking...`}
-              {status === 'connected' && agentMode === 'listening' && 'Listening to you...'}
+              {status === 'connected' && isPaused && '⏸️ Session Paused'}
+              {status === 'connected' && !isPaused && agentMode === 'speaking' && `${scenario.persona.name} is speaking...`}
+              {status === 'connected' && !isPaused && agentMode === 'listening' && 'Listening to you...'}
               {status === 'disconnected' && 'Session ended'}
             </p>
             
             <p className="text-gray-400 text-sm mb-6 text-center">
-              {status === 'connected' && `Speak naturally — ${scenario.persona.name.split(' ')[0]} will respond`}
+              {status === 'connected' && isPaused && 'Take your time — click Resume when ready'}
+              {status === 'connected' && !isPaused && `Speak naturally — ${scenario.persona.name.split(' ')[0]} will respond`}
             </p>
 
             {error && (
@@ -683,18 +768,46 @@ export default function VoiceSessionPage() {
               </div>
             )}
 
+            {/* Pause Indicator */}
+            {isPaused && (
+              <div className="bg-yellow-500/20 border border-yellow-500/30 rounded-xl p-3 mb-4 max-w-sm">
+                <p className="text-yellow-400 text-sm flex items-center gap-2">
+                  <Pause className="w-4 h-4" />
+                  Session paused — {Math.floor(pauseTimeRemaining / 60)}:{(pauseTimeRemaining % 60).toString().padStart(2, '0')} remaining
+                </p>
+                <p className="text-yellow-400/70 text-xs mt-1">
+                  Session will auto-end if not resumed
+                </p>
+              </div>
+            )}
+
             {/* Controls */}
             <div className="flex items-center gap-3">
               <button
                 onClick={toggleMute}
-                disabled={status !== 'connected'}
+                disabled={status !== 'connected' || isPaused}
                 className={`p-3 rounded-full transition-all ${
                   isMuted 
                     ? 'bg-red-500/20 text-red-400 hover:bg-red-500/30' 
                     : 'bg-white/10 text-white hover:bg-white/20'
                 } disabled:opacity-50 disabled:cursor-not-allowed`}
+                title={isMuted ? 'Unmute' : 'Mute'}
               >
                 {isMuted ? <MicOff className="w-5 h-5" /> : <Mic className="w-5 h-5" />}
+              </button>
+              
+              {/* Pause/Resume Button */}
+              <button
+                onClick={togglePause}
+                disabled={status !== 'connected'}
+                className={`p-3 rounded-full transition-all ${
+                  isPaused 
+                    ? 'bg-green-500/20 text-green-400 hover:bg-green-500/30' 
+                    : 'bg-yellow-500/20 text-yellow-400 hover:bg-yellow-500/30'
+                } disabled:opacity-50 disabled:cursor-not-allowed`}
+                title={isPaused ? 'Resume session' : 'Pause session'}
+              >
+                {isPaused ? <Play className="w-5 h-5" /> : <Pause className="w-5 h-5" />}
               </button>
               
               <button
