@@ -125,7 +125,7 @@ export function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
   if (!isOpen || !profile) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-[60] flex items-start justify-center pt-20 pb-4 px-4">
       {/* Backdrop */}
       <div 
         className="absolute inset-0 bg-black/70 backdrop-blur-sm"
@@ -133,7 +133,7 @@ export function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
       />
       
       {/* Modal */}
-      <div className="relative bg-navy-light border border-white/10 rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden flex flex-col">
+      <div className="relative bg-navy-light border border-white/10 rounded-2xl w-full max-w-2xl max-h-[calc(100vh-6rem)] overflow-hidden flex flex-col">
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-white/10">
           <h2 className="text-xl font-semibold text-white">Profile Settings</h2>
@@ -485,7 +485,7 @@ export function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
               <p className="text-gray-400 text-sm mb-4">
                 You&apos;ve earned {earnedAchievements.length} of {achievements.length} achievements
               </p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-[400px] overflow-y-auto">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {achievements.map((achievement) => {
                   const isEarned = earnedAchievements.includes(achievement.id);
                   return (
