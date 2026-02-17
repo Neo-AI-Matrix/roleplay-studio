@@ -258,9 +258,9 @@ export function ScenarioGrid({ scenarios }: ScenarioGridProps) {
 
 function ScenarioTile({ scenario, rating }: { scenario: Scenario; rating?: ScenarioRating }) {
   const difficultyColorMap = {
-    Beginner: "bg-green-500/20 text-green-400 border-green-500/30",
-    Intermediate: "bg-yellow-500/20 text-yellow-400 border-yellow-500/30",
-    Advanced: "bg-red-500/20 text-red-400 border-red-500/30",
+    Beginner: "bg-green-500/20 text-green-700 dark:text-green-400 border-green-500/30",
+    Intermediate: "bg-yellow-500/20 text-yellow-700 dark:text-yellow-400 border-yellow-500/30",
+    Advanced: "bg-red-500/20 text-red-700 dark:text-red-400 border-red-500/30",
   };
 
   const getCategoryColorClass = (cat: ScenarioCategory) => {
