@@ -23,11 +23,11 @@ export const categoryDescriptions: Record<ScenarioCategory, string> = {
 };
 
 export const categoryColors: Record<ScenarioCategory, { bg: string; text: string; border: string }> = {
-  sales: { bg: 'bg-violet/30', text: 'text-white', border: 'border-violet/50' },
-  support: { bg: 'bg-cyan/30', text: 'text-white', border: 'border-cyan/50' },
-  hr: { bg: 'bg-amber-500/30', text: 'text-amber-200', border: 'border-amber-500/50' },
-  communication: { bg: 'bg-emerald-500/30', text: 'text-emerald-200', border: 'border-emerald-500/50' },
-  leadership: { bg: 'bg-rose-500/30', text: 'text-rose-200', border: 'border-rose-500/50' }
+  sales: { bg: 'bg-violet/30', text: 'text-violet-700 dark:text-white', border: 'border-violet/50' },
+  support: { bg: 'bg-cyan/30', text: 'text-cyan-700 dark:text-white', border: 'border-cyan/50' },
+  hr: { bg: 'bg-amber-500/30', text: 'text-amber-700 dark:text-amber-200', border: 'border-amber-500/50' },
+  communication: { bg: 'bg-emerald-500/30', text: 'text-emerald-700 dark:text-emerald-200', border: 'border-emerald-500/50' },
+  leadership: { bg: 'bg-rose-500/30', text: 'text-rose-700 dark:text-rose-200', border: 'border-rose-500/50' }
 };
 
 export interface Scenario {
