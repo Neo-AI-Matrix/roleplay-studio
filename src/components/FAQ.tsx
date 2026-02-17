@@ -1,7 +1,11 @@
 "use client";
 
-import { useState } from "react";
-import { ChevronDown } from "lucide-react";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
 export interface FAQItem {
   question: string;
@@ -15,8 +19,6 @@ interface FAQProps {
 }
 
 export function FAQ({ title = "Frequently Asked Questions", subtitle, faqs }: FAQProps) {
-  const [openIndex, setOpenIndex] = useState<number | null>(0);
-
   return (
     <section className="py-16 md:py-24">
       <div className="container mx-auto px-4">
@@ -31,34 +33,23 @@ export function FAQ({ title = "Frequently Asked Questions", subtitle, faqs }: FA
           )}
         </div>
 
-        <div className="max-w-3xl mx-auto space-y-4">
-          {faqs.map((faq, index) => (
-            <div
-              key={index}
-              className="border border-white/10 rounded-xl overflow-hidden bg-navy-light/50"
-            >
-              <button
-                onClick={() => setOpenIndex(openIndex === index ? null : index)}
-                className="w-full flex items-center justify-between p-5 text-left hover:bg-white/5 transition-colors"
+        <div className="max-w-3xl mx-auto">
+          <Accordion type="single" collapsible defaultValue="item-0" className="space-y-4">
+            {faqs.map((faq, index) => (
+              <AccordionItem
+                key={index}
+                value={`item-${index}`}
+                className="border border-white/10 rounded-xl overflow-hidden bg-navy-light/50 px-5"
               >
-                <span className="font-medium text-white pr-4">{faq.question}</span>
-                <ChevronDown
-                  className={`w-5 h-5 text-gray-400 flex-shrink-0 transition-transform duration-200 ${
-                    openIndex === index ? "rotate-180" : ""
-                  }`}
-                />
-              </button>
-              <div
-                className={`overflow-hidden transition-all duration-200 ${
-                  openIndex === index ? "max-h-96" : "max-h-0"
-                }`}
-              >
-                <div className="p-5 pt-0 text-muted-foreground leading-relaxed">
+                <AccordionTrigger className="text-left text-white font-medium hover:no-underline py-5">
+                  {faq.question}
+                </AccordionTrigger>
+                <AccordionContent className="text-muted-foreground leading-relaxed pb-5">
                   {faq.answer}
-                </div>
-              </div>
-            </div>
-          ))}
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
         </div>
       </div>
     </section>
