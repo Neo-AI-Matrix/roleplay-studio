@@ -5,8 +5,74 @@
  */
 
 const { MongoClient } = require('mongodb');
+const { BetaAnalyticsDataClient } = require('@google-analytics/data');
+const fs = require('fs');
+const path = require('path');
 
 const MONGODB_URI = process.env.MONGODB_URI;
+const GA4_PROPERTY_ID = '524996854';
+const GA4_CREDENTIALS_PATH = process.env.GA4_CREDENTIALS_PATH || 
+  path.join(process.env.HOME, '.openclaw/secrets/ga4-service-account.json');
+
+async function getGA4Stats() {
+  try {
+    if (!fs.existsSync(GA4_CREDENTIALS_PATH)) {
+      console.warn('GA4 credentials not found, skipping GA4 data');
+      return null;
+    }
+
+    const analyticsDataClient = new BetaAnalyticsDataClient({
+      keyFilename: GA4_CREDENTIALS_PATH
+    });
+
+    const [response] = await analyticsDataClient.runReport({
+      property: `properties/${GA4_PROPERTY_ID}`,
+      dateRanges: [{ startDate: '7daysAgo', endDate: 'today' }],
+      dimensions: [{ name: 'country' }],
+      metrics: [
+        { name: 'activeUsers' },
+        { name: 'sessions' },
+        { name: 'newUsers' },
+        { name: 'screenPageViews' }
+      ],
+    });
+
+    let totalActiveUsers = 0;
+    let totalSessions = 0;
+    let totalNewUsers = 0;
+    let totalPageViews = 0;
+    const countryData = [];
+
+    response.rows?.forEach(row => {
+      const country = row.dimensionValues[0].value;
+      const activeUsers = parseInt(row.metricValues[0].value) || 0;
+      const sessions = parseInt(row.metricValues[1].value) || 0;
+      const newUsers = parseInt(row.metricValues[2].value) || 0;
+      const pageViews = parseInt(row.metricValues[3].value) || 0;
+
+      totalActiveUsers += activeUsers;
+      totalSessions += sessions;
+      totalNewUsers += newUsers;
+      totalPageViews += pageViews;
+
+      countryData.push({ country, activeUsers, sessions });
+    });
+
+    // Sort by sessions and take top 5
+    countryData.sort((a, b) => b.sessions - a.sessions);
+
+    return {
+      activeUsers: totalActiveUsers,
+      sessions: totalSessions,
+      newUsers: totalNewUsers,
+      pageViews: totalPageViews,
+      topCountries: countryData.slice(0, 5)
+    };
+  } catch (error) {
+    console.warn('Error fetching GA4 data:', error.message);
+    return null;
+  }
+}
 
 async function getWeeklyStats() {
   const client = new MongoClient(MONGODB_URI);
@@ -66,6 +132,9 @@ async function getWeeklyStats() {
       { $group: { _id: null, avg: { $avg: '$rating' } } }
     ]).toArray();
     
+    // Fetch GA4 data
+    const ga4Data = await getGA4Stats();
+    
     return {
       period: {
         start: weekAgo.toISOString().split('T')[0],
@@ -92,7 +161,8 @@ async function getWeeklyStats() {
       ratings: {
         count: ratingsThisWeek,
         average: avgRating[0]?.avg?.toFixed(1) || 'N/A'
-      }
+      },
+      ga4: ga4Data
     };
   } finally {
     await client.close();
@@ -117,6 +187,26 @@ function formatReport(stats) {
 
 `;
 
+  // Add GA4 website analytics
+  if (stats.ga4) {
+    report += `**Website Analytics (GA4):**
+• Unique Visitors: ${stats.ga4.activeUsers}
+• Website Sessions: ${stats.ga4.sessions}
+• New Visitors: ${stats.ga4.newUsers}
+• Page Views: ${stats.ga4.pageViews}
+
+`;
+    if (stats.ga4.topCountries && stats.ga4.topCountries.length > 0) {
+      report += `**Top Countries:**\n`;
+      stats.ga4.topCountries.forEach((c, i) => {
+        report += `${i + 1}. ${c.country}: ${c.sessions} sessions\n`;
+      });
+      report += '\n';
+    }
+  } else {
+    report += `**Website Analytics:** *(GA4 data unavailable)*\n\n`;
+  }
+
   if (stats.newAccounts.list.length > 0) {
     report += `**New Signups:**\n`;
     stats.newAccounts.list.forEach(a => {
@@ -133,7 +223,7 @@ function formatReport(stats) {
     report += '\n';
   }
 
-  report += `*Note: GA4 visitor data available at analytics.google.com (neo@tocabay.com)*`;
+  report += `*Full analytics: analytics.google.com (neo@tocabay.com)*`;
   
   return report;
 }
