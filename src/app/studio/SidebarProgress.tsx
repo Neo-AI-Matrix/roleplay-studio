@@ -33,9 +33,23 @@ export function SidebarProgress() {
     );
   }
 
-  const progressPercent = stats.totalSessions > 0 
-    ? Math.min((stats.totalSessions / 10) * 100, 100) 
-    : 0;
+  // Session milestones matching achievements
+  const sessionMilestones = [
+    { target: 5, name: 'Getting Warmed Up', icon: '🔥' },
+    { target: 10, name: 'Dedicated Learner', icon: '📚' },
+    { target: 25, name: 'Committed', icon: '💪' },
+    { target: 50, name: 'Training Expert', icon: '🎓' },
+  ];
+
+  // Find the next milestone to work toward
+  const nextMilestone = sessionMilestones.find(m => stats.totalSessions < m.target);
+  const prevMilestoneTarget = sessionMilestones
+    .filter(m => stats.totalSessions >= m.target)
+    .pop()?.target || 0;
+
+  const progressPercent = nextMilestone
+    ? ((stats.totalSessions - prevMilestoneTarget) / (nextMilestone.target - prevMilestoneTarget)) * 100
+    : 100;
 
   const scenariosCompleted = Object.keys(stats.scenarioStats || {}).length;
 
@@ -66,19 +80,29 @@ export function SidebarProgress() {
           <span className="text-white font-semibold">{scenariosCompleted}</span>
         </div>
         
-        {/* Progress bar */}
-        <div className="pt-2">
-          <div className="flex items-center justify-between text-xs text-gray-500 mb-1">
-            <span>Progress to 10 sessions</span>
-            <span>{Math.round(progressPercent)}%</span>
+        {/* Progress bar - tracks toward next achievement milestone */}
+        {nextMilestone ? (
+          <div className="pt-2">
+            <div className="flex items-center justify-between text-xs text-gray-500 mb-1">
+              <span className="flex items-center gap-1">
+                <span>{nextMilestone.icon}</span>
+                <span>{nextMilestone.name} ({nextMilestone.target} sessions)</span>
+              </span>
+              <span>{stats.totalSessions}/{nextMilestone.target}</span>
+            </div>
+            <div className="w-full h-2 bg-white/10 rounded-full overflow-hidden">
+              <div 
+                className="h-full bg-gradient-to-r from-violet to-cyan rounded-full transition-all duration-500" 
+                style={{ width: `${progressPercent}%` }}
+              />
+            </div>
           </div>
-          <div className="w-full h-2 bg-white/10 rounded-full overflow-hidden">
-            <div 
-              className="h-full bg-gradient-to-r from-violet to-cyan rounded-full transition-all duration-500" 
-              style={{ width: `${progressPercent}%` }}
-            />
+        ) : (
+          <div className="pt-2 flex items-center gap-2 text-xs text-green-400">
+            <span>🎓</span>
+            <span>All session milestones achieved!</span>
           </div>
-        </div>
+        )}
         
         {stats.totalSessions === 0 ? (
           <p className="text-xs text-gray-500">Complete your first session to start tracking progress</p>
