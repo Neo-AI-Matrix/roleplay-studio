@@ -1,11 +1,7 @@
 "use client";
 
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
+import { useState } from "react";
+import { ChevronDown } from "lucide-react";
 
 export interface FAQItem {
   question: string;
@@ -19,6 +15,12 @@ interface FAQProps {
 }
 
 export function FAQ({ title = "Frequently Asked Questions", subtitle, faqs }: FAQProps) {
+  const [openIndex, setOpenIndex] = useState<number | null>(0);
+
+  const toggleFAQ = (index: number) => {
+    setOpenIndex(openIndex === index ? null : index);
+  };
+
   return (
     <section className="py-16 md:py-24">
       <div className="container mx-auto px-4">
@@ -33,23 +35,35 @@ export function FAQ({ title = "Frequently Asked Questions", subtitle, faqs }: FA
           )}
         </div>
 
-        <div className="max-w-3xl mx-auto">
-          <Accordion type="single" collapsible defaultValue="item-0" className="space-y-4">
-            {faqs.map((faq, index) => (
-              <AccordionItem
+        <div className="max-w-3xl mx-auto space-y-4">
+          {faqs.map((faq, index) => {
+            const isOpen = openIndex === index;
+            return (
+              <div
                 key={index}
-                value={`item-${index}`}
-                className="border border-white/10 rounded-xl overflow-hidden bg-navy-light/50 px-5"
+                className="border border-white/10 rounded-xl overflow-hidden bg-navy-light/50"
               >
-                <AccordionTrigger className="text-left text-white font-medium hover:no-underline py-5">
-                  {faq.question}
-                </AccordionTrigger>
-                <AccordionContent className="text-muted-foreground leading-relaxed pb-5">
-                  {faq.answer}
-                </AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
+                <button
+                  type="button"
+                  onClick={() => toggleFAQ(index)}
+                  className="w-full flex items-center justify-between p-5 text-left hover:bg-white/5 transition-colors cursor-pointer"
+                  aria-expanded={isOpen}
+                >
+                  <span className="font-medium text-white pr-4">{faq.question}</span>
+                  <ChevronDown
+                    className={`w-5 h-5 text-gray-400 flex-shrink-0 transition-transform duration-200 ${
+                      isOpen ? "rotate-180" : ""
+                    }`}
+                  />
+                </button>
+                {isOpen && (
+                  <div className="px-5 pb-5 text-muted-foreground leading-relaxed">
+                    {faq.answer}
+                  </div>
+                )}
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>
