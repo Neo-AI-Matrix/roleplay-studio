@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Activity, Users, DollarSign, Clock, TrendingUp, LogOut, RefreshCw, AlertTriangle } from 'lucide-react';
+import { Activity, Users, DollarSign, Clock, TrendingUp, LogOut, RefreshCw, AlertTriangle, UserPlus } from 'lucide-react';
 
 interface UsageSummary {
   totalElevenLabsCharacters: number;
@@ -41,6 +41,26 @@ interface UsageData {
   generatedAt: string;
 }
 
+interface Signup {
+  _id: string;
+  clerkUserId: string;
+  email: string;
+  name?: string;
+  accountType: string;
+  createdAt: string;
+  eventType: string;
+}
+
+interface SignupsData {
+  signups: Signup[];
+  stats: {
+    total: number;
+    trials: number;
+    paid: number;
+    periodDays: number;
+  };
+}
+
 export default function AdminDashboard() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -49,6 +69,7 @@ export default function AdminDashboard() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [usageData, setUsageData] = useState<UsageData | null>(null);
+  const [signupsData, setSignupsData] = useState<SignupsData | null>(null);
   const [isRefreshing, setIsRefreshing] = useState(false);
 
   // Check if already logged in
@@ -63,11 +84,25 @@ export default function AdminDashboard() {
         const data = await res.json();
         setUsageData(data);
         setIsLoggedIn(true);
+        // Also fetch signups
+        fetchSignups();
       }
     } catch {
       // Not logged in
     } finally {
       setIsLoading(false);
+    }
+  }
+
+  async function fetchSignups() {
+    try {
+      const res = await fetch('/api/admin/signups?days=30&limit=50');
+      if (res.ok) {
+        const data = await res.json();
+        setSignupsData(data);
+      }
+    } catch {
+      console.error('Failed to fetch signups');
     }
   }
 
@@ -106,13 +141,20 @@ export default function AdminDashboard() {
   async function fetchUsageData() {
     setIsRefreshing(true);
     try {
-      const res = await fetch('/api/admin/usage');
-      if (res.ok) {
-        const data = await res.json();
+      const [usageRes, signupsRes] = await Promise.all([
+        fetch('/api/admin/usage'),
+        fetch('/api/admin/signups?days=30&limit=50'),
+      ]);
+      if (usageRes.ok) {
+        const data = await usageRes.json();
         setUsageData(data);
       }
+      if (signupsRes.ok) {
+        const data = await signupsRes.json();
+        setSignupsData(data);
+      }
     } catch {
-      setError('Failed to fetch usage data');
+      setError('Failed to fetch data');
     } finally {
       setIsRefreshing(false);
     }
@@ -327,6 +369,70 @@ export default function AdminDashboard() {
               <TokenRow label="OpenAI Output Tokens" value={summary?.totalOpenAIOutputTokens || 0} />
             </div>
           </div>
+        </div>
+
+        {/* Recent Signups */}
+        <div className="bg-gray-800 rounded-xl p-6 border border-gray-700 mb-8">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-lg font-semibold text-white flex items-center gap-2">
+              <UserPlus className="w-5 h-5 text-emerald-400" />
+              Recent Signups
+            </h3>
+            {signupsData?.stats && (
+              <div className="flex items-center gap-4 text-sm">
+                <span className="text-gray-400">
+                  Last {signupsData.stats.periodDays} days:
+                </span>
+                <span className="text-emerald-400 font-medium">
+                  {signupsData.stats.trials} trials
+                </span>
+                <span className="text-violet-400 font-medium">
+                  {signupsData.stats.paid} paid
+                </span>
+              </div>
+            )}
+          </div>
+          {!signupsData?.signups?.length ? (
+            <p className="text-gray-400 text-center py-8">No signups recorded yet. Configure the Clerk webhook to start tracking.</p>
+          ) : (
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead>
+                  <tr className="text-left text-gray-400 text-sm border-b border-gray-700">
+                    <th className="pb-3 font-medium">Email</th>
+                    <th className="pb-3 font-medium">Name</th>
+                    <th className="pb-3 font-medium">Type</th>
+                    <th className="pb-3 font-medium">Signed Up</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {signupsData.signups.map((signup) => (
+                    <tr key={signup._id} className="border-b border-gray-700/50">
+                      <td className="py-3 text-white font-medium">{signup.email}</td>
+                      <td className="py-3 text-gray-300">{signup.name || '-'}</td>
+                      <td className="py-3">
+                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                          signup.accountType === 'Trial' 
+                            ? 'bg-emerald-500/20 text-emerald-400' 
+                            : 'bg-violet-500/20 text-violet-400'
+                        }`}>
+                          {signup.accountType}
+                        </span>
+                      </td>
+                      <td className="py-3 text-gray-400 text-sm">
+                        {new Date(signup.createdAt).toLocaleString('en-US', {
+                          month: 'short',
+                          day: 'numeric',
+                          hour: 'numeric',
+                          minute: '2-digit',
+                        })}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
         </div>
 
         {/* User Breakdown */}
