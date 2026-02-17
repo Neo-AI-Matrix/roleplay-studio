@@ -91,9 +91,7 @@ const team = [
 
 const milestones = [
   { year: '2024', event: 'Company founded with a vision to transform sales training' },
-  { year: '2024', event: 'Launched beta with 50 early adopter companies' },
-  { year: '2025', event: 'Reached 5,000 active users across 200+ companies' },
-  { year: '2025', event: 'Raised Series A funding to accelerate product development' },
+  { year: '2024', event: 'Launched beta with early adopter companies' },
   { year: '2026', event: 'Expanded to 5 training categories: Sales, Support, HR, Communication, Leadership' },
 ];
 
