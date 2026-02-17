@@ -48,6 +48,7 @@ export function FAQ({ title = "Frequently Asked Questions", subtitle, faqs }: FA
                   onClick={() => toggleFAQ(index)}
                   className="w-full flex items-center justify-between p-5 text-left hover:bg-white/5 transition-colors cursor-pointer"
                   aria-expanded={isOpen}
+                  aria-controls={`faq-answer-${index}`}
                 >
                   <span className="font-medium text-white pr-4">{faq.question}</span>
                   <ChevronDown
@@ -56,11 +57,18 @@ export function FAQ({ title = "Frequently Asked Questions", subtitle, faqs }: FA
                     }`}
                   />
                 </button>
-                {isOpen && (
-                  <div className="px-5 pb-5 text-muted-foreground leading-relaxed">
-                    {faq.answer}
+                <div 
+                  id={`faq-answer-${index}`}
+                  className={`grid transition-all duration-200 ease-out ${
+                    isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+                  }`}
+                >
+                  <div className="overflow-hidden">
+                    <div className="px-5 pb-5 text-muted-foreground leading-relaxed">
+                      {faq.answer}
+                    </div>
                   </div>
-                )}
+                </div>
               </div>
             );
           })}
