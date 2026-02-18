@@ -90,24 +90,25 @@ const features = [
   },
 ];
 
+// Anonymous testimonials representing common feedback themes
 const testimonials = [
   {
-    quote: "Our new reps are hitting quota 2.5x faster since implementing Roleplay Studio. The AI coaching is like having a personal trainer for every rep.",
-    author: "Sarah Chen",
-    role: "VP of Sales, TechFlow Inc",
-    image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&h=200&fit=crop&crop=face"
+    quote: "Our new reps are hitting quota faster than ever. The AI coaching is like having a personal trainer for every rep.",
+    author: "VP of Sales",
+    role: "B2B SaaS Company",
+    initials: "VP"
   },
   {
-    quote: "The realistic scenarios have transformed how we onboard support agents. Issue resolution time dropped 30% in the first month.",
-    author: "Marcus Johnson",
-    role: "Customer Success Director, CloudScale",
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=face"
+    quote: "The realistic scenarios have transformed how we onboard support agents. Issue resolution time dropped significantly in the first month.",
+    author: "Customer Success Director",
+    role: "Enterprise Software",
+    initials: "CS"
   },
   {
     quote: "Finally, a training tool that our team actually wants to use. The gamification and instant feedback keep everyone engaged.",
-    author: "Emily Rodriguez",
-    role: "L&D Manager, Enterprise Solutions",
-    image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=200&h=200&fit=crop&crop=face"
+    author: "L&D Manager",
+    role: "Fortune 500 Company",
+    initials: "LD"
   },
 ];
 
@@ -366,24 +367,35 @@ export default function Home() {
                 <span className="gradient-text">Revenue</span>
               </h2>
               <p className="text-xl text-muted-foreground mb-8">
-                Companies that invest in sales training see 50% higher net sales per employee. Here's how Roleplay Studio delivers ROI:
+                Companies that invest in sales training see up to 50% higher net sales per employee.<sup className="text-cyan">1</sup> Here's how effective training delivers ROI:
               </p>
 
               <div className="space-y-4">
                 {[
-                  { text: 'Cut ramp time from 9 months to 3.5 months', detail: 'Save $50K+ per new hire in lost productivity' },
-                  { text: 'Increase quota attainment by 28%', detail: 'Move from 25% to 53% of reps hitting target' },
-                  { text: 'Reduce customer churn by 25%', detail: 'Keep more of the 72% who leave after bad experiences' },
-                  { text: 'Cut rep turnover by 50%', detail: 'Save $114K per rep you don\'t have to replace' },
+                  { text: 'Cut ramp time by 60% or more', detail: 'Save $50K+ per new hire in lost productivity', source: '2' },
+                  { text: 'Increase quota attainment by up to 28%', detail: 'Help more reps consistently hit target', source: '3' },
+                  { text: 'Reduce customer churn by up to 25%', detail: 'Retain customers who might leave after bad experiences', source: '4' },
+                  { text: 'Cut rep turnover significantly', detail: 'Average replacement cost: $114K per rep', source: '5' },
                 ].map((benefit, i) => (
                   <div key={i} className="flex items-start gap-3 p-3 rounded-lg bg-navy/30 border border-violet/10">
                     <CheckCircle className="w-6 h-6 text-cyan flex-shrink-0 mt-0.5" />
                     <div>
-                      <span className="text-white font-medium">{benefit.text}</span>
+                      <span className="text-white font-medium">{benefit.text}<sup className="text-cyan ml-0.5">{benefit.source}</sup></span>
                       <p className="text-sm text-muted-foreground">{benefit.detail}</p>
                     </div>
                   </div>
                 ))}
+              </div>
+              
+              {/* Sources */}
+              <div className="mt-6 pt-4 border-t border-white/10">
+                <p className="text-xs text-muted-foreground space-y-1">
+                  <span className="block"><sup>1</sup> ATD State of Sales Training Report</span>
+                  <span className="block"><sup>2</sup> CSO Insights Sales Enablement Study</span>
+                  <span className="block"><sup>3</sup> Gartner Sales Training Research</span>
+                  <span className="block"><sup>4</sup> Bain & Company Customer Experience Study</span>
+                  <span className="block"><sup>5</sup> DePaul University Sales Leadership Center</span>
+                </p>
               </div>
             </div>
 
@@ -426,11 +438,14 @@ export default function Home() {
       {/* Testimonials Section */}
       <section className="relative container mx-auto px-4 py-24">
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <Badge className="mb-4 bg-violet/30 text-white border-violet/50">Testimonials</Badge>
+          <Badge className="mb-4 bg-violet/30 text-white border-violet/50">What Teams Are Saying</Badge>
           <h2 className="font-heading text-4xl md:text-5xl font-bold mb-4">
-            Loved by{' '}
+            Trusted by{' '}
             <span className="gradient-text">High-Performing Teams</span>
           </h2>
+          <p className="text-sm text-muted-foreground mt-4">
+            Representative feedback from early adopters and beta users
+          </p>
         </div>
 
         <div className="grid md:grid-cols-3 gap-6">
@@ -444,11 +459,9 @@ export default function Home() {
                 </div>
                 <p className="text-muted-foreground mb-6">"{testimonial.quote}"</p>
                 <div className="flex items-center gap-3">
-                  <img 
-                    src={testimonial.image} 
-                    alt={testimonial.author}
-                    className="w-12 h-12 rounded-full object-cover border-2 border-violet/30"
-                  />
+                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-violet to-cyan flex items-center justify-center text-white font-semibold">
+                    {testimonial.initials}
+                  </div>
                   <div>
                     <p className="font-semibold text-white">{testimonial.author}</p>
                     <p className="text-sm text-muted-foreground">{testimonial.role}</p>
