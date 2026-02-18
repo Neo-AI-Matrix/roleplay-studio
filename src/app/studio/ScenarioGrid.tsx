@@ -269,7 +269,10 @@ function ScenarioTile({ scenario, rating }: { scenario: Scenario; rating?: Scena
   };
 
   return (
-    <div className="group bg-navy-light border border-white/10 rounded-2xl overflow-hidden hover:border-electric-blue/50 hover:shadow-lg hover:shadow-electric-blue/10 transition-all duration-300">
+    <Link 
+      href={`/studio/scenario/${scenario.id}`}
+      className="group block bg-navy-light border border-white/10 rounded-2xl overflow-hidden hover:border-electric-blue/50 hover:shadow-lg hover:shadow-electric-blue/10 transition-all duration-300 cursor-pointer"
+    >
       {/* Avatar Header */}
       <div className="relative h-48 bg-gradient-to-br from-navy via-navy-light to-navy overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-t from-navy-light via-transparent to-transparent z-10" />
@@ -322,7 +325,7 @@ function ScenarioTile({ scenario, rating }: { scenario: Scenario; rating?: Scena
         </p>
 
         {/* Meta */}
-        <div className="flex items-center gap-3 mb-4">
+        <div className="flex items-center gap-3">
           <span className={`px-2 py-1 text-xs font-medium rounded-full border ${difficultyColorMap[scenario.difficulty]}`}>
             {scenario.difficulty}
           </span>
@@ -330,36 +333,14 @@ function ScenarioTile({ scenario, rating }: { scenario: Scenario; rating?: Scena
             <Clock className="w-3.5 h-3.5" />
             {scenario.duration}
           </span>
-        </div>
-
-        {/* Action Buttons */}
-        <div className="flex gap-2">
-          <Link
-            href={`/studio/session/${scenario.id}`}
-            className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-white/10 hover:bg-white/20 text-white text-sm font-medium rounded-xl transition-colors"
-          >
-            <MessageSquare className="w-4 h-4" />
-            Text
-          </Link>
-          {scenario.elevenLabsAgentId ? (
-            <Link
-              href={`/studio/voice/${scenario.id}`}
-              className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-gradient-to-r from-violet to-cyan hover:opacity-90 text-white text-sm font-medium rounded-xl transition-opacity"
-            >
-              <Mic className="w-4 h-4" />
+          {scenario.elevenLabsAgentId && (
+            <span className="text-gray-500 text-sm flex items-center gap-1">
+              <Mic className="w-3.5 h-3.5 text-cyan" />
               Voice
-            </Link>
-          ) : (
-            <button
-              disabled
-              className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-white/5 text-gray-500 text-sm font-medium rounded-xl cursor-not-allowed"
-            >
-              <Mic className="w-4 h-4" />
-              Voice
-            </button>
+            </span>
           )}
         </div>
       </div>
-    </div>
+    </Link>
   );
 }
