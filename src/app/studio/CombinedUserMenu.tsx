@@ -128,7 +128,7 @@ export function CombinedUserMenu() {
             <div className="py-2">
               {/* Profile Settings - Opens our custom modal */}
               <button
-                onClick={handleOpenProfile}
+                onClick={() => handleOpenProfile('profile')}
                 className="w-full px-4 py-2.5 flex items-center gap-3 text-left text-gray-300 hover:text-white hover:bg-white/10 transition-colors"
               >
                 <Settings className="w-4 h-4 text-electric-blue" />
