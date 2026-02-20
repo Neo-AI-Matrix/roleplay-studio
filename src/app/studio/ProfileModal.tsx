@@ -558,7 +558,7 @@ export function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
                     <div className="flex items-start justify-between mb-4">
                       <div>
                         <p className="text-gray-400 text-sm">Current Plan</p>
-                        <h3 className="text-2xl font-bold text-white">{subscription?.planName || 'Free Trial'}</h3>
+                        <h3 className="text-2xl font-bold text-white">{subscription?.planName || 'Individual'}</h3>
                         <p className="text-sm text-gray-400 mt-1">
                           {subscription?.minutesPerMonth ? `${subscription.minutesPerMonth} minutes/month` : '100 minutes/month'}
                           {subscription?.currentPeriodEnd && (
@@ -578,7 +578,7 @@ export function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
                         {subscription?.status === 'active' ? 'Active' :
                          subscription?.status === 'trialing' ? 'Trial' :
                          subscription?.status === 'past_due' ? 'Past Due' :
-                         'Free'}
+                         'Individual'}
                       </div>
                     </div>
                     <div className="flex gap-3">

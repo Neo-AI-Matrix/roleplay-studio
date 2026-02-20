@@ -21,7 +21,7 @@ export function getStripe(): Stripe {
 // Plan definitions - update these with your actual Stripe price IDs
 export const PLANS = {
   free: {
-    name: 'Free Trial',
+    name: 'Individual',
     priceId: null,
     price: 0,
     minutesPerMonth: 100,
@@ -33,7 +33,7 @@ export const PLANS = {
     ],
   },
   pro: {
-    name: 'Pro',
+    name: 'Business',
     priceId: process.env.STRIPE_PRICE_ID_PRO,
     price: 29,
     minutesPerMonth: 500,
@@ -52,7 +52,7 @@ export const PLANS = {
     minutesPerMonth: 2000,
     features: [
       '2,000 minutes/month',
-      'Everything in Pro',
+      'Everything in Business',
       'Team analytics',
       'Custom scenarios',
       'Admin dashboard',
