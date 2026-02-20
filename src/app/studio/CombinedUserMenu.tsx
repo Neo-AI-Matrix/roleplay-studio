@@ -20,6 +20,7 @@ export function CombinedUserMenu() {
   const { signOut, openUserProfile } = useClerk();
   const [isOpen, setIsOpen] = useState(false);
   const [showProfileModal, setShowProfileModal] = useState(false);
+  const [profileModalTab, setProfileModalTab] = useState<'profile' | 'preferences' | 'achievements' | 'billing'>('profile');
   const [hasProfile, setHasProfile] = useState(false);
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -47,8 +48,9 @@ export function CombinedUserMenu() {
     signOut({ redirectUrl: '/' });
   };
 
-  const handleOpenProfile = () => {
+  const handleOpenProfile = (tab: 'profile' | 'preferences' | 'achievements' | 'billing' = 'profile') => {
     setIsOpen(false);
+    setProfileModalTab(tab);
     setShowProfileModal(true);
   };
 
@@ -140,25 +142,18 @@ export function CombinedUserMenu() {
                 </div>
               </button>
 
-              {/* Billing - Also in Profile Settings, but quick access */}
+              {/* Billing - Opens directly to billing tab */}
               <button
-                onClick={() => {
-                  setIsOpen(false);
-                  setShowProfileModal(true);
-                  // Note: The modal will open to default tab, user can navigate to billing
-                }}
+                onClick={() => handleOpenProfile('billing')}
                 className="w-full px-4 py-2.5 flex items-center gap-3 text-left text-gray-300 hover:text-white hover:bg-white/10 transition-colors"
               >
                 <CreditCard className="w-4 h-4 text-cyan" />
                 <span>Billing & Plans</span>
               </button>
 
-              {/* Achievements - Quick access */}
+              {/* Achievements - Opens directly to achievements tab */}
               <button
-                onClick={() => {
-                  setIsOpen(false);
-                  setShowProfileModal(true);
-                }}
+                onClick={() => handleOpenProfile('achievements')}
                 className="w-full px-4 py-2.5 flex items-center gap-3 text-left text-gray-300 hover:text-white hover:bg-white/10 transition-colors"
               >
                 <Trophy className="w-4 h-4 text-yellow-400" />
@@ -195,7 +190,11 @@ export function CombinedUserMenu() {
       </div>
 
       {/* Profile Modal */}
-      <ProfileModal isOpen={showProfileModal} onClose={() => setShowProfileModal(false)} />
+      <ProfileModal 
+        isOpen={showProfileModal} 
+        onClose={() => setShowProfileModal(false)} 
+        initialTab={profileModalTab}
+      />
     </>
   );
 }

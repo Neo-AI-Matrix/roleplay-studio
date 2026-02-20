@@ -46,12 +46,13 @@ import { useSubscription } from '@/lib/use-subscription';
 interface ProfileModalProps {
   isOpen: boolean;
   onClose: () => void;
+  initialTab?: 'profile' | 'preferences' | 'achievements' | 'billing';
 }
 
-export function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
+export function ProfileModal({ isOpen, onClose, initialTab = 'profile' }: ProfileModalProps) {
   const { user } = useUser();
   const [profile, setProfile] = useState<UserProfile | null>(null);
-  const [activeTab, setActiveTab] = useState<'profile' | 'preferences' | 'achievements' | 'billing'>('profile');
+  const [activeTab, setActiveTab] = useState<'profile' | 'preferences' | 'achievements' | 'billing'>(initialTab);
   const [isSaving, setIsSaving] = useState(false);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [sessions, setSessions] = useState<SessionRecord[]>([]);
@@ -75,6 +76,13 @@ export function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
       setIsUpgrading(false);
     }
   };
+
+  // Sync active tab when modal opens with a specific tab
+  useEffect(() => {
+    if (isOpen) {
+      setActiveTab(initialTab);
+    }
+  }, [isOpen, initialTab]);
 
   useEffect(() => {
     if (isOpen && user) {
