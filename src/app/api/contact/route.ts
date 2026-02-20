@@ -28,35 +28,30 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const resendApiKey = process.env.RESEND_API_KEY;
+    const sendgridApiKey = process.env.SENDGRID_API_KEY;
     
-    if (resendApiKey) {
-      // Send email via Resend
-      const response = await fetch('https://api.resend.com/emails', {
+    if (sendgridApiKey) {
+      // Send email via SendGrid
+      const response = await fetch('https://api.sendgrid.com/v3/mail/send', {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${resendApiKey}`,
+          'Authorization': `Bearer ${sendgridApiKey}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          from: 'Roleplay Studio <noreply@roleplaystudio.ai>',
-          to: ['askus@roleplaystudio.ai'],
-          reply_to: data.email,
+          personalizations: [{
+            to: [{ email: 'askus@roleplaystudio.ai' }],
+          }],
+          from: { 
+            email: 'noreply@roleplaystudio.ai',
+            name: 'Roleplay Studio'
+          },
+          reply_to: { email: data.email, name: data.name },
           subject: `Contact Form: ${data.name}${data.company ? ` from ${data.company}` : ''}`,
-          html: `
-            <h2>New Contact Form Submission</h2>
-            <p><strong>Name:</strong> ${data.name}</p>
-            <p><strong>Email:</strong> ${data.email}</p>
-            ${data.company ? `<p><strong>Company:</strong> ${data.company}</p>` : ''}
-            <hr />
-            <h3>Message:</h3>
-            <p>${data.message.replace(/\n/g, '<br />')}</p>
-            <hr />
-            <p style="color: #666; font-size: 12px;">
-              Submitted at ${new Date().toISOString()}
-            </p>
-          `,
-          text: `
+          content: [
+            {
+              type: 'text/plain',
+              value: `
 New Contact Form Submission
 
 Name: ${data.name}
@@ -68,16 +63,34 @@ ${data.message}
 
 ---
 Submitted at ${new Date().toISOString()}
-          `.trim(),
+              `.trim(),
+            },
+            {
+              type: 'text/html',
+              value: `
+                <h2>New Contact Form Submission</h2>
+                <p><strong>Name:</strong> ${data.name}</p>
+                <p><strong>Email:</strong> ${data.email}</p>
+                ${data.company ? `<p><strong>Company:</strong> ${data.company}</p>` : ''}
+                <hr />
+                <h3>Message:</h3>
+                <p>${data.message.replace(/\n/g, '<br />')}</p>
+                <hr />
+                <p style="color: #666; font-size: 12px;">
+                  Submitted at ${new Date().toISOString()}
+                </p>
+              `,
+            },
+          ],
         }),
       });
 
       if (!response.ok) {
         const error = await response.text();
-        console.error('Resend API error:', error);
+        console.error('SendGrid API error:', error);
         // Fall through to log the submission
       } else {
-        console.log('[Contact Form] Email sent successfully via Resend');
+        console.log('[Contact Form] Email sent successfully via SendGrid');
         return NextResponse.json({ success: true, method: 'email' });
       }
     }
