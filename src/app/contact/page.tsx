@@ -98,7 +98,7 @@ export default function ContactPage() {
       {/* Hero Section */}
       <section className="relative container mx-auto px-4 pt-20 pb-16">
         <div className="max-w-4xl mx-auto text-center">
-          <Badge className="mb-6 bg-violet/30 text-white border-violet/50">
+          <Badge className="mb-6 bg-gradient-to-r from-violet to-cyan text-white border-0">
             Contact Us
           </Badge>
           
@@ -228,7 +228,7 @@ export default function ContactPage() {
         <div className="grid lg:grid-cols-2 gap-16 max-w-6xl mx-auto">
           {/* Contact Form */}
           <div>
-            <Badge className="mb-4 bg-cyan/30 text-white border-cyan/50">Send a Message</Badge>
+            <Badge className="mb-4 bg-gradient-to-r from-violet to-cyan text-white border-0">Send a Message</Badge>
             <h2 className="font-heading text-3xl font-bold mb-6">
               Get in{' '}
               <span className="gradient-text">Touch</span>

@@ -392,7 +392,7 @@ export default function CareersPage() {
       {/* Our Values */}
       <section className="relative container mx-auto px-4 py-16">
         <div className="text-center mb-12">
-          <Badge className="mb-4 bg-violet/30 text-white border-violet/50">Our Values</Badge>
+          <Badge className="mb-4 bg-gradient-to-r from-violet to-cyan text-white border-0">Our Values</Badge>
           <h2 className="font-heading text-4xl font-bold mb-4">
             What We{' '}
             <span className="gradient-text">Believe In</span>
@@ -415,7 +415,7 @@ export default function CareersPage() {
       <section className="relative bg-navy-light/50 py-24">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <Badge className="mb-4 bg-cyan/30 text-white border-cyan/50">Perks & Benefits</Badge>
+            <Badge className="mb-4 bg-gradient-to-r from-violet to-cyan text-white border-0">Perks & Benefits</Badge>
             <h2 className="font-heading text-4xl font-bold mb-4">
               More Than Just a{' '}
               <span className="gradient-text">Paycheck</span>
@@ -444,7 +444,7 @@ export default function CareersPage() {
       {/* Open Positions */}
       <section id="openings" className="relative container mx-auto px-4 py-24">
         <div className="text-center mb-16">
-          <Badge className="mb-4 bg-violet/30 text-white border-violet/50">Open Positions</Badge>
+          <Badge className="mb-4 bg-gradient-to-r from-violet to-cyan text-white border-0">Open Positions</Badge>
           <h2 className="font-heading text-4xl font-bold mb-4">
             Join Our{' '}
             <span className="gradient-text">Growing Team</span>

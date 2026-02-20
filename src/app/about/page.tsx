@@ -106,7 +106,7 @@ export default function AboutPage() {
       {/* Hero Section */}
       <section className="relative container mx-auto px-4 pt-20 pb-16">
         <div className="max-w-4xl mx-auto text-center">
-          <Badge className="mb-6 bg-violet/30 text-white border-violet/50">
+          <Badge className="mb-6 bg-gradient-to-r from-violet to-cyan text-white border-0">
             About Us
           </Badge>
           
@@ -137,7 +137,7 @@ export default function AboutPage() {
       <section className="relative container mx-auto px-4 py-16">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           <div>
-            <Badge className="mb-4 bg-cyan/30 text-white border-cyan/50">Our Mission</Badge>
+            <Badge className="mb-4 bg-gradient-to-r from-violet to-cyan text-white border-0">Our Mission</Badge>
             <h2 className="font-heading text-4xl font-bold mb-6">
               Democratize{' '}
               <span className="gradient-text">Elite Training</span>
@@ -191,7 +191,7 @@ export default function AboutPage() {
       <section className="relative bg-navy-light/50 py-24">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <Badge className="mb-4 bg-violet/30 text-white border-violet/50">Our Values</Badge>
+            <Badge className="mb-4 bg-gradient-to-r from-violet to-cyan text-white border-0">Our Values</Badge>
             <h2 className="font-heading text-4xl font-bold">
               What{' '}
               <span className="gradient-text">Drives Us</span>
@@ -217,7 +217,7 @@ export default function AboutPage() {
       {/* Team Section */}
       <section className="relative container mx-auto px-4 py-24">
         <div className="text-center mb-12">
-          <Badge className="mb-4 bg-cyan/30 text-white border-cyan/50">Our Team</Badge>
+          <Badge className="mb-4 bg-gradient-to-r from-violet to-cyan text-white border-0">Our Team</Badge>
           <h2 className="font-heading text-4xl font-bold mb-4">
             Meet the{' '}
             <span className="gradient-text">People Behind the Product</span>
@@ -249,7 +249,7 @@ export default function AboutPage() {
       <section className="relative bg-navy-light/50 py-24">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <Badge className="mb-4 bg-violet/30 text-white border-violet/50">Our Journey</Badge>
+            <Badge className="mb-4 bg-gradient-to-r from-violet to-cyan text-white border-0">Our Journey</Badge>
             <h2 className="font-heading text-4xl font-bold">
               Building the{' '}
               <span className="gradient-text">Future of Training</span>

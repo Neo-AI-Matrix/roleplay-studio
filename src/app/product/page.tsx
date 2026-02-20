@@ -219,7 +219,7 @@ export default function ProductPage() {
       {/* Hero Section */}
       <section className="relative container mx-auto px-4 pt-20 pb-16">
         <div className="max-w-4xl mx-auto text-center">
-          <Badge className="mb-6 bg-violet/30 text-white border-violet/50">
+          <Badge className="mb-6 bg-gradient-to-r from-violet to-cyan text-white border-0">
             Product
           </Badge>
           
@@ -248,7 +248,7 @@ export default function ProductPage() {
       {/* How It Works */}
       <section className="relative container mx-auto px-4 py-16">
         <div className="text-center mb-12">
-          <Badge className="mb-4 bg-cyan/30 text-white border-cyan/50">How It Works</Badge>
+          <Badge className="mb-4 bg-gradient-to-r from-violet to-cyan text-white border-0">How It Works</Badge>
           <h2 className="font-heading text-4xl font-bold">
             Four Steps to{' '}
             <span className="gradient-text">Better Performance</span>
@@ -277,7 +277,7 @@ export default function ProductPage() {
       <section id="pricing" className="relative bg-navy-light/50 py-24">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <Badge className="mb-4 bg-cyan/30 text-white border-cyan/50">Pricing</Badge>
+            <Badge className="mb-4 bg-gradient-to-r from-violet to-cyan text-white border-0">Pricing</Badge>
             <h2 className="font-heading text-4xl font-bold mb-4">
               Simple, Transparent{' '}
               <span className="gradient-text">Pricing</span>
@@ -366,7 +366,7 @@ export default function ProductPage() {
       <section id="categories" className="relative bg-navy-light/50 py-24">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <Badge className="mb-4 bg-violet/30 text-white border-violet/50">Training Categories</Badge>
+            <Badge className="mb-4 bg-gradient-to-r from-violet to-cyan text-white border-0">Training Categories</Badge>
             <h2 className="font-heading text-4xl font-bold mb-4">
               Five Pillars of{' '}
               <span className="gradient-text">Professional Excellence</span>
@@ -588,7 +588,7 @@ export default function ProductPage() {
       <section className="relative container mx-auto px-4 py-24">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           <div>
-            <Badge className="mb-4 bg-violet/30 text-white border-violet/50">AI Coaching</Badge>
+            <Badge className="mb-4 bg-gradient-to-r from-violet to-cyan text-white border-0">AI Coaching</Badge>
             <h2 className="font-heading text-4xl font-bold mb-6">
               Instant Feedback That{' '}
               <span className="gradient-text">Actually Helps</span>
