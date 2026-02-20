@@ -1,7 +1,7 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
-import { useParams, useRouter } from 'next/navigation';
+import { useState, useEffect, useRef, useCallback } from 'react';
+import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 import { getScenario } from '@/lib/scenarios';
 import { 
@@ -44,8 +44,11 @@ type AgentMode = 'listening' | 'speaking';
 export default function VoiceSessionPage() {
   const params = useParams();
   const router = useRouter();
+  const searchParams = useSearchParams();
   const scenarioId = params.scenarioId as string;
   const scenario = getScenario(scenarioId);
+  const autoStart = searchParams.get('autostart') === 'true';
+  const hasAutoStarted = useRef(false);
   
   const [status, setStatus] = useState<ConversationStatus>('disconnected');
   const [agentMode, setAgentMode] = useState<AgentMode>('listening');
@@ -90,20 +93,70 @@ export default function VoiceSessionPage() {
     }
   }, [sessionStarted]);
 
-  // Cleanup on unmount
-  useEffect(() => {
-    return () => {
-      if (conversationRef.current) {
+  // Cleanup function
+  const cleanupSession = useCallback(() => {
+    if (conversationRef.current) {
+      try {
         conversationRef.current.endSession();
+      } catch (e) {
+        console.error('Error ending session:', e);
       }
-      if (timerRef.current) {
-        clearInterval(timerRef.current);
-      }
-      if (pauseTimerRef.current) {
-        clearInterval(pauseTimerRef.current);
+      conversationRef.current = null;
+    }
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+      timerRef.current = null;
+    }
+    if (pauseTimerRef.current) {
+      clearInterval(pauseTimerRef.current);
+      pauseTimerRef.current = null;
+    }
+  }, []);
+
+  // Cleanup on unmount and page visibility change
+  useEffect(() => {
+    // Handle page visibility change (tab switch, minimize)
+    const handleVisibilityChange = () => {
+      if (document.hidden && conversationRef.current) {
+        console.log('Page hidden - ending voice session');
+        cleanupSession();
+        setStatus('disconnected');
       }
     };
-  }, []);
+
+    // Handle before unload (page close, navigation)
+    const handleBeforeUnload = () => {
+      cleanupSession();
+    };
+
+    // Handle popstate (back button)
+    const handlePopState = () => {
+      cleanupSession();
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    window.addEventListener('popstate', handlePopState);
+
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+      window.removeEventListener('popstate', handlePopState);
+      cleanupSession();
+    };
+  }, [cleanupSession]);
+
+  // Auto-start if requested via URL param
+  useEffect(() => {
+    if (autoStart && scenario?.elevenLabsAgentId && !hasAutoStarted.current && !sessionStarted) {
+      hasAutoStarted.current = true;
+      // Small delay to ensure component is fully mounted
+      const timer = setTimeout(() => {
+        startConversation();
+      }, 500);
+      return () => clearTimeout(timer);
+    }
+  }, [autoStart, scenario?.elevenLabsAgentId, sessionStarted]);
 
   const startConversation = async () => {
     if (!scenario?.elevenLabsAgentId) {

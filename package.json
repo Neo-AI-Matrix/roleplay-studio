@@ -13,6 +13,7 @@
     "@elevenlabs/client": "^0.14.0",
     "@google-analytics/data": "^5.2.1",
     "@next/third-parties": "^16.1.6",
+    "@stripe/stripe-js": "^8.7.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "lucide-react": "^0.563.0",
@@ -22,6 +23,7 @@
     "radix-ui": "^1.4.3",
     "react": "19.2.3",
     "react-dom": "19.2.3",
+    "stripe": "^20.3.1",
     "svix": "^1.85.0",
     "tailwind-merge": "^3.4.0"
   },

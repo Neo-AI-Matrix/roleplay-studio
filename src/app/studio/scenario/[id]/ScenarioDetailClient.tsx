@@ -209,7 +209,7 @@ export function ScenarioDetailClient({ scenario }: ScenarioDetailClientProps) {
             </Link>
             {scenario.elevenLabsAgentId ? (
               <Link
-                href={`/studio/voice/${scenario.id}`}
+                href={`/studio/voice/${scenario.id}?autostart=true`}
                 className="flex-1 flex items-center justify-center gap-3 px-6 py-4 bg-gradient-to-r from-violet to-cyan hover:opacity-90 text-white font-semibold rounded-xl transition-opacity"
               >
                 <Mic className="w-5 h-5" />

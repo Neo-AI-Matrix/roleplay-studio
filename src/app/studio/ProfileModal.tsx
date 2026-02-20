@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { useUser } from '@clerk/nextjs';
 import Image from 'next/image';
 import {
@@ -17,7 +18,15 @@ import {
   Check,
   Loader2,
   Lock,
-  ChevronDown
+  ChevronDown,
+  CreditCard,
+  Receipt,
+  ArrowUpCircle,
+  ArrowDownCircle,
+  XCircle,
+  ExternalLink,
+  Calendar,
+  DollarSign
 } from 'lucide-react';
 import {
   UserProfile,
@@ -32,6 +41,7 @@ import {
 } from '@/lib/profile-storage';
 import { getSessions, getStats, SessionRecord } from '@/lib/session-storage';
 import { achievements, calculateEarnedAchievements } from '@/lib/achievements';
+import { useSubscription } from '@/lib/use-subscription';
 
 interface ProfileModalProps {
   isOpen: boolean;
@@ -41,12 +51,15 @@ interface ProfileModalProps {
 export function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
   const { user } = useUser();
   const [profile, setProfile] = useState<UserProfile | null>(null);
-  const [activeTab, setActiveTab] = useState<'profile' | 'preferences' | 'achievements'>('profile');
+  const [activeTab, setActiveTab] = useState<'profile' | 'preferences' | 'achievements' | 'billing'>('profile');
   const [isSaving, setIsSaving] = useState(false);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [sessions, setSessions] = useState<SessionRecord[]>([]);
   const [earnedAchievements, setEarnedAchievements] = useState<string[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  
+  // Stripe subscription data
+  const { subscription, isLoading: isLoadingSubscription, openCheckout, openBillingPortal } = useSubscription();
 
   useEffect(() => {
     if (isOpen && user) {
@@ -124,8 +137,9 @@ export function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
 
   if (!isOpen || !profile) return null;
 
-  return (
-    <div className="fixed inset-0 z-[60] flex items-start justify-center pt-20 pb-4 px-4">
+  // Use portal to render outside of any stacking context
+  const modalContent = (
+    <div className="fixed inset-0 z-[9999] flex items-start justify-center pt-20 pb-4 px-4">
       {/* Backdrop */}
       <div 
         className="absolute inset-0 bg-black/70 backdrop-blur-sm"
@@ -179,6 +193,17 @@ export function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
           >
             <Trophy className="w-4 h-4 inline mr-2" />
             Achievements
+          </button>
+          <button
+            onClick={() => setActiveTab('billing')}
+            className={`flex-1 px-4 py-3 text-sm font-medium transition-colors ${
+              activeTab === 'billing'
+                ? 'text-electric-blue border-b-2 border-electric-blue'
+                : 'text-gray-400 hover:text-white'
+            }`}
+          >
+            <CreditCard className="w-4 h-4 inline mr-2" />
+            Billing
           </button>
         </div>
 
@@ -519,6 +544,224 @@ export function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
               </div>
             </div>
           )}
+
+          {activeTab === 'billing' && (
+            <div className="space-y-6">
+              {isLoadingSubscription ? (
+                <div className="flex items-center justify-center py-12">
+                  <Loader2 className="w-8 h-8 animate-spin text-electric-blue" />
+                </div>
+              ) : (
+                <>
+                  {/* Current Plan */}
+                  <div className="bg-gradient-to-br from-electric-blue/20 to-violet/20 rounded-xl p-5 border border-electric-blue/30">
+                    <div className="flex items-start justify-between mb-4">
+                      <div>
+                        <p className="text-gray-400 text-sm">Current Plan</p>
+                        <h3 className="text-2xl font-bold text-white">{subscription?.planName || 'Free Trial'}</h3>
+                        <p className="text-sm text-gray-400 mt-1">
+                          {subscription?.minutesPerMonth ? `${subscription.minutesPerMonth} minutes/month` : '100 minutes/month'}
+                          {subscription?.currentPeriodEnd && (
+                            <> • Renews {new Date(subscription.currentPeriodEnd).toLocaleDateString()}</>
+                          )}
+                        </p>
+                        {subscription?.cancelAtPeriodEnd && (
+                          <p className="text-sm text-yellow-400 mt-1">⚠️ Cancels at end of billing period</p>
+                        )}
+                      </div>
+                      <div className={`px-3 py-1 rounded-full text-xs font-medium ${
+                        subscription?.status === 'active' ? 'bg-green-500/20 text-green-400' :
+                        subscription?.status === 'trialing' ? 'bg-electric-blue/20 text-electric-blue' :
+                        subscription?.status === 'past_due' ? 'bg-yellow-500/20 text-yellow-400' :
+                        'bg-gray-500/20 text-gray-400'
+                      }`}>
+                        {subscription?.status === 'active' ? 'Active' :
+                         subscription?.status === 'trialing' ? 'Trial' :
+                         subscription?.status === 'past_due' ? 'Past Due' :
+                         'Free'}
+                      </div>
+                    </div>
+                    <div className="flex gap-3">
+                      {subscription?.plan === 'free' || !subscription?.hasSubscription ? (
+                        <>
+                          <button 
+                            onClick={() => openCheckout('pro')}
+                            className="flex-1 bg-electric-blue hover:bg-electric-blue/90 text-white font-medium py-2 px-4 rounded-lg transition-colors flex items-center justify-center gap-2"
+                          >
+                            <ArrowUpCircle className="w-4 h-4" />
+                            Upgrade to Pro
+                          </button>
+                          <a 
+                            href="/product#pricing"
+                            className="flex-1 bg-white/10 hover:bg-white/20 text-white font-medium py-2 px-4 rounded-lg transition-colors flex items-center justify-center gap-2"
+                          >
+                            <ExternalLink className="w-4 h-4" />
+                            View Plans
+                          </a>
+                        </>
+                      ) : (
+                        <button 
+                          onClick={openBillingPortal}
+                          className="flex-1 bg-white/10 hover:bg-white/20 text-white font-medium py-2 px-4 rounded-lg transition-colors flex items-center justify-center gap-2"
+                        >
+                          <ExternalLink className="w-4 h-4" />
+                          Manage Subscription
+                        </button>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Usage This Month */}
+                  <div>
+                    <h4 className="text-white font-medium mb-3 flex items-center gap-2">
+                      <Calendar className="w-4 h-4 text-gray-400" />
+                      Usage This Month
+                    </h4>
+                    <div className="bg-white/5 rounded-xl p-4 border border-white/10">
+                      <div className="flex justify-between items-center mb-2">
+                        <span className="text-gray-400 text-sm">Minutes Used</span>
+                        <span className="text-white font-medium">
+                          {/* TODO: Get actual usage from your usage tracking */}
+                          0 / {subscription?.minutesPerMonth || 100} min
+                        </span>
+                      </div>
+                      <div className="w-full bg-white/10 rounded-full h-2">
+                        <div className="bg-electric-blue h-2 rounded-full" style={{ width: '0%' }}></div>
+                      </div>
+                      {subscription?.currentPeriodEnd && (
+                        <p className="text-xs text-gray-500 mt-2">
+                          Resets on {new Date(subscription.currentPeriodEnd).toLocaleDateString()}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Payment Method */}
+                  {subscription?.paymentMethod && (
+                    <div>
+                      <h4 className="text-white font-medium mb-3 flex items-center gap-2">
+                        <CreditCard className="w-4 h-4 text-gray-400" />
+                        Payment Method
+                      </h4>
+                      <div className="bg-white/5 rounded-xl p-4 border border-white/10">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-3">
+                            <div className={`w-10 h-6 rounded flex items-center justify-center text-white text-xs font-bold ${
+                              subscription.paymentMethod.brand === 'visa' ? 'bg-gradient-to-r from-blue-600 to-blue-400' :
+                              subscription.paymentMethod.brand === 'mastercard' ? 'bg-gradient-to-r from-red-600 to-yellow-500' :
+                              subscription.paymentMethod.brand === 'amex' ? 'bg-gradient-to-r from-blue-800 to-blue-600' :
+                              'bg-gray-600'
+                            }`}>
+                              {subscription.paymentMethod.brand.toUpperCase().slice(0, 4)}
+                            </div>
+                            <div>
+                              <p className="text-white text-sm">•••• •••• •••• {subscription.paymentMethod.last4}</p>
+                              <p className="text-xs text-gray-500">
+                                Expires {subscription.paymentMethod.expMonth}/{subscription.paymentMethod.expYear}
+                              </p>
+                            </div>
+                          </div>
+                          <button 
+                            onClick={openBillingPortal}
+                            className="text-electric-blue hover:text-electric-blue/80 text-sm transition-colors"
+                          >
+                            Update
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Billing History */}
+                  {subscription?.invoices && subscription.invoices.length > 0 && (
+                    <div>
+                      <h4 className="text-white font-medium mb-3 flex items-center gap-2">
+                        <Receipt className="w-4 h-4 text-gray-400" />
+                        Billing History
+                      </h4>
+                      <div className="bg-white/5 rounded-xl border border-white/10 overflow-hidden">
+                        <div className="divide-y divide-white/10">
+                          {subscription.invoices.slice(0, 5).map((invoice) => (
+                            <div key={invoice.id} className="p-4 flex items-center justify-between hover:bg-white/5 transition-colors">
+                              <div className="flex items-center gap-3">
+                                <DollarSign className={`w-4 h-4 ${
+                                  invoice.status === 'paid' ? 'text-green-400' : 'text-yellow-400'
+                                }`} />
+                                <div>
+                                  <p className="text-white text-sm">{subscription.planName} - Monthly</p>
+                                  <p className="text-xs text-gray-500">
+                                    {new Date(invoice.date).toLocaleDateString()}
+                                  </p>
+                                </div>
+                              </div>
+                              <div className="flex items-center gap-3">
+                                <span className="text-white font-medium">${invoice.amount.toFixed(2)}</span>
+                                {invoice.pdfUrl && (
+                                  <a 
+                                    href={invoice.pdfUrl}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-electric-blue hover:text-electric-blue/80 text-sm transition-colors"
+                                  >
+                                    Invoice
+                                  </a>
+                                )}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                        {subscription.invoices.length > 5 && (
+                          <div className="p-3 bg-white/5 border-t border-white/10 text-center">
+                            <button 
+                              onClick={openBillingPortal}
+                              className="text-gray-400 hover:text-white text-sm transition-colors"
+                            >
+                              View All Invoices →
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Manage Subscription - Only show for paid users */}
+                  {subscription?.hasSubscription && (
+                    <div className="pt-4 border-t border-white/10">
+                      <h4 className="text-white font-medium mb-3">Manage Subscription</h4>
+                      <div className="space-y-2">
+                        <button 
+                          onClick={openBillingPortal}
+                          className="w-full text-left p-3 bg-white/5 hover:bg-white/10 rounded-lg transition-colors flex items-center justify-between group"
+                        >
+                          <div className="flex items-center gap-3">
+                            <ArrowDownCircle className="w-5 h-5 text-yellow-400" />
+                            <div>
+                              <p className="text-white text-sm">Change Plan</p>
+                              <p className="text-xs text-gray-500">Upgrade or downgrade your subscription</p>
+                            </div>
+                          </div>
+                          <ExternalLink className="w-4 h-4 text-gray-500 group-hover:text-white transition-colors" />
+                        </button>
+                        <button 
+                          onClick={openBillingPortal}
+                          className="w-full text-left p-3 bg-white/5 hover:bg-red-500/10 rounded-lg transition-colors flex items-center justify-between group border border-transparent hover:border-red-500/30"
+                        >
+                          <div className="flex items-center gap-3">
+                            <XCircle className="w-5 h-5 text-red-400" />
+                            <div>
+                              <p className="text-white text-sm">Cancel Subscription</p>
+                              <p className="text-xs text-gray-500">Your access ends at billing period</p>
+                            </div>
+                          </div>
+                          <ExternalLink className="w-4 h-4 text-gray-500 group-hover:text-red-400 transition-colors" />
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </>
+              )}
+            </div>
+          )}
         </div>
 
         {/* Footer */}
@@ -550,4 +793,11 @@ export function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
       </div>
     </div>
   );
+
+  // Render via portal to escape stacking context issues
+  if (typeof window !== 'undefined') {
+    return createPortal(modalContent, document.body);
+  }
+  
+  return modalContent;
 }

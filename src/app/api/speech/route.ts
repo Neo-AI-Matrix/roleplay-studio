@@ -1,70 +1,80 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-// ElevenLabs voice IDs
-// Male voices: Josh, Antoni, Arnold, Adam, Sam
-// Female voices: Rachel, Bella, Elli, Domi
+// ElevenLabs voice IDs - Updated February 2026
+// Verified from ElevenLabs API /v1/voices endpoint
 
 const VOICE_IDS = {
   // Male voices
-  josh: 'TxGEqnHWrfWFTfGW9XjX',
-  antoni: 'ErXwobaYiN019PkySvjV',
-  arnold: 'VR6AewLTigWG4xSOukaG',
-  adam: 'pNInz6obpgDQGcFmaJgB',
-  sam: 'yoZ06aMxZJJ28mfd3POQ',
+  roger: 'CwhRBWXzGAHq8TQ4Fs17',     // Laid-Back, Casual, Resonant
+  charlie: 'IKne3meq5aSn9XLyUdCD',   // Deep, Confident, Energetic
+  george: 'JBFqnCBsd6RMkjVDRZzb',    // Warm, Captivating Storyteller
+  callum: 'N2lVS1w4EtoT3dr4eOWO',    // Husky Trickster
+  river: 'SAz9YHcvj6GT2YYXdXww',     // Relaxed, Neutral, Informative
+  harry: 'SOYHLrjzK2X1ezoPC6cr',     // Fierce Warrior
+  liam: 'TX3LPaxmHKxFdv7VOQHJ',      // Energetic, Social Media
+  will: 'bIHbv24MWmeRgasZH58o',      // Relaxed Optimist
+  eric: 'cjVigY5qzO86Huf0OWal',      // Smooth, Trustworthy
+  chris: 'iP95p4xoKVk53GoZ742B',     // Charming, Down-to-Earth
+  brian: 'nPczCjzI2devNBz1zQrb',     // Deep, Resonant, Comforting
+  daniel: 'onwK4e9ZLuTAKqWW03F9',    // Steady Broadcaster
+  adam: 'pNInz6obpgDQGcFmaJgB',      // Dominant, Firm
   // Female voices
-  rachel: '21m00Tcm4TlvDq8ikWAM',
-  bella: 'EXAVITQu4vr4xnSDxMaL',
-  elli: 'MF3mGyEYCl7XYWbV9V6O',
-  domi: 'AZnzlk1XvdvUeBnXmlld',
+  sarah: 'EXAVITQu4vr4xnSDxMaL',     // Mature, Reassuring, Confident
+  laura: 'FGY2WhTYpPnrIDTdsKH5',     // Enthusiast, Quirky Attitude
+  alice: 'Xb7hH8MSUJpSbSDYk0k2',     // Clear, Engaging Educator
+  matilda: 'XrExE9yKIg1WjnnlVkGX',   // Knowledgeable, Professional
+  jessica: 'cgSgspJ2msm6clMCkdW9',   // Playful, Bright, Warm
+  bella: 'hpp4J3VqNfWAUOO0d1Us',     // Professional, Bright, Warm
+  lily: 'pFZP5JQG7iQjIQuC4Bku',      // Velvety Actress
 };
 
-// Scenario to voice mapping - matched to persona gender
+// Scenario to voice mapping - matched to persona gender and personality
 const SCENARIO_VOICES: Record<string, string> = {
   // ============ SUPPORT SCENARIOS ============
-  'angry-customer': VOICE_IDS.rachel,           // Margaret Chen (female)
-  'angry-customer-billing': VOICE_IDS.josh,     // Derek Morrison (male)
-  'confused-user': VOICE_IDS.sam,               // Tom Bradley (male)
-  'demanding-client': VOICE_IDS.bella,          // Victoria Hayes (female)
+  'angry-customer': VOICE_IDS.sarah,            // Margaret Chen (female) - mature, reassuring fits frustrated customer
+  'angry-customer-billing': VOICE_IDS.charlie,  // Derek Morrison (male) - deep, confident
+  'confused-user': VOICE_IDS.will,              // Tom Bradley (male) - relaxed optimist
+  'demanding-client': VOICE_IDS.matilda,        // Victoria Hayes (female) - professional, demanding
   
   // ============ SALES - DISCOVERY ============
-  'sales-discovery': VOICE_IDS.antoni,          // David Morrison (male)
-  'cautious-prospect': VOICE_IDS.adam,          // Robert Chen (male)
-  'chatty-executive': VOICE_IDS.rachel,         // Patricia Donovan (female)
-  'technical-buyer': VOICE_IDS.arnold,          // Dr. Michael Torres (male)
+  'sales-discovery': VOICE_IDS.george,          // David Morrison (male) - warm, captivating
+  'cautious-prospect': VOICE_IDS.adam,          // Robert Chen (male) - dominant, firm (cautious)
+  'chatty-executive': VOICE_IDS.laura,          // Patricia Donovan (female) - enthusiast, quirky
+  'technical-buyer': VOICE_IDS.brian,           // Dr. Michael Torres (male) - deep, resonant
   
   // ============ SALES - OBJECTION HANDLING ============
-  'skeptical-cfo': VOICE_IDS.arnold,            // Richard Thompson (male)
-  'busy-decision-maker': VOICE_IDS.domi,        // Jennifer Walsh (female)
-  'price-shopper': VOICE_IDS.adam,              // Marcus Price (male)
+  'skeptical-cfo': VOICE_IDS.daniel,            // Richard Thompson (male) - steady broadcaster
+  'busy-decision-maker': VOICE_IDS.jessica,     // Jennifer Walsh (female) - playful but professional
+  'price-shopper': VOICE_IDS.eric,              // Marcus Price (male) - smooth, trustworthy
   
   // ============ SALES - UPSELL ============
-  'upsell-opportunity': VOICE_IDS.elli,         // Sarah Mitchell (female)
-  'happy-customer-upsell': VOICE_IDS.domi,      // Amanda Foster (female)
-  'budget-conscious-upsell': VOICE_IDS.josh,    // Frank Deluca (male)
-  'growth-focused-upsell': VOICE_IDS.bella,     // Rachel Okonkwo (female)
+  'upsell-opportunity': VOICE_IDS.bella,        // Sarah Mitchell (female) - professional, bright, warm
+  'happy-customer-upsell': VOICE_IDS.jessica,   // Amanda Foster (female) - playful, bright
+  'budget-conscious-upsell': VOICE_IDS.roger,   // Frank Deluca (male) - laid-back, casual
+  'growth-focused-upsell': VOICE_IDS.alice,     // Rachel Okonkwo (female) - clear, engaging
   
   // ============ HR SCENARIOS ============
-  'asking-for-raise': VOICE_IDS.bella,          // Karen Mitchell (female)
-  'underperforming-employee': VOICE_IDS.sam,    // Jason Peters (male)
-  'difficult-coworker': VOICE_IDS.adam,         // Steve Collins (male)
-  'termination-conversation': VOICE_IDS.rachel, // Lisa Chen (female)
+  'asking-for-raise': VOICE_IDS.matilda,        // Karen Mitchell (female) - professional, demanding boss
+  'underperforming-employee': VOICE_IDS.chris,  // Jason Peters (male) - charming but defensive
+  'difficult-coworker': VOICE_IDS.callum,       // Steve Collins (male) - husky, tricky
+  'termination-conversation': VOICE_IDS.lily,   // Lisa Chen (female) - velvety, emotional
   
   // ============ COMMUNICATION SCENARIOS ============
-  'team-pitch': VOICE_IDS.josh,                 // Mark Davidson (male)
-  'stakeholder-update': VOICE_IDS.domi,         // Diana Reeves (female)
-  'all-hands-presentation': VOICE_IDS.antoni,   // Alex Torres (male)
-  'public-speaking-qa': VOICE_IDS.sam,          // Jordan Blake (male)
+  'team-pitch': VOICE_IDS.river,                // Mark Davidson (male) - relaxed, neutral (skeptical)
+  'stakeholder-update': VOICE_IDS.sarah,        // Diana Reeves (female) - mature, confident executive
+  'all-hands-presentation': VOICE_IDS.liam,     // Alex Torres (male) - energetic
+  'public-speaking-qa': VOICE_IDS.charlie,      // Jordan Blake (male) - deep, confident
   
   // ============ LEADERSHIP SCENARIOS ============
-  'giving-feedback': VOICE_IDS.adam,            // Sam Parker (male)
-  'coaching-conversation': VOICE_IDS.josh,      // Taylor Morgan (male)
-  'executive-presence': VOICE_IDS.bella,        // Catherine Walsh (female)
-  'leading-change': VOICE_IDS.arnold,           // Jamie Chen (male)
+  'giving-feedback': VOICE_IDS.will,            // Sam Parker (male) - relaxed, needs coaching
+  'coaching-conversation': VOICE_IDS.chris,     // Taylor Morgan (male) - charming, coachable
+  'executive-presence': VOICE_IDS.matilda,      // Catherine Walsh (female) - professional executive
+  'leading-change': VOICE_IDS.harry,            // Jamie Chen (male) - fierce, resistant
 };
 
 // Default voices by gender (fallback)
-const DEFAULT_MALE_VOICE = VOICE_IDS.josh;
-const DEFAULT_FEMALE_VOICE = VOICE_IDS.rachel;
+const DEFAULT_MALE_VOICE = VOICE_IDS.george;
+const DEFAULT_FEMALE_VOICE = VOICE_IDS.sarah;
 
 export async function POST(request: NextRequest) {
   try {
@@ -81,6 +91,11 @@ export async function POST(request: NextRequest) {
 
     // Get the voice for this scenario, or fall back to male default
     const voiceId = SCENARIO_VOICES[scenarioId] || DEFAULT_MALE_VOICE;
+    
+    // Debug logging
+    console.log('[Speech API] scenarioId:', scenarioId);
+    console.log('[Speech API] voiceId:', voiceId);
+    console.log('[Speech API] mapped?:', !!SCENARIO_VOICES[scenarioId]);
 
     const response = await fetch(
       `https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`,
