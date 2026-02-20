@@ -14,8 +14,14 @@ export async function POST(request: NextRequest) {
     const { planType } = await request.json() as { planType: PlanType };
     
     const plan = PLANS[planType];
+    console.log('Checkout request:', { planType, plan, priceId: plan?.priceId });
+    
     if (!plan || !plan.priceId) {
-      return NextResponse.json({ error: 'Invalid plan' }, { status: 400 });
+      console.error('Invalid plan or missing priceId:', { planType, plan, envVars: {
+        STRIPE_PRICE_ID_BUSINESS: process.env.STRIPE_PRICE_ID_BUSINESS ? 'set' : 'missing',
+        STRIPE_PRICE_ID_TEAM: process.env.STRIPE_PRICE_ID_TEAM ? 'set' : 'missing',
+      }});
+      return NextResponse.json({ error: `Invalid plan: ${planType}. Price ID may not be configured.` }, { status: 400 });
     }
 
     const stripe = getStripe();

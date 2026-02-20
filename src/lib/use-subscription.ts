@@ -33,23 +33,26 @@ export function useSubscription() {
   }, [fetchSubscription]);
 
   const openCheckout = async (planType: string) => {
-    try {
-      const response = await fetch('/api/stripe/create-checkout', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ planType }),
-      });
+    const response = await fetch('/api/stripe/create-checkout', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ planType }),
+    });
 
-      if (!response.ok) {
-        throw new Error('Failed to create checkout session');
-      }
+    if (!response.ok) {
+      const data = await response.json().catch(() => ({}));
+      const errorMessage = data.error || 'Failed to create checkout session';
+      setError(errorMessage);
+      throw new Error(errorMessage);
+    }
 
-      const { url } = await response.json();
-      if (url) {
-        window.location.href = url;
-      }
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to open checkout');
+    const { url } = await response.json();
+    if (url) {
+      window.location.href = url;
+    } else {
+      const errorMessage = 'No checkout URL received';
+      setError(errorMessage);
+      throw new Error(errorMessage);
     }
   };
 

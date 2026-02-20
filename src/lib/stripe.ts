@@ -34,7 +34,7 @@ export const PLANS = {
   },
   pro: {
     name: 'Business',
-    priceId: process.env.STRIPE_PRICE_ID_PRO,
+    priceId: process.env.STRIPE_PRICE_ID_BUSINESS,
     price: 29,
     minutesPerMonth: 500,
     features: [
@@ -48,10 +48,11 @@ export const PLANS = {
   team: {
     name: 'Team',
     priceId: process.env.STRIPE_PRICE_ID_TEAM,
-    price: 99,
+    price: 129,
     minutesPerMonth: 2000,
     features: [
       '2,000 minutes/month',
+      'Up to 5 users',
       'Everything in Business',
       'Team analytics',
       'Custom scenarios',

@@ -89,14 +89,6 @@ export function Navigation() {
               Studio
             </Link>
           </SignedIn>
-          <SignedOut>
-            <Link
-              href="/sign-up"
-              className="text-cyan hover:text-cyan/80 transition-colors font-semibold"
-            >
-              Start Trial Now
-            </Link>
-          </SignedOut>
         </div>
 
         {/* CTA Buttons */}
@@ -193,15 +185,6 @@ export function Navigation() {
                     Studio
                   </Link>
                 </SignedIn>
-                <SignedOut>
-                  <Link
-                    href="/sign-up"
-                    onClick={() => setIsOpen(false)}
-                    className="text-lg font-semibold text-cyan hover:text-cyan/80 transition-colors"
-                  >
-                    Start Trial Now
-                  </Link>
-                </SignedOut>
                 <div className="flex flex-col gap-3 mt-4">
                   <SignedOut>
                     <Link 

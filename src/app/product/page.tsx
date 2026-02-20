@@ -157,33 +157,33 @@ const howItWorks = [
 
 const pricingPlans = [
   {
-    name: 'Individual',
+    name: 'Business',
     price: '$29',
     period: 'per month',
     description: 'Perfect for individual contributors looking to level up.',
     features: [
-      '1 user',
-      'All pre-built scenarios',
-      'Basic analytics',
-      'Email support',
-      'Unlimited practice sessions',
+      '500 minutes/month',
+      'All scenarios',
+      'Voice + text feedback',
+      'AI coaching insights',
+      'Priority support',
     ],
     cta: 'Start 7-Day Free Trial',
     popular: false,
   },
   {
-    name: 'Business',
-    price: '$99',
+    name: 'Team',
+    price: '$129',
     period: 'per month',
     description: 'For teams that need collaboration and advanced features.',
     features: [
-      'Up to 10 users',
-      'Unlimited scenarios',
-      'Advanced analytics & reporting',
-      'Custom persona builder',
-      'Priority support',
-      'Unlimited practice sessions',
-      'Team leaderboards',
+      '2,000 minutes/month',
+      'Up to 5 users',
+      'Everything in Business',
+      'Team analytics',
+      'Custom scenarios',
+      'Admin dashboard',
+      'Dedicated support',
     ],
     cta: 'Start 7-Day Free Trial',
     popular: true,
@@ -341,13 +341,13 @@ export default function ProductPage() {
               </div>
               <div className="hidden md:block w-px h-12 bg-violet/30" />
               <div className="text-center md:text-left">
-                <p className="text-muted-foreground text-sm mb-1">Business plan yearly (10 users)</p>
-                <p className="text-2xl font-heading font-bold text-cyan">$1,188</p>
+                <p className="text-muted-foreground text-sm mb-1">Team plan yearly (5 users)</p>
+                <p className="text-2xl font-heading font-bold text-cyan">$1,548</p>
               </div>
               <div className="hidden md:block w-px h-12 bg-violet/30" />
               <div className="text-center md:text-left">
                 <p className="text-muted-foreground text-sm mb-1">ROI if you retain just 1 rep</p>
-                <p className="text-2xl font-heading font-bold text-green-400">9,578%</p>
+                <p className="text-2xl font-heading font-bold text-green-400">7,426%</p>
               </div>
             </div>
           </div>
