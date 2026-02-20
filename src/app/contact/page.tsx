@@ -13,7 +13,6 @@ import {
   MapPin,
   Send,
   CheckCircle,
-  Clock,
   Headphones,
   X,
   Sparkles
@@ -43,7 +42,7 @@ const contactFAQs = [
   },
   {
     question: 'How quickly does your team respond?',
-    answer: 'Our average response time is under 2 hours during business hours (9am-6pm PT, Monday-Friday). Enterprise customers receive priority support with a 4-hour response time SLA.',
+    answer: 'We respond as quickly as possible during business hours (9am-6pm PT, Monday-Friday). Enterprise customers receive priority support with dedicated success managers.',
   },
   {
     question: 'Can I schedule a live demo?',
@@ -98,7 +97,7 @@ export default function ContactPage() {
               <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?w=100&h=100&fit=crop&crop=face" className="w-12 h-12 rounded-full border-2 border-navy" alt="Support team" />
             </div>
             <p className="text-muted-foreground">
-              Our team typically responds within <span className="text-cyan font-semibold">2 hours</span>
+              Our team is here to help
             </p>
           </div>
         </div>
@@ -313,14 +312,10 @@ export default function ContactPage() {
                     <h3 className="font-heading text-lg font-semibold text-white mb-2">
                       Enterprise Support
                     </h3>
-                    <p className="text-muted-foreground mb-4">
+                    <p className="text-muted-foreground">
                       Enterprise customers get priority support with dedicated success managers 
-                      and 4-hour response time SLA.
+                      and faster response times.
                     </p>
-                    <div className="flex items-center gap-2 text-cyan">
-                      <Clock className="w-4 h-4" />
-                      <span className="text-sm">Average response time: 2 hours</span>
-                    </div>
                   </div>
                 </div>
               </CardContent>
