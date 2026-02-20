@@ -589,7 +589,7 @@ export function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
                             className="flex-1 bg-electric-blue hover:bg-electric-blue/90 text-white font-medium py-2 px-4 rounded-lg transition-colors flex items-center justify-center gap-2"
                           >
                             <ArrowUpCircle className="w-4 h-4" />
-                            Upgrade to Pro
+                            Upgrade to Business
                           </button>
                           <a 
                             href="/product#pricing"
