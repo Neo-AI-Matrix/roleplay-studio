@@ -232,14 +232,59 @@ export default function ProductPage() {
             Everything your team needs to practice, improve, and excel at customer-facing conversations.
           </p>
 
-          {/* Hero Image */}
-          <div className="max-w-4xl mx-auto mt-12">
-            <div className="glass-card p-2 overflow-hidden glow-violet">
-              <img 
-                src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=1200&h=500&fit=crop" 
-                alt="Professional team training session"
-                className="w-full h-64 md:h-80 object-cover object-center rounded-lg"
-              />
+          {/* Pricing Grid - Moved to Hero for Better Conversion */}
+          <div className="max-w-5xl mx-auto mt-12">
+            <div className="grid md:grid-cols-3 gap-6">
+              {pricingPlans.map((plan, i) => (
+                <Card 
+                  key={i} 
+                  className={`glass-card border-violet/20 relative ${plan.popular ? 'border-cyan/50 glow-cyan' : ''}`}
+                >
+                  {plan.popular && (
+                    <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
+                      <Badge className="bg-cyan text-white border-0">Most Popular</Badge>
+                    </div>
+                  )}
+                  <CardHeader className="text-center pb-4">
+                    <CardTitle className="font-heading text-2xl text-white">{plan.name}</CardTitle>
+                    <div className="mt-4">
+                      <span className="text-4xl font-heading font-bold gradient-text">{plan.price}</span>
+                      <span className="text-muted-foreground text-sm ml-2">{plan.period}</span>
+                    </div>
+                    <p className="text-muted-foreground mt-2">{plan.description}</p>
+                  </CardHeader>
+                  <CardContent>
+                    <ul className="space-y-3 mb-6">
+                      {plan.features.map((feature, j) => (
+                        <li key={j} className="flex items-center gap-2">
+                          <CheckCircle className="w-5 h-5 text-cyan flex-shrink-0" />
+                          <span className="text-muted-foreground">{feature}</span>
+                        </li>
+                      ))}
+                    </ul>
+                    {plan.name === 'Enterprise' ? (
+                      <Link href="/enterprise">
+                        <Button 
+                          className="w-full border-violet/30 hover:bg-violet/20"
+                          variant="outline"
+                        >
+                          {plan.cta}
+                          <ArrowRight className="ml-2 w-4 h-4" />
+                        </Button>
+                      </Link>
+                    ) : (
+                      <Link href="/sign-up">
+                        <Button 
+                          className={`w-full ${plan.popular ? 'btn-gradient text-white border-0' : 'border-violet/30'}`}
+                          variant={plan.popular ? 'default' : 'outline'}
+                        >
+                          {plan.cta}
+                        </Button>
+                      </Link>
+                    )}
+                  </CardContent>
+                </Card>
+              ))}
             </div>
           </div>
         </div>
@@ -307,57 +352,15 @@ export default function ProductPage() {
             </div>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-            {pricingPlans.map((plan, i) => (
-              <Card 
-                key={i} 
-                className={`glass-card border-violet/20 relative ${plan.popular ? 'border-cyan/50 glow-cyan' : ''}`}
-              >
-                {plan.popular && (
-                  <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                    <Badge className="bg-cyan text-white border-0">Most Popular</Badge>
-                  </div>
-                )}
-                <CardHeader className="text-center pb-4">
-                  <CardTitle className="font-heading text-2xl text-white">{plan.name}</CardTitle>
-                  <div className="mt-4">
-                    <span className="text-4xl font-heading font-bold gradient-text">{plan.price}</span>
-                    <span className="text-muted-foreground text-sm ml-2">{plan.period}</span>
-                  </div>
-                  <p className="text-muted-foreground mt-2">{plan.description}</p>
-                </CardHeader>
-                <CardContent>
-                  <ul className="space-y-3 mb-6">
-                    {plan.features.map((feature, j) => (
-                      <li key={j} className="flex items-center gap-2">
-                        <CheckCircle className="w-5 h-5 text-cyan flex-shrink-0" />
-                        <span className="text-muted-foreground">{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  {plan.name === 'Enterprise' ? (
-                    <Link href="/enterprise">
-                      <Button 
-                        className="w-full border-violet/30 hover:bg-violet/20"
-                        variant="outline"
-                      >
-                        {plan.cta}
-                        <ArrowRight className="ml-2 w-4 h-4" />
-                      </Button>
-                    </Link>
-                  ) : (
-                    <Link href="/sign-up">
-                      <Button 
-                        className={`w-full ${plan.popular ? 'btn-gradient text-white border-0' : 'border-violet/30'}`}
-                        variant={plan.popular ? 'default' : 'outline'}
-                      >
-                        {plan.cta}
-                      </Button>
-                    </Link>
-                  )}
-                </CardContent>
-              </Card>
-            ))}
+          {/* Image - Moved from Hero */}
+          <div className="max-w-4xl mx-auto">
+            <div className="glass-card p-2 overflow-hidden glow-violet">
+              <img 
+                src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=1200&h=500&fit=crop" 
+                alt="Professional team training session"
+                className="w-full h-64 md:h-80 object-cover object-center rounded-lg"
+              />
+            </div>
           </div>
         </div>
       </section>
