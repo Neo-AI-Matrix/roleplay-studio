@@ -128,7 +128,10 @@ export function Navigation() {
                   afterSignOutUrl="/"
                   appearance={{
                     elements: {
-                      avatarBox: "w-9 h-9 ring-2 ring-electric-blue/50"
+                      avatarBox: "w-9 h-9 ring-2 ring-electric-blue/50",
+                      // Hide profile editing in Clerk's modal - we handle that in ProfileModal
+                      profileSection__profile: { display: 'none' },
+                      profilePage__profile: { display: 'none' },
                     }
                   }}
                 />
@@ -228,7 +231,10 @@ export function Navigation() {
                             afterSignOutUrl="/"
                             appearance={{
                               elements: {
-                                avatarBox: "w-10 h-10 ring-2 ring-electric-blue/50"
+                                avatarBox: "w-10 h-10 ring-2 ring-electric-blue/50",
+                                // Hide profile editing in Clerk's modal - we handle that in ProfileModal
+                                profileSection__profile: { display: 'none' },
+                                profilePage__profile: { display: 'none' },
                               }
                             }}
                           />

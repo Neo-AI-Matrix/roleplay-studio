@@ -13,7 +13,7 @@ import {
   Shield
 } from 'lucide-react';
 import { ProfileModal } from './ProfileModal';
-import { getProfile } from '@/lib/profile-storage';
+import { getProfile, UserProfile } from '@/lib/profile-storage';
 
 export function CombinedUserMenu() {
   const { user } = useUser();
@@ -21,12 +21,14 @@ export function CombinedUserMenu() {
   const [isOpen, setIsOpen] = useState(false);
   const [showProfileModal, setShowProfileModal] = useState(false);
   const [hasProfile, setHasProfile] = useState(false);
+  const [profile, setProfile] = useState<UserProfile | null>(null);
   const menuRef = useRef<HTMLDivElement>(null);
 
-  // Check if user has completed their profile
+  // Load profile and check if completed
   useEffect(() => {
-    const profile = getProfile();
-    setHasProfile(!!profile?.preferredName || !!profile?.interests?.length);
+    const loadedProfile = getProfile();
+    setProfile(loadedProfile);
+    setHasProfile(!!loadedProfile?.preferredName || !!loadedProfile?.interests?.length);
   }, [showProfileModal]);
 
   // Close menu when clicking outside
@@ -52,7 +54,16 @@ export function CombinedUserMenu() {
 
   const handleManageAccount = () => {
     setIsOpen(false);
-    openUserProfile();
+    // Open Clerk's profile but customize to focus on security
+    openUserProfile({
+      appearance: {
+        elements: {
+          // Hide the profile section header since we handle that
+          profileSection__profile: { display: 'none' },
+          profilePage__profile: { display: 'none' },
+        }
+      }
+    });
   };
 
   return (
@@ -64,7 +75,20 @@ export function CombinedUserMenu() {
           className="flex items-center gap-2 p-1 rounded-full hover:bg-white/10 transition-colors"
         >
           <div className="relative">
-            {user?.imageUrl ? (
+            {/* Priority: 1) Custom photo, 2) Custom emoji, 3) Clerk image, 4) Fallback */}
+            {profile?.avatarType === 'photo' && profile?.avatarUrl ? (
+              <Image
+                src={profile.avatarUrl}
+                alt={profile.preferredName || user?.firstName || 'User'}
+                width={40}
+                height={40}
+                className="w-10 h-10 rounded-full ring-2 ring-electric-blue object-cover"
+              />
+            ) : profile?.avatarType === 'emoji' && profile?.avatarEmoji ? (
+              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-violet to-cyan flex items-center justify-center ring-2 ring-electric-blue">
+                <span className="text-xl">{profile.avatarEmoji}</span>
+              </div>
+            ) : user?.imageUrl ? (
               <Image
                 src={user.imageUrl}
                 alt={user.firstName || 'User'}
