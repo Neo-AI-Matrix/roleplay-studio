@@ -59,7 +59,21 @@ export function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   
   // Stripe subscription data
-  const { subscription, isLoading: isLoadingSubscription, openCheckout, openBillingPortal } = useSubscription();
+  const { subscription, isLoading: isLoadingSubscription, error: subscriptionError, openCheckout, openBillingPortal } = useSubscription();
+  const [isUpgrading, setIsUpgrading] = useState(false);
+  const [upgradeError, setUpgradeError] = useState<string | null>(null);
+
+  const handleUpgrade = async () => {
+    setIsUpgrading(true);
+    setUpgradeError(null);
+    try {
+      await openCheckout('pro');
+    } catch (err) {
+      setUpgradeError('Unable to start checkout. Please try again or contact support.');
+    } finally {
+      setIsUpgrading(false);
+    }
+  };
 
   useEffect(() => {
     if (isOpen && user) {
@@ -581,33 +595,41 @@ export function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
                          'Individual'}
                       </div>
                     </div>
-                    <div className="flex gap-3">
-                      {subscription?.plan === 'free' || !subscription?.hasSubscription ? (
-                        <>
+                    <div className="space-y-3">
+                      {upgradeError && (
+                        <div className="p-3 bg-red-500/10 border border-red-500/30 rounded-lg text-red-400 text-sm">
+                          {upgradeError}
+                        </div>
+                      )}
+                      <div className="flex gap-3">
+                        {subscription?.plan === 'free' || !subscription?.hasSubscription ? (
                           <button 
-                            onClick={() => openCheckout('pro')}
-                            className="flex-1 bg-electric-blue hover:bg-electric-blue/90 text-white font-medium py-2 px-4 rounded-lg transition-colors flex items-center justify-center gap-2"
+                            onClick={handleUpgrade}
+                            disabled={isUpgrading}
+                            className="flex-1 bg-gradient-to-r from-violet to-cyan hover:opacity-90 disabled:opacity-50 text-white font-medium py-3 px-4 rounded-lg transition-opacity flex items-center justify-center gap-2"
                           >
-                            <ArrowUpCircle className="w-4 h-4" />
-                            Upgrade to Business
+                            {isUpgrading ? (
+                              <>
+                                <Loader2 className="w-4 h-4 animate-spin" />
+                                Processing...
+                              </>
+                            ) : (
+                              <>
+                                <ArrowUpCircle className="w-4 h-4" />
+                                Upgrade to Business
+                              </>
+                            )}
                           </button>
-                          <a 
-                            href="/product#pricing"
+                        ) : (
+                          <button 
+                            onClick={openBillingPortal}
                             className="flex-1 bg-white/10 hover:bg-white/20 text-white font-medium py-2 px-4 rounded-lg transition-colors flex items-center justify-center gap-2"
                           >
                             <ExternalLink className="w-4 h-4" />
-                            View Plans
-                          </a>
-                        </>
-                      ) : (
-                        <button 
-                          onClick={openBillingPortal}
-                          className="flex-1 bg-white/10 hover:bg-white/20 text-white font-medium py-2 px-4 rounded-lg transition-colors flex items-center justify-center gap-2"
-                        >
-                          <ExternalLink className="w-4 h-4" />
-                          Manage Subscription
-                        </button>
-                      )}
+                            Manage Subscription
+                          </button>
+                        )}
+                      </div>
                     </div>
                   </div>
 
