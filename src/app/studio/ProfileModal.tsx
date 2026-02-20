@@ -56,6 +56,7 @@ export function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [sessions, setSessions] = useState<SessionRecord[]>([]);
   const [earnedAchievements, setEarnedAchievements] = useState<string[]>([]);
+  const [monthlyUsageMinutes, setMonthlyUsageMinutes] = useState(0);
   const fileInputRef = useRef<HTMLInputElement>(null);
   
   // Stripe subscription data
@@ -90,6 +91,14 @@ export function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
       const stats = getStats();
       setSessions(loadedSessions);
       setEarnedAchievements(calculateEarnedAchievements(stats, loadedSessions));
+      
+      // Calculate usage for current month
+      const now = new Date();
+      const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+      const monthlySeconds = loadedSessions
+        .filter(s => new Date(s.startTime) >= startOfMonth)
+        .reduce((total, s) => total + (s.durationSeconds || 0), 0);
+      setMonthlyUsageMinutes(Math.round(monthlySeconds / 60));
     }
   }, [isOpen, user]);
 
@@ -640,21 +649,48 @@ export function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
                       Usage This Month
                     </h4>
                     <div className="bg-white/5 rounded-xl p-4 border border-white/10">
-                      <div className="flex justify-between items-center mb-2">
-                        <span className="text-gray-400 text-sm">Minutes Used</span>
-                        <span className="text-white font-medium">
-                          {/* TODO: Get actual usage from your usage tracking */}
-                          0 / {subscription?.minutesPerMonth || 100} min
-                        </span>
-                      </div>
-                      <div className="w-full bg-white/10 rounded-full h-2">
-                        <div className="bg-electric-blue h-2 rounded-full" style={{ width: '0%' }}></div>
-                      </div>
-                      {subscription?.currentPeriodEnd && (
-                        <p className="text-xs text-gray-500 mt-2">
-                          Resets on {new Date(subscription.currentPeriodEnd).toLocaleDateString()}
-                        </p>
-                      )}
+                      {(() => {
+                        const maxMinutes = subscription?.minutesPerMonth || 100;
+                        const usagePercent = Math.min((monthlyUsageMinutes / maxMinutes) * 100, 100);
+                        const isNearLimit = usagePercent >= 80;
+                        const isOverLimit = usagePercent >= 100;
+                        
+                        return (
+                          <>
+                            <div className="flex justify-between items-center mb-2">
+                              <span className="text-gray-400 text-sm">Minutes Used</span>
+                              <span className={`font-medium ${isOverLimit ? 'text-red-400' : isNearLimit ? 'text-yellow-400' : 'text-white'}`}>
+                                {monthlyUsageMinutes} / {maxMinutes} min
+                              </span>
+                            </div>
+                            <div className="w-full bg-white/10 rounded-full h-2">
+                              <div 
+                                className={`h-2 rounded-full transition-all ${isOverLimit ? 'bg-red-500' : isNearLimit ? 'bg-yellow-500' : 'bg-electric-blue'}`} 
+                                style={{ width: `${usagePercent}%` }}
+                              ></div>
+                            </div>
+                            {isNearLimit && !isOverLimit && (
+                              <p className="text-xs text-yellow-400 mt-2">
+                                ⚠️ You're approaching your monthly limit
+                              </p>
+                            )}
+                            {isOverLimit && (
+                              <p className="text-xs text-red-400 mt-2">
+                                ⚠️ You've reached your monthly limit. Upgrade for more minutes.
+                              </p>
+                            )}
+                            {subscription?.currentPeriodEnd ? (
+                              <p className="text-xs text-gray-500 mt-2">
+                                Resets on {new Date(subscription.currentPeriodEnd).toLocaleDateString()}
+                              </p>
+                            ) : (
+                              <p className="text-xs text-gray-500 mt-2">
+                                Resets on the 1st of each month
+                              </p>
+                            )}
+                          </>
+                        );
+                      })()}
                     </div>
                   </div>
 
