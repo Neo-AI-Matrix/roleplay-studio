@@ -3,18 +3,28 @@ import { auth, currentUser } from '@clerk/nextjs/server';
 import { getStripe, PLANS, PlanType } from '@/lib/stripe';
 
 export async function POST(request: NextRequest) {
+  console.log('[Checkout] Starting checkout request');
+  
   try {
+    console.log('[Checkout] Getting auth...');
     const { userId } = await auth();
+    console.log('[Checkout] userId:', userId);
+    
+    console.log('[Checkout] Getting currentUser...');
     const user = await currentUser();
+    console.log('[Checkout] user email:', user?.emailAddresses?.[0]?.emailAddress);
     
     if (!userId || !user) {
+      console.log('[Checkout] Unauthorized - no user');
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const { planType } = await request.json() as { planType: PlanType };
+    const body = await request.json();
+    console.log('[Checkout] Request body:', body);
+    const { planType } = body as { planType: PlanType };
     
     const plan = PLANS[planType];
-    console.log('Checkout request:', { planType, plan, priceId: plan?.priceId });
+    console.log('[Checkout] Plan lookup:', { planType, planName: plan?.name, priceId: plan?.priceId });
     
     if (!plan || !plan.priceId) {
       console.error('Invalid plan or missing priceId:', { planType, plan, envVars: {
@@ -24,12 +34,16 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: `Invalid plan: ${planType}. Price ID may not be configured.` }, { status: 400 });
     }
 
+    console.log('[Checkout] Getting Stripe client...');
     const stripe = getStripe();
+    console.log('[Checkout] Stripe client obtained');
     
     // Check if user already has a Stripe customer ID
     let customerId = user.privateMetadata?.stripeCustomerId as string | undefined;
+    console.log('[Checkout] Existing customerId:', customerId);
 
     if (!customerId) {
+      console.log('[Checkout] Creating new Stripe customer...');
       // Create a new Stripe customer
       const customer = await stripe.customers.create({
         email: user.emailAddresses[0]?.emailAddress,
@@ -39,11 +53,12 @@ export async function POST(request: NextRequest) {
         },
       });
       customerId = customer.id;
-      
-      // Note: You'll want to save this to Clerk's user metadata via their API
-      // For now, we'll include it in the session metadata
+      console.log('[Checkout] Created customer:', customerId);
     }
 
+    console.log('[Checkout] Creating checkout session...');
+    console.log('[Checkout] Success URL:', `${process.env.NEXT_PUBLIC_APP_URL}/studio?checkout=success`);
+    
     // Create checkout session
     const session = await stripe.checkout.sessions.create({
       customer: customerId,
