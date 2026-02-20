@@ -1,5 +1,4 @@
 import { currentUser } from "@clerk/nextjs/server";
-import { UserButton } from "@clerk/nextjs";
 import { Sparkles } from "lucide-react";
 import { getAllScenarios } from "@/lib/scenarios";
 import { StudioStats } from "./StudioStats";
@@ -9,7 +8,7 @@ import { TrialCountdown } from "./TrialCountdown";
 import { Achievements } from "./Achievements";
 import { SidebarProgress } from "./SidebarProgress";
 import { QuickActions } from "./QuickActions";
-import { ProfileButton } from "./ProfileButton";
+import { CombinedUserMenu } from "./CombinedUserMenu";
 import { ThemeToggle } from "@/components/ThemeToggle";
 
 export default async function StudioPage() {
@@ -37,15 +36,7 @@ export default async function StudioPage() {
               <p className="text-sm text-gray-400">Signed in as</p>
               <p className="text-white font-medium">{user?.emailAddresses[0]?.emailAddress}</p>
             </div>
-            <ProfileButton />
-            <UserButton 
-              afterSignOutUrl="/"
-              appearance={{
-                elements: {
-                  avatarBox: "w-10 h-10 ring-2 ring-electric-blue"
-                }
-              }}
-            />
+            <CombinedUserMenu />
           </div>
         </div>
       </div>
