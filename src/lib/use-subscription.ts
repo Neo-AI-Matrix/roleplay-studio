@@ -41,7 +41,9 @@ export function useSubscription() {
 
     if (!response.ok) {
       const data = await response.json().catch(() => ({}));
-      const errorMessage = data.error || 'Failed to create checkout session';
+      // Show detailed error for debugging
+      const errorMessage = data.details || data.error || 'Failed to create checkout session';
+      console.error('Checkout error:', data);
       setError(errorMessage);
       throw new Error(errorMessage);
     }

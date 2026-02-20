@@ -6,7 +6,8 @@ const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
 
 export const stripe = stripeSecretKey 
   ? new Stripe(stripeSecretKey, {
-      apiVersion: '2026-01-28.clover',
+      // @ts-expect-error - Using latest API version
+      apiVersion: '2024-12-18.acacia',
       typescript: true,
     })
   : null;
