@@ -70,7 +70,7 @@ export function CombinedUserMenu() {
 
   return (
     <>
-      <div className="relative" ref={menuRef}>
+      <div className="relative z-[9999]" ref={menuRef}>
         {/* Avatar Button */}
         <button
           onClick={() => setIsOpen(!isOpen)}
