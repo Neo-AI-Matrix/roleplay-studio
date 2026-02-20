@@ -5,11 +5,7 @@ import Stripe from 'stripe';
 const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
 
 export const stripe = stripeSecretKey 
-  ? new Stripe(stripeSecretKey, {
-      // @ts-expect-error - Using latest API version
-      apiVersion: '2024-12-18.acacia',
-      typescript: true,
-    })
+  ? new Stripe(stripeSecretKey)
   : null;
 
 export function getStripe(): Stripe {
