@@ -56,6 +56,7 @@ export default function VoiceSessionPage() {
   const [isPaused, setIsPaused] = useState(false);
   const [pauseTimeRemaining, setPauseTimeRemaining] = useState(0);
   const [error, setError] = useState<string | null>(null);
+  const [hasMicrophone, setHasMicrophone] = useState<boolean | null>(null);
   const [transcript, setTranscript] = useState<TranscriptEntry[]>([]);
   const [sessionStarted, setSessionStarted] = useState(false);
   const [sessionEnded, setSessionEnded] = useState(false);
@@ -78,6 +79,21 @@ export default function VoiceSessionPage() {
   
   // Max pause time: 5 minutes (300 seconds)
   const MAX_PAUSE_SECONDS = 300;
+
+  // Check for microphone availability on mount
+  useEffect(() => {
+    const checkMicrophone = async () => {
+      try {
+        const devices = await navigator.mediaDevices.enumerateDevices();
+        const audioInputs = devices.filter(device => device.kind === 'audioinput');
+        setHasMicrophone(audioInputs.length > 0);
+      } catch (err) {
+        console.error('Error checking for microphone:', err);
+        setHasMicrophone(false);
+      }
+    };
+    checkMicrophone();
+  }, []);
 
   // Auto-scroll transcript within its container only (not the page)
   useEffect(() => {
@@ -164,6 +180,12 @@ export default function VoiceSessionPage() {
       return;
     }
 
+    // Check for microphone before starting
+    if (hasMicrophone === false) {
+      setError('No microphone detected. Please connect a microphone and refresh the page to use voice sessions.');
+      return;
+    }
+
     setSessionStarted(true);
     setStatus('connecting');
     setError(null);
@@ -178,7 +200,17 @@ export default function VoiceSessionPage() {
 
     try {
       // Request microphone permission
-      await navigator.mediaDevices.getUserMedia({ audio: true });
+      try {
+        await navigator.mediaDevices.getUserMedia({ audio: true });
+      } catch (micError: any) {
+        if (micError.name === 'NotFoundError' || micError.name === 'DevicesNotFoundError') {
+          throw new Error('No microphone found. Please connect a microphone to use voice sessions.');
+        } else if (micError.name === 'NotAllowedError' || micError.name === 'PermissionDeniedError') {
+          throw new Error('Microphone access denied. Please allow microphone access in your browser settings.');
+        } else {
+          throw new Error('Could not access microphone: ' + (micError.message || 'Unknown error'));
+        }
+      }
 
       // Get signed URL from our API
       const tokenResponse = await fetch('/api/elevenlabs-token', {
@@ -544,11 +576,28 @@ export default function VoiceSessionPage() {
                 </ul>
               </div>
 
-              <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-xl p-4 mb-8">
-                <p className="text-yellow-400 text-sm">
-                  🎤 You&apos;ll need to allow microphone access when prompted
-                </p>
-              </div>
+              {hasMicrophone === false ? (
+                <div className="bg-red-500/10 border border-red-500/30 rounded-xl p-4 mb-8">
+                  <p className="text-red-400 text-sm font-medium mb-2">
+                    🚫 No Microphone Detected
+                  </p>
+                  <p className="text-red-400/80 text-sm">
+                    Voice sessions require a microphone. Please connect a microphone and refresh this page, or use text chat instead.
+                  </p>
+                  <button
+                    onClick={() => router.push(`/studio/session/${scenarioId}`)}
+                    className="mt-4 px-6 py-3 bg-electric-blue hover:bg-electric-blue/90 text-white font-semibold rounded-xl"
+                  >
+                    Use Text Chat Instead
+                  </button>
+                </div>
+              ) : (
+                <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-xl p-4 mb-8">
+                  <p className="text-yellow-400 text-sm">
+                    🎤 You&apos;ll need to allow microphone access when prompted
+                  </p>
+                </div>
+              )}
               
               {!scenario.elevenLabsAgentId ? (
                 <div className="bg-red-500/10 border border-red-500/30 rounded-xl p-4 mb-8">
@@ -562,6 +611,14 @@ export default function VoiceSessionPage() {
                     Use Text Chat
                   </button>
                 </div>
+              ) : hasMicrophone === false ? (
+                <button
+                  disabled
+                  className="w-full py-4 bg-gray-600 text-gray-400 font-semibold rounded-xl cursor-not-allowed text-lg flex items-center justify-center gap-3"
+                >
+                  <MicOff className="w-6 h-6" />
+                  Microphone Required
+                </button>
               ) : (
                 <button
                   onClick={startConversation}
