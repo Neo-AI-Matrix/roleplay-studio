@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useAuth, SignInButton } from "@clerk/nextjs";
 import { 
   ArrowLeft, 
   MessageSquare, 
@@ -15,7 +16,8 @@ import {
   Info,
   Target,
   AlertCircle,
-  CheckCircle
+  CheckCircle,
+  Lock
 } from "lucide-react";
 import type { Scenario } from "@/lib/scenarios";
 import { categoryLabels, categoryColors, type ScenarioCategory } from "@/lib/scenarios";
@@ -32,6 +34,8 @@ interface CustomBriefing {
 }
 
 export function ScenarioDetailClient({ scenario }: ScenarioDetailClientProps) {
+  const { isSignedIn, isLoaded } = useAuth();
+  
   // Load custom briefing from localStorage or use defaults
   const [briefing, setBriefing] = useState<CustomBriefing>({
     background: scenario.briefing.background,
@@ -129,11 +133,11 @@ export function ScenarioDetailClient({ scenario }: ScenarioDetailClientProps) {
       <div className="border-b border-white/10 bg-navy-light/50 backdrop-blur-sm">
         <div className="container mx-auto px-4 py-4">
           <Link 
-            href="/studio" 
+            href={isSignedIn ? "/studio" : "/"} 
             className="inline-flex items-center gap-2 text-gray-400 hover:text-white transition-colors mb-4"
           >
             <ArrowLeft className="w-4 h-4" />
-            Back to Studio
+            {isSignedIn ? "Back to Studio" : "Back to Home"}
           </Link>
         </div>
       </div>
@@ -200,29 +204,55 @@ export function ScenarioDetailClient({ scenario }: ScenarioDetailClientProps) {
 
           {/* Action Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 mb-8">
-            <Link
-              href={`/studio/session/${scenario.id}`}
-              className="flex-1 flex items-center justify-center gap-3 px-6 py-4 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-xl transition-colors border border-white/10"
-            >
-              <MessageSquare className="w-5 h-5" />
-              Start Text Session
-            </Link>
-            {scenario.elevenLabsAgentId ? (
-              <Link
-                href={`/studio/voice/${scenario.id}?autostart=true`}
-                className="flex-1 flex items-center justify-center gap-3 px-6 py-4 bg-gradient-to-r from-violet to-cyan hover:opacity-90 text-white font-semibold rounded-xl transition-opacity"
-              >
-                <Mic className="w-5 h-5" />
-                Start Voice Session
-              </Link>
+            {isLoaded && isSignedIn ? (
+              <>
+                <Link
+                  href={`/studio/session/${scenario.id}`}
+                  className="flex-1 flex items-center justify-center gap-3 px-6 py-4 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-xl transition-colors border border-white/10"
+                >
+                  <MessageSquare className="w-5 h-5" />
+                  Start Text Session
+                </Link>
+                {scenario.elevenLabsAgentId ? (
+                  <Link
+                    href={`/studio/voice/${scenario.id}?autostart=true`}
+                    className="flex-1 flex items-center justify-center gap-3 px-6 py-4 bg-gradient-to-r from-violet to-cyan hover:opacity-90 text-white font-semibold rounded-xl transition-opacity"
+                  >
+                    <Mic className="w-5 h-5" />
+                    Start Voice Session
+                  </Link>
+                ) : (
+                  <button
+                    disabled
+                    className="flex-1 flex items-center justify-center gap-3 px-6 py-4 bg-white/5 text-gray-500 font-semibold rounded-xl cursor-not-allowed border border-white/5"
+                  >
+                    <Mic className="w-5 h-5" />
+                    Voice Not Available
+                  </button>
+                )}
+              </>
             ) : (
-              <button
-                disabled
-                className="flex-1 flex items-center justify-center gap-3 px-6 py-4 bg-white/5 text-gray-500 font-semibold rounded-xl cursor-not-allowed border border-white/5"
-              >
-                <Mic className="w-5 h-5" />
-                Voice Not Available
-              </button>
+              <div className="flex-1 bg-navy/50 border border-white/10 rounded-xl p-6">
+                <div className="flex flex-col sm:flex-row items-center gap-4">
+                  <div className="flex items-center gap-3 text-gray-400">
+                    <Lock className="w-5 h-5" />
+                    <span>Sign in to start practicing with AI roleplay</span>
+                  </div>
+                  <div className="flex gap-3">
+                    <SignInButton mode="modal">
+                      <button className="px-6 py-3 bg-gradient-to-r from-violet to-cyan hover:opacity-90 text-white font-semibold rounded-xl transition-opacity">
+                        Sign In to Start
+                      </button>
+                    </SignInButton>
+                    <Link
+                      href="/sign-up"
+                      className="px-6 py-3 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-xl transition-colors border border-white/10"
+                    >
+                      Create Account
+                    </Link>
+                  </div>
+                </div>
+              </div>
             )}
           </div>
 

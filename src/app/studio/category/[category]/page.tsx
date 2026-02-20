@@ -2,7 +2,8 @@
 
 import { useParams, notFound } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, Briefcase, HeadphonesIcon, Users, MessageSquare, Crown } from "lucide-react";
+import { useAuth, SignInButton } from "@clerk/nextjs";
+import { ArrowLeft, Briefcase, HeadphonesIcon, Users, MessageSquare, Crown, Sparkles } from "lucide-react";
 import { getAllScenarios, categoryLabels, categoryDescriptions, categoryColors, type ScenarioCategory } from "@/lib/scenarios";
 import { ScenarioGrid } from "../../ScenarioGrid";
 
@@ -18,6 +19,7 @@ const validCategories: ScenarioCategory[] = ['sales', 'support', 'hr', 'communic
 
 export default function CategoryPage() {
   const params = useParams();
+  const { isSignedIn } = useAuth();
   const category = params.category as string;
 
   // Validate category
@@ -33,13 +35,13 @@ export default function CategoryPage() {
   return (
     <div className="min-h-screen bg-navy pt-24 pb-16">
       <div className="container mx-auto px-4">
-        {/* Back Link */}
+        {/* Back Link - go to studio if signed in, home if not */}
         <Link 
-          href="/studio" 
+          href={isSignedIn ? "/studio" : "/"} 
           className="inline-flex items-center gap-2 text-gray-400 hover:text-white mb-8 transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
-          Back to all scenarios
+          {isSignedIn ? "Back to all scenarios" : "Back to home"}
         </Link>
 
         {/* Category Header */}
@@ -57,6 +59,34 @@ export default function CategoryPage() {
             {categoryScenarios.length} scenario{categoryScenarios.length !== 1 ? 's' : ''} available
           </div>
         </div>
+
+        {/* CTA for unauthenticated users */}
+        {!isSignedIn && (
+          <div className="mb-8 p-6 bg-gradient-to-r from-violet/20 to-cyan/20 border border-violet/30 rounded-2xl">
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <Sparkles className="w-6 h-6 text-cyan" />
+                <div>
+                  <h3 className="text-white font-semibold">Ready to start practicing?</h3>
+                  <p className="text-gray-400 text-sm">Create a free account to access AI roleplay training</p>
+                </div>
+              </div>
+              <div className="flex gap-3">
+                <SignInButton mode="modal">
+                  <button className="px-5 py-2.5 bg-white/10 hover:bg-white/20 text-white font-medium rounded-xl transition-colors">
+                    Sign In
+                  </button>
+                </SignInButton>
+                <Link
+                  href="/sign-up"
+                  className="px-5 py-2.5 bg-gradient-to-r from-violet to-cyan hover:opacity-90 text-white font-medium rounded-xl transition-opacity"
+                >
+                  Get Started Free
+                </Link>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Scenarios Grid */}
         {categoryScenarios.length > 0 ? (
